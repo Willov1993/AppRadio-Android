@@ -13,4 +13,18 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+
+    <string name="title_activity_home">HomeActivity</string>
+
+    <!--STRINGS PARA LOS LABELS DEL NAVEGATION MENU -->
+    <string name="title_home">Inicio</string>
+    <string name="title_emisoras">Emisoras</string>
+    <string name="title_perfil">Perfil</string>
+    <string name="title_sugerencias">Sugerencias</string>
+    <string name="title_notificaciones">Notificaciones</string>
+    <string name="title_segmentos">Segmentos</string>
+    <string name="title_favoritos">Favoritos</string>
+    <string name="title_chat">Segmentos</string>
+    <string name="title_noticias">Noticias</string>
+
 </resources>
