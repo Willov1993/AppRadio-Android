@@ -6,6 +6,7 @@
         <item name="colorPrimary">@color/appColorTheme</item>
         <item name="colorPrimaryDark">@color/appColorTheme</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="coordinatorLayoutStyle">@style/Widget.Design.NavigationView</item>
     </style>
 
 </resources>
