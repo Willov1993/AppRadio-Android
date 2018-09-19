@@ -44,51 +44,57 @@
                 app:layout_constraintTop_toBottomOf="@+id/tv_emisora" />
 
             <Button
-                android:id="@+id/play_button_segmento"
+                android:id="@+id/btn_play_segmento"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="30dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="32dp"
-                android:background="@android:drawable/ic_media_play"
+                android:background="@drawable/play_button"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_segmento" />
 
             <Button
-                android:id="@+id/pause_button_segmento"
+                android:id="@+id/btn_volumen_segmento"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="28dp"
-                android:background="@android:drawable/ic_media_pause"
-                app:layout_constraintBaseline_toBaselineOf="@+id/play_button_segmento"
-                app:layout_constraintEnd_toStartOf="@+id/play_button_segmento" />
-
-            <Button
-                android:id="@+id/volume_button_segmento"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:layout_marginStart="28dp"
+                android:layout_height="0dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginTop="8dp"
                 android:background="@android:drawable/ic_lock_silent_mode_off"
-                app:layout_constraintBaseline_toBaselineOf="@+id/play_button_segmento"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/play_button_segmento" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHeight_max="wrap"
+                app:layout_constraintHeight_min="wrap"
+                app:layout_constraintTop_toTopOf="parent" />
 
         </android.support.constraint.ConstraintLayout>
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyclerView"
+            android:id="@+id/rv_segmentos"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_marginBottom="5dp"
             android:layout_marginTop="20dp"
             android:background="@android:color/darker_gray"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/adview_segmento"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/player_segmento"
-            app:layout_constraintVertical_bias="1.0"
-            tools:layout_editor_absoluteX="0dp"></android.support.v7.widget.RecyclerView>
+            app:layout_constraintVertical_bias="1.0"></android.support.v7.widget.RecyclerView>
+
+        <com.google.android.gms.ads.AdView
+            android:id="@+id/adview_segmento"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:layout_marginStart="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rv_segmentos"
+            app:layout_constraintVertical_bias="0.98" />
 
     </android.support.constraint.ConstraintLayout>
 
