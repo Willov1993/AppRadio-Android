@@ -3,15 +3,14 @@
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password (optional)</string>
-    <string name="action_sign_in">Sign in or register</string>
-    <string name="action_sign_in_short">Sign in</string>
-    <string name="error_invalid_email">This email address is invalid</string>
-    <string name="error_invalid_password">This password is too short</string>
-    <string name="error_incorrect_password">This password is incorrect</string>
-    <string name="error_field_required">This field is required</string>
-    <string name="permission_rationale">"Contacts permissions are needed for providing email
-        completions."
+    <string name="prompt_password">Contraseña (optional)</string>
+    <string name="action_sign_in">Inicia Sesion o Registrate</string>
+    <string name="action_sign_in_short">Inicia Sesion</string>
+    <string name="error_invalid_username">El usuario debe tener mas de 6 caracteres</string>
+    <string name="error_invalid_password">La contraseña es muy corta</string>
+    <string name="error_incorrect_password">La contraseña es incorrecta</string>
+    <string name="error_field_required">Llene todos los campos</string>
+    <string name="permission_rationale">"Se necesita permiso sobre tus contactos."
     </string>
 
     <string name="title_activity_home">HomeActivity</string>
@@ -30,4 +29,18 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
+
+    <!--STRING PARA VENTANA DE LOGIN-->
+
+    <string name="text_login">INICIAR SESÍON</string>
+    <string name="text_log_fb">INICIA CON FACEBOOK</string>
+    <string name="text_log_tw">INICIA CON TWITTER</string>
+    <string name="text_log_Google">INICIA CON GOOGLE</string>
+    <string name="text_register">No tienes cuenta? Regístrate Aquí</string>
+    <string name="hint_username">Usuario</string>
+    <string name="hint_password">Contraseña</string>
+
+    <!--STRING PARA API DE LOGIN DE FB-->
+    <string name="facebook_app_id">766740600384378</string>
+    <string name="fb_login_protocol_scheme">fb766740600384378</string>
 </resources>
