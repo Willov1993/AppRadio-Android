@@ -3,6 +3,7 @@ package com.innovasystem.appradio.Utils;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.util.Base64;
 
 /*Clase que contiene metodos estaticos para realizar actividades especificas */
 public class Utils {
@@ -43,5 +44,15 @@ public class Utils {
             }
         }
         return isNetworkAvail;
+    }
+
+
+    public static String encrypt(String input) {
+        // This is base64 encoding, which is not an encryption
+        return Base64.encodeToString(input.getBytes(), Base64.DEFAULT);
+    }
+
+    public static String decrypt(String input) {
+        return new String(Base64.decode(input, Base64.DEFAULT));
     }
 }

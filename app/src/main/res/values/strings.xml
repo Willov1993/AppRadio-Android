@@ -9,6 +9,7 @@
     <string name="error_invalid_username">El usuario debe tener mas de 6 caracteres</string>
     <string name="error_invalid_password">La contraseña es muy corta</string>
     <string name="error_incorrect_password">La contraseña es incorrecta</string>
+    <string name="error_incorrect_credentials">Las credenciales son incorrectas.</string>
     <string name="error_field_required">Llene todos los campos</string>
     <string name="permission_rationale">"Se necesita permiso sobre tus contactos."
     </string>
@@ -39,6 +40,7 @@
     <string name="text_register">No tienes cuenta? Regístrate Aquí</string>
     <string name="hint_username">Usuario</string>
     <string name="hint_password">Contraseña</string>
+    <string name="text_loading">Cargando....</string>
 
     <!--STRING PARA API DE LOGIN DE FB-->
     <string name="facebook_app_id">766740600384378</string>

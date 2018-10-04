@@ -11,6 +11,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.innovasystem.appradio.Utils.Constants;
 import com.innovasystem.appradio.Utils.LogUser;
+import com.innovasystem.appradio.Utils.ResultadoLogIn;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -56,7 +57,6 @@ public class RestServices {
                         System.out.println("Respuesta:"+response.toString());
                         try{
 
-
                         }catch(Exception e){
 
                         }
@@ -81,8 +81,8 @@ public class RestServices {
 
 
 
-    public String postLoginSpring(final Context context, String username, String password){
-        String respuesta ="";
+    public static ResultadoLogIn postLoginSpring(final Context context, String username, String password){
+        ResultadoLogIn resultadoLogIn;
         try{
             LogUser user = new LogUser(username,"",password);
 
@@ -93,28 +93,33 @@ public class RestServices {
             //GsonBuilder builder = new GsonBuilder();
             //Gson gson = builder.create();
             //System.out.println(gson.toJson(posthistdisp));
-            // Create a new RestTemplate instance
+
+
+            //Create a new RestTemplate instance
             RestTemplate restTemplate = new RestTemplate();
             // Add the Jackson and String message converters
             restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
 
             //restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
             System.out.println("POST arraydf: "+ user.toString());
-            System.out.println("POST array: "+ requestEntity.toString());
             // Make the HTTP POST request, marshaling the request to JSON, and the response to a String
             ResponseEntity<String> responseEntity = restTemplate.exchange(Constants.serverDomain+Constants.uriLogIn, HttpMethod.POST, requestEntity, String.class);
-            System.out.println("novatos:"+responseEntity.getBody());
-            respuesta =responseEntity.getBody();
+            System.out.println("Cuerpo de RespuestaLogin:"+responseEntity.getBody());
+
+            resultadoLogIn = new ResultadoLogIn(responseEntity.getBody(),responseEntity.getStatusCode().value());
             HttpStatus status = responseEntity.getStatusCode();
-            //Registrodispositivo restCall = responseEntity.getBody();
-            //String result = responseEntity.getBody();
             System.out.println("status Post Login "+status);
 
         } catch (HttpStatusCodeException exception) {
             int statusCode = exception.getStatusCode().value();
-            System.out.println("statusCode POst Login: "+statusCode);
+            resultadoLogIn = new ResultadoLogIn("",statusCode);
+            resultadoLogIn.setErrorMessage(exception.getResponseBodyAsString());
+
+
+        }catch(Exception e){
+            resultadoLogIn = new ResultadoLogIn("",500);
         }
 
-        return  respuesta;
+        return  resultadoLogIn;
     }
 }
