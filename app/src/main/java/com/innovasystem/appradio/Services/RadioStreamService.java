@@ -346,27 +346,40 @@ public class RadioStreamService extends Service implements AudioManager.OnAudioF
                     startMediaPlayer(radioURL);
                 else if (!mPlayer.isPlaying())
                     mPlayer.start();
-                mPlayer.setVolume(1.0f, 1.0f);
+
+                if(mPlayer != null)
+                    mPlayer.setVolume(1.0f, 1.0f);
                 break;
 
             case AudioManager.AUDIOFOCUS_LOSS:
                 // Lost focus for an unbounded amount of time: stop playback and release media player
-                if (mPlayer.isPlaying()) mPlayer.stop();
-                mPlayer.release();
-                mPlayer = null;
+                if(mPlayer == null)
+                    return;
+                else {
+                    if (mPlayer.isPlaying())
+                        mPlayer.stop();
+                    mPlayer.release();
+                    mPlayer = null;
+                }
                 break;
 
             case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT:
                 // Lost focus for a short time, but we have to stop
                 // playback. We don't release the media player because playback
                 // is likely to resume
-                if (mPlayer.isPlaying()) mPlayer.pause();
+                if(mPlayer == null)
+                    return;
+                if (mPlayer.isPlaying())
+                    mPlayer.pause();
                 break;
 
             case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK:
                 // Lost focus for a short time, but it's ok to keep playing
                 // at an attenuated level
-                if (mPlayer.isPlaying()) mPlayer.setVolume(0.1f, 0.1f);
+                if(mPlayer == null)
+                    return;
+                if (mPlayer.isPlaying())
+                    mPlayer.setVolume(0.1f, 0.1f);
                 break;
 
         }
