@@ -3,6 +3,7 @@ package com.innovasystem.appradio.Fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 import com.google.android.gms.ads.AdView;
 import com.innovasystem.appradio.R;
 import com.innovasystem.appradio.Services.RadioStreamService;
+import com.innovasystem.appradio.Utils.NotificationManagement;
 import com.innovasystem.appradio.Utils.Utils;
 
 /**
@@ -86,8 +88,8 @@ public class SegmentosFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View root= inflater.inflate(R.layout.fragment_segmentos, container, false);
-        //tv_emisora= root.findViewById(R.id.tv_emisora);
-        //tv_segmento= root.findViewById(R.id.tv_segmento);
+        tv_emisora= root.findViewById(R.id.tv_emisora);
+        tv_segmento= root.findViewById(R.id.tv_segmento);
         btn_reproducir= root.findViewById(R.id.btn_play_segmento);
 
         btn_reproducir.setOnClickListener(btnReproducirListener);
@@ -113,8 +115,8 @@ public class SegmentosFragment extends Fragment {
                 System.out.println("Start Playing!!!!!");
                 if(Utils.isNetworkAvailable(getContext())) {
                     btn_reproducir.setBackgroundResource(R.drawable.stop_button);
-                    startMediaPlayer("http://str.ecuastreaming.com:9958/");
                     playing = true;
+                    new DetectConnectionTask().execute();
                 }
                 else{
                     Toast.makeText(getContext(), "No se puede reproducir la emisora debido a que no tiene internet," +
@@ -164,5 +166,35 @@ public class SegmentosFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    private class DetectConnectionTask extends AsyncTask<Object,Object,Boolean>{
+
+        @Override
+        protected void onPreExecute() {
+            tv_emisora.setText("cargando....");
+            tv_segmento.setText("Espere un momento");
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Boolean doInBackground(Object... objects) {
+            return Utils.isActiveInternet();
+        }
+
+        @Override
+        protected void onPostExecute(Boolean result) {
+            tv_emisora.setText("Nombre Emisora");
+            tv_segmento.setText("Nombre del Segmento");
+            if(result == true && playing)
+                startMediaPlayer("http://str.ecuastreaming.com:9958/");
+            else{
+                NotificationManagement.notificarError("AppRadio - Error de Reproduccion","No se puede conectar al servidor de la radio",getActivity().getApplicationContext());
+                btn_reproducir.setBackgroundResource(R.drawable.play_button);
+                playing = false;
+                Toast.makeText(getContext(), "No se puede reproducir la emisora debido a que no tiene internet," +
+                        "revise su conexion", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 }
