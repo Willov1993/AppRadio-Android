@@ -93,12 +93,14 @@ public class LoginActivity extends AppCompatActivity {
         System.out.println("Token encriptado:"+tokenEncrypted);
         if(!tokenEncrypted.equals("default")){
             token = Utils.decrypt(tokenEncrypted);
+            Toast.makeText(this,
+                    token, Toast.LENGTH_LONG).show();
+            entrarHome();
         }else{
             token="";
         }
 
-        Toast.makeText(this,
-                token, Toast.LENGTH_LONG).show();
+
         //Valida si ya tiene token de fb
         /*
         if(AccessToken.getCurrentAccessToken() != null){
@@ -149,7 +151,16 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        Button btn_register = (Button) findViewById(R.id.btn_register);
 
+
+        btn_register.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(LoginActivity.this,RegisterActivity.class);
+                startActivity(i);
+            }
+        });
 
 
 
@@ -273,6 +284,8 @@ public class LoginActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
             int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
             mLoadingView.setVisibility(show ? View.VISIBLE : View.GONE);
+
+
             mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
             mLoginFormView.animate().setDuration(shortAnimTime).alpha(
                     show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
@@ -384,6 +397,11 @@ public class LoginActivity extends AppCompatActivity {
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
+    }
+    public void entrarHome(){
+        Intent i = new Intent(LoginActivity.this,HomeActivity.class);
+        startActivity(i);
+        finish();
     }
 }
 
