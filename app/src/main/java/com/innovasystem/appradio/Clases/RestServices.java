@@ -1,7 +1,8 @@
-package com.innovasystem.appradio.Services;
+package com.innovasystem.appradio.Clases;
 
 import android.content.Context;
 import android.net.Uri;
+import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -9,12 +10,15 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.innovasystem.appradio.Clases.Models.Emisora;
+import com.innovasystem.appradio.Clases.Models.Segmento;
 import com.innovasystem.appradio.Utils.Constants;
 import com.innovasystem.appradio.Utils.LogUser;
-import com.innovasystem.appradio.Utils.ResultadoLogIn;
+import com.innovasystem.appradio.Clases.ResultadoLogIn;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.http.HttpAuthentication;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -25,7 +29,11 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class RestServices {
@@ -121,5 +129,47 @@ public class RestServices {
         }
 
         return  resultadoLogIn;
+    }
+
+    public static List<Emisora> consultarEmisoras(){
+
+        HttpHeaders reqHeaders= new HttpHeaders();
+        reqHeaders.setAccept(Collections.singletonList(new MediaType("application","json")));
+        reqHeaders.set("Authorization","token ");
+        HttpEntity<?> requestEntity = new HttpEntity<Object>(reqHeaders);
+        Emisora[] emisoras = null;
+        RestTemplate restTemplate= new RestTemplate();
+        String url= Constants.serverDomain + Constants.uriEmisoras;
+
+        try{
+            ResponseEntity<Emisora[]> responseEntity= restTemplate.exchange(url,HttpMethod.GET,requestEntity,Emisora[].class);
+            if(responseEntity.getStatusCode() == HttpStatus.OK) {
+                emisoras = responseEntity.getBody();
+            }
+        }catch (Exception e){
+            Log.e("RestGetError", e.getMessage());
+        }
+
+        return new ArrayList<>(Arrays.asList(emisoras));
+    }
+
+    public static List<Segmento> consultarSegmentos(){
+        HttpHeaders reqHeaders= new HttpHeaders();
+        reqHeaders.setAccept(Collections.singletonList(new MediaType("application","json")));
+        reqHeaders.set("Authorization","token ");
+        HttpEntity<?> requestEntity = new HttpEntity<Object>(reqHeaders);
+        Segmento[] segmentos= null;
+        RestTemplate restTemplate= new RestTemplate();
+        String url= Constants.serverDomain + Constants.uriSegmentos;
+        try{
+            ResponseEntity<Segmento[]> responseEntity= restTemplate.exchange(url,HttpMethod.GET,requestEntity,Segmento[].class);
+            if(responseEntity.getStatusCode() == HttpStatus.OK) {
+                segmentos= responseEntity.getBody();
+            }
+        }catch (Exception e){
+            Log.e("RestGetError", e.getMessage());
+        }
+
+        return new ArrayList<>(Arrays.asList(segmentos));
     }
 }

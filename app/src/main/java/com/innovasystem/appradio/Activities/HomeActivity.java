@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -16,6 +17,9 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.innovasystem.appradio.Clases.Models.Emisora;
+import com.innovasystem.appradio.Clases.Models.Segmento;
+import com.innovasystem.appradio.Clases.RestServices;
 import com.innovasystem.appradio.Fragments.ChatFragment;
 import com.innovasystem.appradio.Fragments.FavoritosFragment;
 import com.innovasystem.appradio.Fragments.HomeFragment;
@@ -23,6 +27,8 @@ import com.innovasystem.appradio.Fragments.NoticiasFragment;
 import com.innovasystem.appradio.Fragments.SegmentosFragment;
 import com.innovasystem.appradio.R;
 import com.innovasystem.appradio.Services.RadioStreamService;
+
+import java.util.List;
 
 
 public class HomeActivity extends AppCompatActivity {
@@ -36,6 +42,8 @@ public class HomeActivity extends AppCompatActivity {
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         navigation.setSelectedItemId(R.id.navigation_segmentos);
+        new RestFetchEmisoraTask().execute();
+        new RestFetchSegmentoTask().execute();
 
     }
 
@@ -156,5 +164,33 @@ public class HomeActivity extends AppCompatActivity {
     };
 
 
+    private class RestFetchEmisoraTask extends AsyncTask<Void,Void,List<Emisora>>{
 
+        @Override
+        protected List<Emisora> doInBackground(Void... voids) {
+            return RestServices.consultarEmisoras();
+        }
+
+        @Override
+        protected void onPostExecute(List<Emisora> listaEmisoras){
+            for(Emisora e: listaEmisoras){
+                Log.i("Emisora: ",e.toString());
+            }
+        }
+    }
+
+    private class RestFetchSegmentoTask extends AsyncTask<Void,Void,List<Segmento>>{
+
+        @Override
+        protected List<Segmento> doInBackground(Void... voids) {
+            return RestServices.consultarSegmentos();
+        }
+
+        @Override
+        protected void onPostExecute(List<Segmento> listaSegmentos){
+            for(Segmento s: listaSegmentos){
+                Log.i("Emisora: ",s.toString());
+            }
+        }
+    }
 }
