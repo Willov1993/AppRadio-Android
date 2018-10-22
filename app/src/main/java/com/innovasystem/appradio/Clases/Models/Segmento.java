@@ -1,6 +1,8 @@
 package com.innovasystem.appradio.Clases.Models;
 import  com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import java.util.Arrays;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Segmento {
 
@@ -10,6 +12,8 @@ public class Segmento {
     private String descripcion;
     private Long idEmisora;
     private String imagen;
+
+    private Horario[] horarios;
 
     public Long getId() {
         return id;
@@ -51,14 +55,32 @@ public class Segmento {
         this.idEmisora = idEmisora;
     }
 
+    public String getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(String imagen) {
+        this.imagen = imagen;
+    }
+
+    public Horario[] getHorarios() {
+        return horarios;
+    }
+
+    public void setHorarios(Horario[] horarios) {
+        this.horarios = horarios;
+    }
+
     @Override
     public String toString() {
         return "Segmento{" +
-                "id='" + id + '\'' +
-                "nombre='" + nombre + '\'' +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
                 ", slogan='" + slogan + '\'' +
                 ", descripcion='" + descripcion + '\'' +
                 ", idEmisora=" + idEmisora +
+                ", imagen='" + imagen + '\'' +
+                ", horarios=" + Arrays.toString(horarios) +
                 '}';
     }
 }

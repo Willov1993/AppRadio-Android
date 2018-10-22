@@ -168,11 +168,16 @@ public class HomeActivity extends AppCompatActivity {
 
         @Override
         protected List<Emisora> doInBackground(Void... voids) {
-            return RestServices.consultarEmisoras();
+            return RestServices.consultarEmisoras(getApplicationContext());
         }
 
         @Override
         protected void onPostExecute(List<Emisora> listaEmisoras){
+            if(listaEmisoras == null){
+                Toast.makeText(HomeActivity.this, "Ocurrio un error con el servidor, intente mas tarde", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            
             for(Emisora e: listaEmisoras){
                 Log.i("Emisora: ",e.toString());
             }
@@ -183,11 +188,16 @@ public class HomeActivity extends AppCompatActivity {
 
         @Override
         protected List<Segmento> doInBackground(Void... voids) {
-            return RestServices.consultarSegmentos();
+            return RestServices.consultarSegmentosPorEmisora(getApplicationContext(),1);
         }
 
         @Override
         protected void onPostExecute(List<Segmento> listaSegmentos){
+            if(listaSegmentos == null){
+                Toast.makeText(HomeActivity.this, "Ocurrio un error con el servidor, intente mas tarde", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
             for(Segmento s: listaSegmentos){
                 Log.i("Emisora: ",s.toString());
             }
