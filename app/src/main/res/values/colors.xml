@@ -8,4 +8,7 @@
     <color name="appColorTheme2">#ff3d56</color>
     <color name="appColorTheme2Saturated1">#ff7f8a</color>
     <color name="appColorTheme2Saturated2">#ffa5ad</color>
+    <color name="TitleColor">#ff7f8a</color>
+    <color name="TextColor">#47525E</color>
+    <color name="infoColor">#FFBA5C</color>
 </resources>

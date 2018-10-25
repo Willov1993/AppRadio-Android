@@ -6,7 +6,9 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,10 +17,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.ads.AdView;
+import com.innovasystem.appradio.Activities.HomeActivity;
+import com.innovasystem.appradio.Clases.Adapters.SegmentosAdapter;
+import com.innovasystem.appradio.Clases.Models.Segmento;
+import com.innovasystem.appradio.Clases.RestServices;
 import com.innovasystem.appradio.R;
 import com.innovasystem.appradio.Services.RadioStreamService;
 import com.innovasystem.appradio.Utils.NotificationManagement;
 import com.innovasystem.appradio.Utils.Utils;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -42,6 +52,8 @@ public class SegmentosFragment extends Fragment {
     Button btn_reproducir,btn_volumen;
     RecyclerView rv_segmentos;
     AdView adView_segmento;
+
+    List<Segmento> lista_segmentos= new ArrayList<>();
 
     /*variables de control de reproduccion */
     private boolean playing= false;
@@ -86,14 +98,21 @@ public class SegmentosFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
+        //Inicializacion de views
         View root= inflater.inflate(R.layout.fragment_segmentos, container, false);
         tv_emisora= root.findViewById(R.id.tv_emisora);
         tv_segmento= root.findViewById(R.id.tv_segmento);
         btn_reproducir= root.findViewById(R.id.btn_play_segmento);
+        rv_segmentos= root.findViewById(R.id.rv_segmentos);
 
         btn_reproducir.setOnClickListener(btnReproducirListener);
 
+        rv_segmentos.setHasFixedSize(true);
+        RecyclerView.LayoutManager lmanager= new LinearLayoutManager(getContext());
+        rv_segmentos.setLayoutManager(lmanager);
+
+
+        new RestFetchSegmentoTask().execute();
 
         return root;
 
@@ -168,6 +187,11 @@ public class SegmentosFragment extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
+
+    /**
+     * Esta clase interna realiza el trabajo de detectar la conexion a internet
+     * del telefono, si hay una conexion activa, entonces inicia el reproductor
+     */
     private class DetectConnectionTask extends AsyncTask<Object,Object,Boolean>{
 
         @Override
@@ -195,6 +219,34 @@ public class SegmentosFragment extends Fragment {
                 Toast.makeText(getContext(), "No se puede reproducir la emisora debido a que no tiene internet," +
                         "revise su conexion", Toast.LENGTH_SHORT).show();
             }
+        }
+    }
+
+    /**
+     * Esta clase interna realiza el trabajo de extraer los segmentos de la emisora seleccionada en
+     * el dia actual
+     */
+    private class RestFetchSegmentoTask extends AsyncTask<Void,Void,List<Segmento>>{
+
+        @Override
+        protected List<Segmento> doInBackground(Void... voids) {
+            return RestServices.consultarSegmentosPorEmisora(getActivity().getApplicationContext(),1);
+        }
+
+        @Override
+        protected void onPostExecute(List<Segmento> listaSegmentos){
+            System.out.println("IMPRIMIENDO RESULTADO_______");
+            System.out.println(Arrays.toString(listaSegmentos.toArray()));
+            if(listaSegmentos == null){
+                Toast.makeText(getContext(), "Ocurrio un error con el servidor, intente mas tarde", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            lista_segmentos= listaSegmentos;
+            SegmentosAdapter segmentoAdapter=new SegmentosAdapter(lista_segmentos,getContext());
+            rv_segmentos.setAdapter(segmentoAdapter);
+            rv_segmentos.getAdapter().notifyDataSetChanged();
+
         }
     }
 }

@@ -92,7 +92,7 @@
                         android:inputType="textPassword"
                         android:maxLines="1"
                         android:singleLine="true"
-                        android:text="wakanda123" />
+                        android:text="appradio123" />
 
                 </android.support.design.widget.TextInputLayout>
 
