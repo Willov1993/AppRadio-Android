@@ -174,7 +174,7 @@ public class RestServices {
         return new ArrayList<>(Arrays.asList(segmentos));
     }
 
-    public static List<Segmento> consultarSegmentosPorEmisora(Context c,int idEmisora){
+    public static List<Segmento> consultarSegmentosEmisora(Context c,int idEmisora){
         HttpHeaders reqHeaders= new HttpHeaders();
         reqHeaders.setAccept(Collections.singletonList(new MediaType("application","json")));
         reqHeaders.set("Authorization",SessionConfig.getSessionConfig(c).userToken);
@@ -182,6 +182,50 @@ public class RestServices {
         Segmento[] segmentos= null;
         RestTemplate restTemplate= new RestTemplate();
         String url= Constants.serverDomain + String.format(Constants.uriSegmentosEmisora,idEmisora);
+
+        try{
+            ResponseEntity<Segmento[]> responseEntity= restTemplate.exchange(url,HttpMethod.GET,requestEntity,Segmento[].class);
+            if(responseEntity.getStatusCode() == HttpStatus.OK) {
+                segmentos= responseEntity.getBody();
+            }
+        }catch (Exception e){
+            Log.e("RestGetError", e.getMessage());
+            return null;
+        }
+
+        return new ArrayList<>(Arrays.asList(segmentos));
+    }
+
+    public static List<Segmento> consultarSegmentosDelDia(Context c){
+        HttpHeaders reqHeaders= new HttpHeaders();
+        reqHeaders.setAccept(Collections.singletonList(new MediaType("application","json")));
+        reqHeaders.set("Authorization",SessionConfig.getSessionConfig(c).userToken);
+        HttpEntity<?> requestEntity = new HttpEntity<Object>(reqHeaders);
+        Segmento[] segmentos= null;
+        RestTemplate restTemplate= new RestTemplate();
+        String url= Constants.serverDomain + Constants.uriSegmentosDelDia;
+
+        try{
+            ResponseEntity<Segmento[]> responseEntity= restTemplate.exchange(url,HttpMethod.GET,requestEntity,Segmento[].class);
+            if(responseEntity.getStatusCode() == HttpStatus.OK) {
+                segmentos= responseEntity.getBody();
+            }
+        }catch (Exception e){
+            Log.e("RestGetError", e.getMessage());
+            return null;
+        }
+
+        return new ArrayList<>(Arrays.asList(segmentos));
+    }
+
+    public static List<Segmento> consultarSegmentosDelDia(Context c,int idEmisora){
+        HttpHeaders reqHeaders= new HttpHeaders();
+        reqHeaders.setAccept(Collections.singletonList(new MediaType("application","json")));
+        reqHeaders.set("Authorization",SessionConfig.getSessionConfig(c).userToken);
+        HttpEntity<?> requestEntity = new HttpEntity<Object>(reqHeaders);
+        Segmento[] segmentos= null;
+        RestTemplate restTemplate= new RestTemplate();
+        String url= Constants.serverDomain + String.format(Constants.uriSegmentosDelDiaEmisora,idEmisora);
 
         try{
             ResponseEntity<Segmento[]> responseEntity= restTemplate.exchange(url,HttpMethod.GET,requestEntity,Segmento[].class);

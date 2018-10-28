@@ -1,9 +1,11 @@
 package com.innovasystem.appradio.Clases.Models;
 
+import android.support.annotation.NonNull;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Horario {
+public class Horario implements Comparable<Horario> {
     private String fecha_inicio;
     private String fecha_fin;
     private String dia;
@@ -39,5 +41,17 @@ public class Horario {
                 ", fecha_fin='" + fecha_fin + '\'' +
                 ", dia='" + dia + '\'' +
                 '}';
+    }
+
+    @Override
+    public int compareTo(@NonNull Horario horario) {
+        String hora1= this.fecha_inicio.substring(0,2);
+        String hora2= horario.fecha_inicio.substring(0,2);
+        String min1= this.fecha_inicio.substring(3,5);
+        String min2= horario.fecha_inicio.substring(3,5);
+        if(hora1.compareTo(hora2)!=0){
+            return hora1.compareTo(hora2);
+        }
+        return min1.compareTo(min2);
     }
 }

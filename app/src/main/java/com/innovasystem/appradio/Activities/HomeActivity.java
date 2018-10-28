@@ -3,8 +3,6 @@ package com.innovasystem.appradio.Activities;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -17,46 +15,28 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.innovasystem.appradio.Clases.Models.Emisora;
-import com.innovasystem.appradio.Clases.Models.Segmento;
-import com.innovasystem.appradio.Clases.RestServices;
-import com.innovasystem.appradio.Fragments.ChatFragment;
-import com.innovasystem.appradio.Fragments.FavoritosFragment;
+import com.innovasystem.appradio.Fragments.EmisorasFragment;
 import com.innovasystem.appradio.Fragments.HomeFragment;
-import com.innovasystem.appradio.Fragments.NoticiasFragment;
-import com.innovasystem.appradio.Fragments.SegmentosFragment;
+import com.innovasystem.appradio.Fragments.NotificacionesFragment;
+import com.innovasystem.appradio.Fragments.PerfilUserFragment;
+import com.innovasystem.appradio.Fragments.SugerenciasFragment;
 import com.innovasystem.appradio.R;
 import com.innovasystem.appradio.Services.RadioStreamService;
 
-import java.util.List;
-
-
 public class HomeActivity extends AppCompatActivity {
+
+    private TextView mTextMessage;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        startService(new Intent(this, RadioStreamService.class));
-        registerReceiver(receiverFromservice, new IntentFilter(RadioStreamService.SERVICE_TO_ACTIVITY));
+
+        mTextMessage = (TextView) findViewById(R.id.message);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        navigation.setSelectedItemId(R.id.navigation_segmentos);
-        //new RestFetchEmisoraTask().execute();
-        //new RestFetchSegmentoTask().execute();
-
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        registerReceiver(receiverFromservice, new IntentFilter(RadioStreamService.SERVICE_TO_ACTIVITY));
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        unregisterReceiver(receiverFromservice);
+        navigation.setSelectedItemId(R.id.navigation_home);
     }
 
 
@@ -76,6 +56,42 @@ public class HomeActivity extends AppCompatActivity {
         ft.commit();
     }
 
+
+    /**
+     * Este Listener manejara los eventos asociados al BottomNavigationView. Se encargara de cargar
+     * los fragments segun la seleccion del usuario.
+     */
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            Fragment contentFragmet;
+            switch (item.getItemId()) {
+                case R.id.navigation_home:
+                    contentFragmet= new HomeFragment();
+                    HomeActivity.this.changeFragment(contentFragmet,R.id.frame_container);
+                    return true;
+                case R.id.navigation_emisoras:
+                    contentFragmet= new EmisorasFragment();
+                    HomeActivity.this.changeFragment(contentFragmet,R.id.frame_container);
+                    return true;
+                case R.id.navigation_notificaciones:
+                    contentFragmet= new NotificacionesFragment();
+                    HomeActivity.this.changeFragment(contentFragmet,R.id.frame_container);
+                    return true;
+                case R.id.navigation_sugerencias:
+                    contentFragmet= new SugerenciasFragment();
+                    HomeActivity.this.changeFragment(contentFragmet,R.id.frame_container);
+                    return true;
+                case R.id.navigation_perfil:
+                    contentFragmet= new PerfilUserFragment();
+                    HomeActivity.this.changeFragment(contentFragmet,R.id.frame_container);
+                    return true;
+            }
+            return false;
+        }
+    };
 
     /*=== Listeners ===*/
 
@@ -103,104 +119,10 @@ public class HomeActivity extends AppCompatActivity {
                         //toast= Toast.makeText(context, "Current status of StreamService: " + currentPlayerStatus, Toast.LENGTH_LONG);
                         break;
                 }
-                
+
                 if(toast != null)
                     toast.show();
             }
         }
     };
-
-
-    /**
-     * Este Listener manejara los eventos asociados al BottomNavigationView. Se encargara de cargar
-     * los fragments segun la seleccion del usuario.
-     */
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
-
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            Fragment contentFragment;
-            switch (item.getItemId()) {
-                case R.id.navigation_home:
-                    contentFragment= new HomeFragment();
-                    HomeActivity.this.changeFragment(contentFragment,R.id.frame_container_home);
-                    return true;
-                case R.id.navigation_segmentos:
-                    contentFragment= new SegmentosFragment();
-                    HomeActivity.this.changeFragment(contentFragment,R.id.frame_container_home);
-                    return true;
-                case R.id.navigation_favoritos:
-                    contentFragment= new FavoritosFragment();
-                    HomeActivity.this.changeFragment(contentFragment,R.id.frame_container_home);
-                    return true;
-                case R.id.navigation_chat:
-                    contentFragment= new ChatFragment();
-                    HomeActivity.this.changeFragment(contentFragment,R.id.frame_container_home);
-                    return true;
-                case R.id.navigation_noticias:
-                    contentFragment= new NoticiasFragment();
-                    HomeActivity.this.changeFragment(contentFragment,R.id.frame_container_home);
-                    return true;
-                /*case R.id.navigation_home:
-                    mTextMessage.setText(R.string.title_home);
-                    return true;
-                case R.id.navigation_emisoras:
-                    mTextMessage.setText(R.string.title_emisoras);
-                    return true;
-                case R.id.navigation_notificaciones:
-                    mTextMessage.setText(R.string.title_notificaciones);
-                    return true;
-                case R.id.navigation_sugerencias:
-                    mTextMessage.setText(R.string.title_sugerencias);
-                    return true;
-                case R.id.navigation_perfil:
-                    mTextMessage.setText(R.string.title_perfil);
-                    return true;
-                    */
-            }
-            return false;
-        }
-    };
-
-
-    private class RestFetchEmisoraTask extends AsyncTask<Void,Void,List<Emisora>>{
-
-        @Override
-        protected List<Emisora> doInBackground(Void... voids) {
-            return RestServices.consultarEmisoras(getApplicationContext());
-        }
-
-        @Override
-        protected void onPostExecute(List<Emisora> listaEmisoras){
-            if(listaEmisoras == null){
-                Toast.makeText(HomeActivity.this, "Ocurrio un error con el servidor, intente mas tarde", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            
-            for(Emisora e: listaEmisoras){
-                Log.i("Emisora: ",e.toString());
-            }
-        }
-    }
-
-    private class RestFetchSegmentoTask extends AsyncTask<Void,Void,List<Segmento>>{
-
-        @Override
-        protected List<Segmento> doInBackground(Void... voids) {
-            return RestServices.consultarSegmentosPorEmisora(getApplicationContext(),1);
-        }
-
-        @Override
-        protected void onPostExecute(List<Segmento> listaSegmentos){
-            if(listaSegmentos == null){
-                Toast.makeText(HomeActivity.this, "Ocurrio un error con el servidor, intente mas tarde", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            for(Segmento s: listaSegmentos){
-                Log.i("Emisora: ",s.toString());
-            }
-        }
-    }
 }

@@ -13,7 +13,7 @@ public class Emisora {
     String descripcion;
     String ciudad;
     String provincia;
-    String logotipo;
+    String logo;
 
     public Long getId() {
         return id;
@@ -87,6 +87,14 @@ public class Emisora {
         this.provincia = provincia;
     }
 
+    public String getLogo() {
+        return logo;
+    }
+
+    public void setLogo(String logo) {
+        this.logo = logo;
+    }
+
     @Override
     public String toString() {
         return "Emisora{" +
@@ -99,6 +107,7 @@ public class Emisora {
                 ", descripcion='" + descripcion + '\'' +
                 ", ciudad='" + ciudad + '\'' +
                 ", provincia='" + provincia + '\'' +
+                ", logo='" + logo + '\'' +
                 '}';
     }
 }
