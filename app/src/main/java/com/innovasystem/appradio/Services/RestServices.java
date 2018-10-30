@@ -11,7 +11,9 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.innovasystem.appradio.Utils.Constants;
 import com.innovasystem.appradio.Utils.LogUser;
+import com.innovasystem.appradio.Utils.RegisterUser;
 import com.innovasystem.appradio.Utils.ResultadoLogIn;
+import com.innovasystem.appradio.Utils.ResultadoRegister;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -81,6 +83,38 @@ public class RestServices {
 
 
 
+    public static ResultadoRegister postRegisterSpring(final Context context, RegisterUser usuario){
+        ResultadoRegister resultadoLogIn;
+        try{
+            // Set the Content-Type header
+            HttpHeaders requestHeaders = new HttpHeaders();
+            requestHeaders.setContentType(new MediaType("application","json"));
+            HttpEntity<RegisterUser> requestEntity = new HttpEntity<>(usuario,requestHeaders);
+
+            RestTemplate restTemplate = new RestTemplate();
+            restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+
+            System.out.println("POST arraydf: "+ usuario.toString());
+            ResponseEntity<String> responseEntity = restTemplate.exchange(Constants.serverDomain+Constants.uriRegister, HttpMethod.POST, requestEntity, String.class);
+            System.out.println("Cuerpo de RespuestaRegister:"+responseEntity.getBody());
+
+            resultadoLogIn = new ResultadoRegister(responseEntity.getBody(),responseEntity.getStatusCode().value());
+            HttpStatus status = responseEntity.getStatusCode();
+            System.out.println("status Post Register "+status);
+
+        } catch (HttpStatusCodeException exception) {
+            int statusCode = exception.getStatusCode().value();
+            resultadoLogIn = new ResultadoRegister("",statusCode);
+            resultadoLogIn.setErrorMessage(exception.getResponseBodyAsString());
+
+
+        }catch(Exception e){
+            resultadoLogIn = new ResultadoRegister("",500);
+        }
+
+        return  resultadoLogIn;
+    }
+
     public static ResultadoLogIn postLoginSpring(final Context context, String username, String password){
         ResultadoLogIn resultadoLogIn;
         try{
@@ -122,4 +156,5 @@ public class RestServices {
 
         return  resultadoLogIn;
     }
+
 }

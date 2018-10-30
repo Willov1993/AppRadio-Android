@@ -51,7 +51,8 @@
 
     <!--STRING PARA VENTANA DE REGISTRO-->
     <string name="text_obligatory_fields">Campos Obligatorios *</string>
-    <string name="text_names_lastname">Nombres y Apellidos *</string>
+    <string name="text_names">Nombres *</string>
+    <string name="text_lastname">Apellidos *</string>
     <string name="text_user">Usuario *</string>
     <string name="text_password">Contraseña *</string>
     <string name="text_mail">Correo Electrónico *</string>
@@ -63,7 +64,8 @@
     <string name="text_year">Año</string>
 
 
-    <string name="hint_names_lastnames">Ingrese sus nombres y apellidos</string>
+    <string name="hint_names_lastnames">Ingrese sus nombres</string>
+    <string name="hint_lastnames">Ingrese sus apellidos</string>
     <string name="hint_user">Ingrese un nombre de usuario</string>
     <string name="hint_mail">Ingrese su correo electronico</string>
     <string name="hint_password_register">Contraseña</string>
