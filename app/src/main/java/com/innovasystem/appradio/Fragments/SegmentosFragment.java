@@ -1,11 +1,11 @@
 package com.innovasystem.appradio.Fragments;
 
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,10 +15,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.ads.AdView;
+import com.innovasystem.appradio.Clases.Adapters.SegmentosAdapter;
+import com.innovasystem.appradio.Clases.Models.Horario;
+import com.innovasystem.appradio.Clases.Models.Segmento;
+import com.innovasystem.appradio.Clases.RestServices;
 import com.innovasystem.appradio.R;
 import com.innovasystem.appradio.Services.RadioStreamService;
 import com.innovasystem.appradio.Utils.NotificationManagement;
 import com.innovasystem.appradio.Utils.Utils;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -32,8 +41,6 @@ import com.innovasystem.appradio.Utils.Utils;
 /*Fragmento que representa la ventana de seleccion de segmentos de la emisora */
 public class SegmentosFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -42,6 +49,8 @@ public class SegmentosFragment extends Fragment {
     Button btn_reproducir,btn_volumen;
     RecyclerView rv_segmentos;
     AdView adView_segmento;
+
+    //List<Segmento> lista_segmentos= new ArrayList<>();
 
     /*variables de control de reproduccion */
     private boolean playing= false;
@@ -53,7 +62,7 @@ public class SegmentosFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     public SegmentosFragment() {
-        // Required empty public constructor
+
     }
 
     /**
@@ -86,14 +95,21 @@ public class SegmentosFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         View root= inflater.inflate(R.layout.fragment_segmentos, container, false);
         tv_emisora= root.findViewById(R.id.tv_emisora);
         tv_segmento= root.findViewById(R.id.tv_segmento);
         btn_reproducir= root.findViewById(R.id.btn_play_segmento);
+        rv_segmentos= root.findViewById(R.id.rv_segmentos);
 
         btn_reproducir.setOnClickListener(btnReproducirListener);
 
+        rv_segmentos.setHasFixedSize(true);
+        RecyclerView.LayoutManager lmanager= new LinearLayoutManager(getContext());
+        rv_segmentos.setLayoutManager(lmanager);
+
+
+
+        new RestFetchSegmentoTask().execute();
 
         return root;
 
@@ -168,6 +184,11 @@ public class SegmentosFragment extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
+
+    /**
+     * Esta clase interna realiza el trabajo de detectar la conexion a internet
+     * del telefono, si hay una conexion activa, entonces inicia el reproductor
+     */
     private class DetectConnectionTask extends AsyncTask<Object,Object,Boolean>{
 
         @Override
@@ -195,6 +216,46 @@ public class SegmentosFragment extends Fragment {
                 Toast.makeText(getContext(), "No se puede reproducir la emisora debido a que no tiene internet," +
                         "revise su conexion", Toast.LENGTH_SHORT).show();
             }
+        }
+    }
+
+    /**
+     * Esta clase interna realiza el trabajo de extraer los segmentos de la emisora seleccionada en
+     * el dia actual
+     */
+    private class RestFetchSegmentoTask extends AsyncTask<Void,Void,List<Segmento>>{
+
+        @Override
+        protected List<Segmento> doInBackground(Void... voids) {
+            return RestServices.consultarSegmentosDelDia(getActivity().getApplicationContext(),2);
+        }
+
+        @Override
+        protected void onPostExecute(List<Segmento> listaSegmentos){
+            System.out.println("IMPRIMIENDO RESULTADO_______");
+            System.out.println(Arrays.toString(listaSegmentos.toArray()));
+            if(listaSegmentos == null){
+                Toast.makeText(getContext(), "Ocurrio un error con el servidor, intente mas tarde", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            Map<Horario,Segmento> mapa_segmentos=new TreeMap<>();
+            for (int i = 0; i < listaSegmentos.size(); i++) {
+                Segmento segmento =  listaSegmentos.get(i);
+                for (int j = 0; j < segmento.getHorarios().length; j++) {
+                     Horario h = segmento.getHorarios()[j];
+                     mapa_segmentos.put(h,segmento);
+                }
+            }
+
+            for(Horario hor: mapa_segmentos.keySet()){
+                System.out.println("-->horario: " + hor.getFecha_inicio() + " - " + hor.getFecha_fin());
+            }
+
+            SegmentosAdapter segmentoAdapter=new SegmentosAdapter(mapa_segmentos,getContext());
+            rv_segmentos.setAdapter(segmentoAdapter);
+            rv_segmentos.getAdapter().notifyDataSetChanged();
+
         }
     }
 }

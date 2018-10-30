@@ -78,7 +78,7 @@
             android:layout_height="0dp"
             android:layout_marginBottom="5dp"
             android:layout_marginTop="20dp"
-            android:background="@android:color/darker_gray"
+            android:background="@android:color/background_light"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintBottom_toTopOf="@+id/adview_segmento"
             app:layout_constraintStart_toStartOf="parent"

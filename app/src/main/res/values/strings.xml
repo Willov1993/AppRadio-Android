@@ -179,7 +179,8 @@
         <item>2017</item>
         <item>2018</item>
     </string-array>
-
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
 
 
 </resources>

@@ -4,7 +4,6 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
@@ -15,13 +14,10 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.facebook.login.Login;
+import com.innovasystem.appradio.Clases.RestServices;
 import com.innovasystem.appradio.R;
-import com.innovasystem.appradio.Services.RestServices;
 import com.innovasystem.appradio.Utils.RegisterUser;
-import com.innovasystem.appradio.Utils.ResultadoLogIn;
 import com.innovasystem.appradio.Utils.ResultadoRegister;
-import com.innovasystem.appradio.Utils.Utils;
 
 import java.util.Date;
 

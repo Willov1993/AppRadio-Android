@@ -26,8 +26,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Activities.HomeActivity"
-            android:label="@string/app_name"></activity>
+            android:name=".Activities.EmisoraActivity"
+            android:label="@string/app_name" />
 
         <service android:name=".Services.RadioStreamService" />
 
@@ -52,7 +52,10 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activities.RegisterActivity"></activity>
+        <activity android:name=".Activities.RegisterActivity" />
+        <activity
+            android:name=".Activities.HomeActivity"
+            android:label="@string/title_activity_home"></activity>
     </application>
 
 </manifest>
