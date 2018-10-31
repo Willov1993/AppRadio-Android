@@ -52,7 +52,7 @@ public class RadioStreamService extends Service implements AudioManager.OnAudioF
 
     /* Variables de la clase */
     private MediaPlayer mPlayer;          //ESTA VARIABLE ES LA QUE MANEJA LA REPRODUCCION DEL STREAMING
-    public String radioURL="";           //esta variable almacena el URL que se recibe como mensaje
+    public static String radioURL="";           //esta variable almacena el URL que se recibe como mensaje
     private AudioManager audioManager;  //esta variable representa un manejador de peticiones de sonido
 
     /* Variables para manejar los eventos de llamadas por telefono*/

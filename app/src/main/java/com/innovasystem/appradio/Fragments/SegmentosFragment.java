@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.ads.AdView;
 import com.innovasystem.appradio.Clases.Adapters.SegmentosAdapter;
+import com.innovasystem.appradio.Clases.Models.Emisora;
 import com.innovasystem.appradio.Clases.Models.Horario;
 import com.innovasystem.appradio.Clases.Models.Segmento;
 import com.innovasystem.appradio.Clases.RestServices;
@@ -49,8 +50,8 @@ public class SegmentosFragment extends Fragment {
     Button btn_reproducir,btn_volumen;
     RecyclerView rv_segmentos;
     AdView adView_segmento;
+    Emisora emisora;
 
-    //List<Segmento> lista_segmentos= new ArrayList<>();
 
     /*variables de control de reproduccion */
     private boolean playing= false;
@@ -100,6 +101,7 @@ public class SegmentosFragment extends Fragment {
         tv_segmento= root.findViewById(R.id.tv_segmento);
         btn_reproducir= root.findViewById(R.id.btn_play_segmento);
         rv_segmentos= root.findViewById(R.id.rv_segmentos);
+        emisora= getActivity().getIntent().getParcelableExtra("emisora");
 
         btn_reproducir.setOnClickListener(btnReproducirListener);
 
@@ -107,6 +109,7 @@ public class SegmentosFragment extends Fragment {
         RecyclerView.LayoutManager lmanager= new LinearLayoutManager(getContext());
         rv_segmentos.setLayoutManager(lmanager);
 
+        tv_emisora.setText(emisora.getNombre());
 
 
         new RestFetchSegmentoTask().execute();
@@ -193,14 +196,13 @@ public class SegmentosFragment extends Fragment {
 
         @Override
         protected void onPreExecute() {
-            tv_emisora.setText("cargando....");
-            tv_segmento.setText("Espere un momento");
+            tv_segmento.setText("Espere un momento...");
             super.onPreExecute();
         }
 
         @Override
         protected Boolean doInBackground(Object... objects) {
-            return Utils.isActiveInternet();
+            return Utils.isActiveInternet(null);
         }
 
         @Override
@@ -208,7 +210,7 @@ public class SegmentosFragment extends Fragment {
             tv_emisora.setText("Nombre Emisora");
             tv_segmento.setText("Nombre del Segmento");
             if(result == true && playing)
-                startMediaPlayer("http://str.ecuastreaming.com:9958/");
+                startMediaPlayer(emisora.getUrl_streaming());
             else{
                 NotificationManagement.notificarError("AppRadio - Error de Reproduccion","No se puede conectar al servidor de la radio",getActivity().getApplicationContext());
                 btn_reproducir.setBackgroundResource(R.drawable.play_button);
@@ -227,7 +229,7 @@ public class SegmentosFragment extends Fragment {
 
         @Override
         protected List<Segmento> doInBackground(Void... voids) {
-            return RestServices.consultarSegmentosDelDia(getActivity().getApplicationContext(),2);
+            return RestServices.consultarSegmentosDelDia(getActivity().getApplicationContext(),emisora.getId().intValue());
         }
 
         @Override

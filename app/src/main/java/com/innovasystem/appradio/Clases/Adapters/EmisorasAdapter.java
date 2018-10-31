@@ -9,13 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.innovasystem.appradio.Activities.EmisoraActivity;
 import com.innovasystem.appradio.Activities.HomeActivity;
 import com.innovasystem.appradio.Clases.ItemClickListener;
 import com.innovasystem.appradio.Clases.Models.Emisora;
-import com.innovasystem.appradio.Clases.Models.Segmento;
 import com.innovasystem.appradio.R;
 import com.squareup.picasso.Picasso;
 
@@ -65,9 +63,9 @@ public class EmisorasAdapter extends  RecyclerView.Adapter<EmisorasAdapter.ViewH
                 emisoras_dataset.get(position).getFrecuencia_dial())
         );
         Picasso.with(context)
-                .load(emisoras_dataset.get(position).getLogo())
+                .load(emisoras_dataset.get(position).getLogotipo())
                 .placeholder(R.drawable.radio_icon_48)
-                .resize(80,80).centerCrop()
+                .resize(80,80).centerInside()
                 .into(viewHolder.iv_emisora);
     }
 
@@ -86,7 +84,9 @@ public class EmisorasAdapter extends  RecyclerView.Adapter<EmisorasAdapter.ViewH
 
         @Override
         public void OnItemClick(View v, int position) {
+            Emisora emisoraSeleccionada= emisoras_dataset.get(position);
             Intent i= new Intent((HomeActivity) context,EmisoraActivity.class);
+            i.putExtra("emisora",emisoraSeleccionada);
             ((HomeActivity) context).startActivity(i);
         }
     };

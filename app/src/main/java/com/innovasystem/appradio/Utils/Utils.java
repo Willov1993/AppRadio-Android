@@ -51,14 +51,15 @@ public class Utils {
     }
 
 
-    public static boolean isActiveInternet () {
+    public static boolean isActiveInternet (String uri){
         boolean success = false;
         try {
-            URL url = new URL("https://google.com");
+            URL url = new URL(uri!=null ? uri : "http://www.google.com");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setConnectTimeout(10000);
             connection.connect();
             success = connection.getResponseCode() == 200;
+            System.out.println("RESULT OF CONNECTION: "+connection.getResponseCode());
         } catch (IOException e) {
             e.printStackTrace();
         } catch (Exception e){

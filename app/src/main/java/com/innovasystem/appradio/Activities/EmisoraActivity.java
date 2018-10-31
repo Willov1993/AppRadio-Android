@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.innovasystem.appradio.Clases.Models.Emisora;
 import com.innovasystem.appradio.Clases.Models.Segmento;
 import com.innovasystem.appradio.Clases.RestServices;
 import com.innovasystem.appradio.Fragments.ChatFragment;
@@ -40,6 +41,7 @@ public class EmisoraActivity extends AppCompatActivity {
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         navigation.setSelectedItemId(R.id.navigation_segmentos);
+        //RadioStreamService.radioURL= ((Emisora) getIntent().getParcelableExtra("emisora")).getUrl_streaming();
 
     }
 

@@ -1,9 +1,12 @@
 package com.innovasystem.appradio.Clases.Models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Emisora {
+public class Emisora implements Parcelable {
     Long id;
     String nombre;
     String frecuencia_dial;
@@ -13,7 +16,8 @@ public class Emisora {
     String descripcion;
     String ciudad;
     String provincia;
-    String logo;
+    String logotipo;
+
 
     public Long getId() {
         return id;
@@ -87,12 +91,12 @@ public class Emisora {
         this.provincia = provincia;
     }
 
-    public String getLogo() {
-        return logo;
+    public String getLogotipo() {
+        return logotipo;
     }
 
-    public void setLogo(String logo) {
-        this.logo = logo;
+    public void setLogotipo(String logotipo) {
+        this.logotipo = logotipo;
     }
 
     @Override
@@ -107,7 +111,64 @@ public class Emisora {
                 ", descripcion='" + descripcion + '\'' +
                 ", ciudad='" + ciudad + '\'' +
                 ", provincia='" + provincia + '\'' +
-                ", logo='" + logo + '\'' +
+                ", logotipo='" + logotipo + '\'' +
                 '}';
+    }
+
+    public Emisora(){
+
+    }
+
+    protected Emisora(Parcel in) {
+        if (in.readByte() == 0) {
+            id = null;
+        } else {
+            id = in.readLong();
+        }
+        nombre = in.readString();
+        frecuencia_dial = in.readString();
+        url_streaming = in.readString();
+        sitio_web = in.readString();
+        direccion = in.readString();
+        descripcion = in.readString();
+        ciudad = in.readString();
+        provincia = in.readString();
+        logotipo = in.readString();
+    }
+
+    public static final Creator<Emisora> CREATOR = new Creator<Emisora>() {
+        @Override
+        public Emisora createFromParcel(Parcel in) {
+            return new Emisora(in);
+        }
+
+        @Override
+        public Emisora[] newArray(int size) {
+            return new Emisora[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        if (id == null) {
+            parcel.writeByte((byte) 0);
+        } else {
+            parcel.writeByte((byte) 1);
+            parcel.writeLong(id);
+        }
+        parcel.writeString(nombre);
+        parcel.writeString(frecuencia_dial);
+        parcel.writeString(url_streaming);
+        parcel.writeString(sitio_web);
+        parcel.writeString(direccion);
+        parcel.writeString(descripcion);
+        parcel.writeString(ciudad);
+        parcel.writeString(provincia);
+        parcel.writeString(logotipo);
     }
 }
