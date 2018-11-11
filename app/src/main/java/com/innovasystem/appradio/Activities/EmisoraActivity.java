@@ -16,9 +16,8 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.innovasystem.appradio.Clases.Models.Emisora;
-import com.innovasystem.appradio.Clases.Models.Segmento;
-import com.innovasystem.appradio.Clases.RestServices;
+import com.innovasystem.appradio.Classes.Models.Segmento;
+import com.innovasystem.appradio.Classes.RestServices;
 import com.innovasystem.appradio.Fragments.ChatFragment;
 import com.innovasystem.appradio.Fragments.FavoritosFragment;
 import com.innovasystem.appradio.Fragments.HomeFragment;
@@ -152,6 +151,7 @@ public class EmisoraActivity extends AppCompatActivity {
         protected List<Segmento> doInBackground(Void... voids) {
             return RestServices.consultarSegmentosEmisora(getApplicationContext(),1);
         }
+
 
         @Override
         protected void onPostExecute(List<Segmento> listaSegmentos){

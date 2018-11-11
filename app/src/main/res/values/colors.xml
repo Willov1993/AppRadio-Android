@@ -4,11 +4,14 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
-    <color name="appColorTheme">#F95F62</color>
+    <color name="appColorTheme">#000000</color>
+    <!--color name="appColorTheme">#F95F62</color-->
     <color name="appColorTheme2">#ff3d56</color>
     <color name="appColorTheme2Saturated1">#ff7f8a</color>
     <color name="appColorTheme2Saturated2">#ffa5ad</color>
     <color name="TitleColor">#ff7f8a</color>
     <color name="TextColor">#47525E</color>
     <color name="infoColor">#FFBA5C</color>
+    <color name="itemBottomNavColor">#FFFFFF</color>
+    <color name="itemBottomNavSelect">#CCCFFF</color>
 </resources>

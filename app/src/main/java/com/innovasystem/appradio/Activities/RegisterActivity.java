@@ -14,7 +14,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.innovasystem.appradio.Clases.RestServices;
+import com.innovasystem.appradio.Classes.RestServices;
 import com.innovasystem.appradio.R;
 import com.innovasystem.appradio.Utils.RegisterUser;
 import com.innovasystem.appradio.Utils.ResultadoRegister;

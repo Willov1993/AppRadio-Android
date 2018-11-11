@@ -5,9 +5,15 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Base64;
 
+import com.innovasystem.appradio.Classes.Models.Emisora;
+import com.innovasystem.appradio.Classes.Models.Horario;
+import com.innovasystem.appradio.Classes.Models.Segmento;
+
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 /*Clase que contiene metodos estaticos para realizar actividades especificas */
 public class Utils {
@@ -77,4 +83,82 @@ public class Utils {
     public static String decrypt(String input) {
         return new String(Base64.decode(input, Base64.DEFAULT));
     }
+
+    /**
+     * Este metodo permite comparar un horario dado con los horarios de un arreglo,
+     * de este arreglo se escogera un objeto Horario h tal que:
+     *
+     * h.horaInicio =< horario < h.horarioFin
+     *
+     * @param horaActual El horario que se deseaComparar en formato String
+     * @param horarios el arreglo de horarios con los que se va a hacer la comparacion
+     * @return Un objeto Horario del arreglo que cumpla la condicion
+     */
+    public static Horario compararHorarioActual(String horaActual,Horario[] horarios){
+        for(Horario hor : horarios){
+            String horaInicio= hor.getFecha_inicio().substring(0,hor.getFecha_inicio().length() - 3);
+            String horaFin= hor.getFecha_fin().substring(0,hor.getFecha_fin().length() - 3);
+            if(horaActual.compareTo(horaInicio) >= 0 && horaActual.compareTo(horaFin) < 0){
+                return hor;
+            }
+        }
+        return null;
+    }
+
+    public static List<Emisora> generarEmisorasPrueba(){
+        int muestra= 10;
+        List<Emisora> lista_emisora= new ArrayList<>();
+        for (int i = 0; i <muestra ; i++) {
+            Emisora e= new Emisora();
+            e.setId((long) (i+ 1));
+            e.setNombre("Emisora de Prueba " + (i+1));
+            e.setFrecuencia_dial("9" + i + "." + (i+1));
+
+            lista_emisora.add(e);
+        }
+        return lista_emisora;
+    }
+
+    public static List<Segmento> generarSegmentosPrueba(long idEmisora){
+        int muestra= 18;
+        String[] dias= new String[]{"Lunes", "Martes", "Miercoles", "Jueves" , "Viernes" , "Sabado", "Domingo"};
+        String[] horariosInicio= new String[]{
+                "06:00:00", "07:00:00", "08:00:00", "09:00:00", "10:00:00", "11:00:00", "12:00:00", "13:00:00", "14:00:00", "15:00:00",
+                "16:00:00", "17:00:00", "18:00:00", "19:00:00", "20:00:00", "21:00:00", "22:00:00", "23:00:00", "00:00:00",
+                "06:30:00", "07:30:00", "08:30:00", "09:30:00", "10:30:00", "11:30:00", "12:30:00", "13:30:00", "14:30:00", "15:30:00",
+                "16:30:00", "17:30:00", "18:30:00", "19:30:00", "20:30:00", "21:30:00", "22:30:00", "23:30:00", "00:30:00"};
+        String[] horariosFin= new String[]{
+                "07:00:00", "08:00:00", "09:00:00", "10:00:00", "11:00:00", "12:00:00", "13:00:00", "14:00:00", "15:00:00", "16:00:00",
+                "17:00:00", "18:00:00", "19:00:00", "20:00:00", "21:00:00", "22:00:00", "23:00:00", "00:00:00", "01:00:00",
+                "07:30:00", "08:30:00", "09:30:00", "10:30:00", "11:30:00", "12:30:00", "13:30:00", "14:30:00", "15:30:00", "16:30:00",
+                "17:30:00", "18:30:00", "19:30:00", "20:30:00", "21:30:00", "22:30:00", "23:30:00", "00:30:00", "01:30:00"};
+
+        List<Segmento> lista_segmentos= new ArrayList<>();
+        for (int i = 0; i <muestra ; i++) {
+            Segmento seg= new Segmento();
+            seg.setNombre("Segmento de Prueba " + (i+1));
+            seg.setIdEmisora(idEmisora<=0 ? -1 : idEmisora);
+            Horario[] horariosdePrueba= new Horario[7];
+
+            for (int j = 0; j < dias.length; j++) {
+                Horario h = new Horario();
+                h.setDia(dias[j]);
+                if(i < muestra/2){
+                    h.setFecha_inicio(horariosInicio[i]);
+                    h.setFecha_fin(horariosFin[i]);
+                }
+                else{
+                    h.setFecha_inicio(horariosInicio[19 + i]);
+                    h.setFecha_fin(horariosFin[19 + i]);
+                }
+                horariosdePrueba[j] = h;
+            }
+
+            seg.setHorarios(horariosdePrueba);
+            lista_segmentos.add(seg);
+        }
+        return lista_segmentos;
+    }
+
+
 }

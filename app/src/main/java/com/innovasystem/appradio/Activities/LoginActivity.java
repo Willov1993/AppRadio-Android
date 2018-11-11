@@ -37,8 +37,8 @@ import com.facebook.GraphResponse;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.innovasystem.appradio.R;
-import com.innovasystem.appradio.Clases.RestServices;
-import com.innovasystem.appradio.Clases.ResultadoLogIn;
+import com.innovasystem.appradio.Classes.RestServices;
+import com.innovasystem.appradio.Classes.ResultadoLogIn;
 import com.innovasystem.appradio.Utils.Utils;
 import com.squareup.picasso.Picasso;
 

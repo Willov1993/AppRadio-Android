@@ -12,9 +12,9 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 import android.support.v4.app.Fragment;
 
-import com.innovasystem.appradio.Clases.Adapters.EmisorasAdapter;
-import com.innovasystem.appradio.Clases.Models.Emisora;
-import com.innovasystem.appradio.Clases.RestServices;
+import com.innovasystem.appradio.Classes.Adapters.EmisorasAdapter;
+import com.innovasystem.appradio.Classes.Models.Emisora;
+import com.innovasystem.appradio.Classes.RestServices;
 import com.innovasystem.appradio.R;
 
 import java.util.List;
@@ -76,9 +76,8 @@ public class EmisorasFragment extends Fragment{
 
         rv_emisoras= root.findViewById(R.id.rv_emisoras);
         rv_emisoras.setHasFixedSize(true);
-        rv_emisoras.setLayoutManager(new LinearLayoutManager(getContext()));
-
-
+        LinearLayoutManager lmanager= new LinearLayoutManager(getContext());
+        rv_emisoras.setLayoutManager(lmanager);
 
         new RestFetchEmisoraTask().execute();
 
@@ -99,6 +98,12 @@ public class EmisorasFragment extends Fragment{
                 Toast.makeText(getContext(), "Ocurrio un error con el servidor, intente mas tarde", Toast.LENGTH_SHORT).show();
                 return;
             }
+
+            /* Codigo para datos de prueba*/
+
+            //listaEmisoras= Utils.generarEmisorasPrueba();
+
+            /**/
 
             for(Emisora e: listaEmisoras){
                 Log.i("Emisora: ",e.toString());

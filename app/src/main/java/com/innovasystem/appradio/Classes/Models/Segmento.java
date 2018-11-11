@@ -1,4 +1,4 @@
-package com.innovasystem.appradio.Clases.Models;
+package com.innovasystem.appradio.Classes.Models;
 import  com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.util.Arrays;

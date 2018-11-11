@@ -20,6 +20,9 @@
     <!--STRINGS PARA LOS LABELS DEL NAVEGATION MENU -->
     <string name="title_home">Inicio</string>
     <string name="title_emisoras">Emisoras</string>
+    <string name="title_ciudad">Ciudad</string>
+    <string name="title_concursos">Concursos</string>
+    <string name="title_navigation">Menú</string>
     <string name="title_perfil">Perfil</string>
     <string name="title_sugerencias">Sugerencias</string>
     <string name="title_notificaciones">Notificaciones</string>

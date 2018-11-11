@@ -1,12 +1,13 @@
-package com.innovasystem.appradio.Clases.Models;
+package com.innovasystem.appradio.Classes.Models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Emisora implements Parcelable {
+public class Emisora implements Parcelable,Comparable<Emisora>{
     Long id;
     String nombre;
     String frecuencia_dial;
@@ -170,5 +171,10 @@ public class Emisora implements Parcelable {
         parcel.writeString(ciudad);
         parcel.writeString(provincia);
         parcel.writeString(logotipo);
+    }
+
+    @Override
+    public int compareTo(@NonNull Emisora emisora) {
+        return this.getNombre().compareTo(emisora.getNombre());
     }
 }

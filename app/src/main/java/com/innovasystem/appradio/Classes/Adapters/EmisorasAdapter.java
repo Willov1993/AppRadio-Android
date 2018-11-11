@@ -1,4 +1,4 @@
-package com.innovasystem.appradio.Clases.Adapters;
+package com.innovasystem.appradio.Classes.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,8 +12,8 @@ import android.widget.TextView;
 
 import com.innovasystem.appradio.Activities.EmisoraActivity;
 import com.innovasystem.appradio.Activities.HomeActivity;
-import com.innovasystem.appradio.Clases.ItemClickListener;
-import com.innovasystem.appradio.Clases.Models.Emisora;
+import com.innovasystem.appradio.Classes.ItemClickListener;
+import com.innovasystem.appradio.Classes.Models.Emisora;
 import com.innovasystem.appradio.R;
 import com.squareup.picasso.Picasso;
 
@@ -64,8 +64,7 @@ public class EmisorasAdapter extends  RecyclerView.Adapter<EmisorasAdapter.ViewH
         );
         Picasso.with(context)
                 .load(emisoras_dataset.get(position).getLogotipo())
-                .placeholder(R.drawable.radio_icon_48)
-                .resize(80,80).centerInside()
+                .placeholder(R.drawable.radio_banner2)
                 .into(viewHolder.iv_emisora);
     }
 

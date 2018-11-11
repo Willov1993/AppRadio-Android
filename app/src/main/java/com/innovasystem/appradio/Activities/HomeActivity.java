@@ -3,6 +3,7 @@ package com.innovasystem.appradio.Activities;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -32,11 +33,24 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
+        startService(new Intent(this, RadioStreamService.class));
+        registerReceiver(receiverFromservice, new IntentFilter(RadioStreamService.SERVICE_TO_ACTIVITY));
         mTextMessage = (TextView) findViewById(R.id.message);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         navigation.setSelectedItemId(R.id.navigation_home);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        registerReceiver(receiverFromservice, new IntentFilter(RadioStreamService.SERVICE_TO_ACTIVITY));
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(receiverFromservice);
     }
 
 
@@ -72,19 +86,23 @@ public class HomeActivity extends AppCompatActivity {
                     contentFragmet= new HomeFragment();
                     HomeActivity.this.changeFragment(contentFragmet,R.id.frame_container);
                     return true;
+
+                case R.id.navigation_ciudad:
+                    contentFragmet= new NotificacionesFragment();
+                    HomeActivity.this.changeFragment(contentFragmet,R.id.frame_container);
+                    return true;
+
+                case R.id.navigation_concursos:
+                    contentFragmet= new SugerenciasFragment();
+                    HomeActivity.this.changeFragment(contentFragmet,R.id.frame_container);
+                    return true;
+
                 case R.id.navigation_emisoras:
                     contentFragmet= new EmisorasFragment();
                     HomeActivity.this.changeFragment(contentFragmet,R.id.frame_container);
                     return true;
-                case R.id.navigation_notificaciones:
-                    contentFragmet= new NotificacionesFragment();
-                    HomeActivity.this.changeFragment(contentFragmet,R.id.frame_container);
-                    return true;
-                case R.id.navigation_sugerencias:
-                    contentFragmet= new SugerenciasFragment();
-                    HomeActivity.this.changeFragment(contentFragmet,R.id.frame_container);
-                    return true;
-                case R.id.navigation_perfil:
+
+                case R.id.navigation_menu:
                     contentFragmet= new PerfilUserFragment();
                     HomeActivity.this.changeFragment(contentFragmet,R.id.frame_container);
                     return true;

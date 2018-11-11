@@ -1,4 +1,4 @@
-package com.innovasystem.appradio.Clases;
+package com.innovasystem.appradio.Classes;
 
 import android.content.Context;
 import android.net.Uri;
@@ -10,17 +10,15 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.innovasystem.appradio.Clases.Models.Emisora;
-import com.innovasystem.appradio.Clases.Models.Segmento;
+import com.innovasystem.appradio.Classes.Models.Emisora;
+import com.innovasystem.appradio.Classes.Models.Segmento;
 import com.innovasystem.appradio.Utils.Constants;
 import com.innovasystem.appradio.Utils.LogUser;
-import com.innovasystem.appradio.Clases.ResultadoLogIn;
 import com.innovasystem.appradio.Utils.RegisterUser;
 import com.innovasystem.appradio.Utils.ResultadoRegister;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.springframework.http.HttpAuthentication;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;

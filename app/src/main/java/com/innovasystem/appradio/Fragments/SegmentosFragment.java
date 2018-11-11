@@ -15,11 +15,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.ads.AdView;
-import com.innovasystem.appradio.Clases.Adapters.SegmentosAdapter;
-import com.innovasystem.appradio.Clases.Models.Emisora;
-import com.innovasystem.appradio.Clases.Models.Horario;
-import com.innovasystem.appradio.Clases.Models.Segmento;
-import com.innovasystem.appradio.Clases.RestServices;
+import com.innovasystem.appradio.Classes.Adapters.SegmentosAdapter;
+import com.innovasystem.appradio.Classes.Models.Emisora;
+import com.innovasystem.appradio.Classes.Models.Horario;
+import com.innovasystem.appradio.Classes.Models.Segmento;
+import com.innovasystem.appradio.Classes.RestServices;
 import com.innovasystem.appradio.R;
 import com.innovasystem.appradio.Services.RadioStreamService;
 import com.innovasystem.appradio.Utils.NotificationManagement;
@@ -110,7 +110,6 @@ public class SegmentosFragment extends Fragment {
         rv_segmentos.setLayoutManager(lmanager);
 
         tv_emisora.setText(emisora.getNombre());
-
 
         new RestFetchSegmentoTask().execute();
 

@@ -50,6 +50,7 @@ public class RadioStreamService extends Service implements AudioManager.OnAudioF
     public static final int CHANGE_PLAYER_TRACK = 5;
     public static final String PLAYER_STATUS_KEY = "PlayerCurrentStatus";
 
+
     /* Variables de la clase */
     private MediaPlayer mPlayer;          //ESTA VARIABLE ES LA QUE MANEJA LA REPRODUCCION DEL STREAMING
     public static String radioURL="";           //esta variable almacena el URL que se recibe como mensaje
