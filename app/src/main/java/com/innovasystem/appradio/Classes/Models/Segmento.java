@@ -12,6 +12,7 @@ public class Segmento {
     private String descripcion;
     private Long idEmisora;
     private String imagen;
+    private Emisora emisora;
 
     private Horario[] horarios;
 
@@ -71,6 +72,10 @@ public class Segmento {
         this.horarios = horarios;
     }
 
+    public Emisora getEmisora(){
+        return this.emisora;
+    }
+
     @Override
     public String toString() {
         return "Segmento{" +
@@ -80,7 +85,12 @@ public class Segmento {
                 ", descripcion='" + descripcion + '\'' +
                 ", idEmisora=" + idEmisora +
                 ", imagen='" + imagen + '\'' +
-                ", horarios=" + Arrays.toString(horarios) +
+                ", horarios=" + Arrays.toString(horarios) + '\'' +
+                ", emisora= " + emisora +
                 '}';
+    }
+
+    public void setEmisora(Emisora em) {
+        this.emisora= em;
     }
 }

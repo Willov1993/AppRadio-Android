@@ -1,40 +1,234 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:picker="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/background_dark"
     tools:context=".Fragments.HomeFragment">
 
     <!-- TODO: Update blank fragment layout -->
 
-    <android.support.constraint.ConstraintLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@android:color/background_dark">
+        android:layout_height="match_parent">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_home"
+        <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="237dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_height="wrap_content"
+            android:background="@android:color/background_dark">
 
-        <FrameLayout
-            android:id="@+id/chat_container"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="20dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rv_home">
+            <ProgressBar
+                android:id="@+id/progressBar_emisoras"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:elevation="5dp"
+                android:theme="@style/CircularProgress"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/rv_home"
+                app:layout_constraintEnd_toEndOf="@+id/rv_home"
+                app:layout_constraintStart_toStartOf="@+id/rv_home"
+                app:layout_constraintTop_toTopOf="@+id/rv_home" />
 
-        </FrameLayout>
+            <ProgressBar
+                android:id="@+id/progressBar_programacion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:theme="@style/CircularProgress"
+                android:visibility="gone"
+                app:layout_constraintBottom_toTopOf="@+id/listv_programas"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/listv_programas" />
 
-    </android.support.constraint.ConstraintLayout>
+            <com.wefika.horizontalpicker.HorizontalPicker
+                android:id="@+id/ciudad_picker"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="5dp"
+                android:background="@color/bgCintaCiudad"
+                android:backgroundTint="@color/bgCintaCiudad"
+                android:marqueeRepeatLimit="-1"
+                android:textColor="@android:color/white"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/iv_izq"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="130dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:elevation="10dp"
+                android:src="@drawable/izquierda"
+                app:layout_constraintBottom_toTopOf="@+id/rv_home"
+                app:layout_constraintEnd_toEndOf="@+id/ciudad_picker"
+                app:layout_constraintStart_toStartOf="@+id/ciudad_picker"
+                app:layout_constraintTop_toTopOf="@+id/ciudad_picker" />
+
+            <ImageView
+                android:id="@+id/iv_der"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="130dp"
+                android:layout_marginTop="8dp"
+                android:elevation="10dp"
+                android:src="@drawable/derecha"
+                app:layout_constraintBottom_toTopOf="@+id/rv_home"
+                app:layout_constraintEnd_toEndOf="@+id/ciudad_picker"
+                app:layout_constraintStart_toStartOf="@+id/ciudad_picker"
+                app:layout_constraintTop_toTopOf="@+id/ciudad_picker" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_home"
+                android:layout_width="match_parent"
+                android:layout_height="270dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ciudad_picker" />
+
+            <ImageButton
+                android:id="@+id/btn_apagar"
+                android:layout_width="33dp"
+                android:layout_height="33dp"
+                android:layout_marginEnd="50dp"
+                android:adjustViewBounds="false"
+                android:background="@drawable/round_button"
+                android:cropToPadding="true"
+                android:padding="7dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/apagar"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/rv_home" />
+
+            <ImageButton
+                android:id="@+id/btn_mute"
+                android:layout_width="33dp"
+                android:layout_height="33dp"
+                android:layout_marginStart="18dp"
+                android:adjustViewBounds="false"
+                android:background="@drawable/round_button"
+                android:cropToPadding="true"
+                android:padding="7dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/silenciar"
+                app:layout_constraintStart_toEndOf="@+id/btn_apagar"
+                app:layout_constraintTop_toBottomOf="@+id/rv_home" />
+
+            <LinearLayout
+                android:id="@+id/linearLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btn_apagar">
+
+                <View
+                    android:id="@+id/divider2"
+                    android:layout_width="0dp"
+                    android:layout_height="2dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight="1"
+                    android:background="@color/text_color" />
+
+                <TextView
+                    android:id="@+id/textView15"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:text="PROGRAMACIÓN"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/background_light"
+                    android:textSize="14sp" />
+
+                <View
+                    android:id="@+id/divider3"
+                    android:layout_width="0dp"
+                    android:layout_height="2dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="10dp"
+                    android:layout_weight="1"
+                    android:background="@color/text_color" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearTitle"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="12dp"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+
+                <TextView
+                    android:id="@+id/textView18"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="HORARIO"
+                    android:textColor="@color/textoGris"
+                    android:textSize="11sp" />
+
+                <TextView
+                    android:id="@+id/textView17"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="PROGRAMA"
+                    android:textColor="@color/textoGris"
+                    android:textSize="11sp" />
+
+                <TextView
+                    android:id="@+id/textView16"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="EMISORA"
+                    android:textAlignment="textStart"
+                    android:textColor="@color/textoGris"
+                    android:textSize="11sp" />
+
+            </LinearLayout>
+
+            <ListView
+                android:id="@+id/listv_programas"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="12dp"
+                android:layout_weight="1"
+                android:nestedScrollingEnabled="true"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearTitle" >
+
+            </ListView>
+
+        </android.support.constraint.ConstraintLayout>
+    </ScrollView>
+
 </FrameLayout>

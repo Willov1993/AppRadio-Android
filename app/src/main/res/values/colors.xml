@@ -14,4 +14,8 @@
     <color name="infoColor">#FFBA5C</color>
     <color name="itemBottomNavColor">#FFFFFF</color>
     <color name="itemBottomNavSelect">#CCCFFF</color>
+    <color name="bgCintaCiudad">#262626</color>
+    <color name="textoGris">#afaeae</color>
+    <color name="bottomNavColor">#1c1c1c</color>
+    <color name="text_color">#ffffff</color>
 </resources>

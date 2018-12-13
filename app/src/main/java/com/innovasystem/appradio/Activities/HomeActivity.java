@@ -87,11 +87,6 @@ public class HomeActivity extends AppCompatActivity {
                     HomeActivity.this.changeFragment(contentFragmet,R.id.frame_container);
                     return true;
 
-                case R.id.navigation_ciudad:
-                    contentFragmet= new NotificacionesFragment();
-                    HomeActivity.this.changeFragment(contentFragmet,R.id.frame_container);
-                    return true;
-
                 case R.id.navigation_concursos:
                     contentFragmet= new SugerenciasFragment();
                     HomeActivity.this.changeFragment(contentFragmet,R.id.frame_container);
@@ -102,9 +97,12 @@ public class HomeActivity extends AppCompatActivity {
                     HomeActivity.this.changeFragment(contentFragmet,R.id.frame_container);
                     return true;
 
-                case R.id.navigation_menu:
-                    contentFragmet= new PerfilUserFragment();
+                case R.id.navigation_encuestas:
+                    contentFragmet= new NotificacionesFragment();
                     HomeActivity.this.changeFragment(contentFragmet,R.id.frame_container);
+                    return true;
+
+                case R.id.navigation_menu:
                     return true;
             }
             return false;

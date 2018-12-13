@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -37,7 +38,7 @@ public class EmisoraHomeAdapter extends  RecyclerView.Adapter<EmisoraHomeAdapter
 
     public static class ViewHolder extends  RecyclerView.ViewHolder{
         TextView tv_radio, tv_frecuencia,tv_segmento,tv_horario;
-        Button btn_verprog;
+        ImageButton btn_chat,btn_addfav;
         ImageView img_segmento;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -45,7 +46,8 @@ public class EmisoraHomeAdapter extends  RecyclerView.Adapter<EmisoraHomeAdapter
             this.tv_frecuencia= itemView.findViewById(R.id.tv_hitem_frecuencia);
             this.tv_segmento= itemView.findViewById(R.id.tv_hitem_prog_actual);
             this.tv_horario= itemView.findViewById(R.id.tv_hitem_horario);
-            this.btn_verprog= itemView.findViewById(R.id.btn_hitem_programacion);
+            this.btn_chat= itemView.findViewById(R.id.btn_hitem_chat);
+            this.btn_addfav= itemView.findViewById(R.id.btn_hitem_favorito);
             this.img_segmento= itemView.findViewById(R.id.img_hitem_segmento);
         }
     }
@@ -81,7 +83,7 @@ public class EmisoraHomeAdapter extends  RecyclerView.Adapter<EmisoraHomeAdapter
         }
         else{
             viewHolder.tv_segmento.setText("No hay información disponible");
-            viewHolder.tv_horario.setText("");
+            //viewHolder.tv_horario.setVisibility(View.GONE);
             System.out.println("img w: "+viewHolder.img_segmento.getLayoutParams().width);
             System.out.println("img h: "+viewHolder.img_segmento.getLayoutParams().height);
             Picasso.with(this.context)
@@ -92,13 +94,18 @@ public class EmisoraHomeAdapter extends  RecyclerView.Adapter<EmisoraHomeAdapter
                     .into(viewHolder.img_segmento);
         }
 
-        viewHolder.btn_verprog.setOnClickListener(new View.OnClickListener(){
+        viewHolder.btn_chat.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
                 Toast.makeText(context, "Viendo Programacion", Toast.LENGTH_SHORT).show();
-                Intent i= new Intent((HomeActivity) context, EmisoraActivity.class);
-                i.putExtra("emisora",emisora);
-                ((HomeActivity) context).startActivity(i);
+            }
+        });
+
+        viewHolder.btn_addfav.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(context, "agregado a favoritos",Toast.LENGTH_SHORT).show();
             }
         });
     }

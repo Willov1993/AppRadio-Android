@@ -10,4 +10,8 @@
         <item name="bottomNavigationStyle">@style/Widget.Design.BottomNavigationView</item>
     </style>
 
+    <style name="CircularProgress" parent="Theme.AppCompat.Light">
+        <item name="colorAccent">@android:color/holo_orange_dark</item>
+    </style>
+
 </resources>

@@ -13,6 +13,6 @@ public class NotificationManagement {
         mBuilder.setContentTitle(titulo);
         mBuilder.setContentText(mensaje);
         NotificationManager manager=  (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
-        manager.notify(001,mBuilder.build());
+        manager.notify(1,mBuilder.build());
     }
 }

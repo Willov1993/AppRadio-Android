@@ -4,10 +4,14 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Base64;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.innovasystem.appradio.Classes.Models.Emisora;
 import com.innovasystem.appradio.Classes.Models.Horario;
 import com.innovasystem.appradio.Classes.Models.Segmento;
+import com.innovasystem.appradio.R;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -113,13 +117,14 @@ public class Utils {
             e.setId((long) (i+ 1));
             e.setNombre("Emisora de Prueba " + (i+1));
             e.setFrecuencia_dial("9" + i + "." + (i+1));
+            e.setUrl_streaming("http://pruebastreaming.com");
 
             lista_emisora.add(e);
         }
         return lista_emisora;
     }
 
-    public static List<Segmento> generarSegmentosPrueba(long idEmisora){
+    public static List<Segmento> generarSegmentosPrueba(Emisora idEmisora){
         int muestra= 18;
         String[] dias= new String[]{"Lunes", "Martes", "Miercoles", "Jueves" , "Viernes" , "Sabado", "Domingo"};
         String[] horariosInicio= new String[]{
@@ -137,7 +142,7 @@ public class Utils {
         for (int i = 0; i <muestra ; i++) {
             Segmento seg= new Segmento();
             seg.setNombre("Segmento de Prueba " + (i+1));
-            seg.setIdEmisora(idEmisora<=0 ? -1 : idEmisora);
+            seg.setEmisora(idEmisora);
             Horario[] horariosdePrueba= new Horario[7];
 
             for (int j = 0; j < dias.length; j++) {
@@ -160,5 +165,24 @@ public class Utils {
         return lista_segmentos;
     }
 
+    public static TextView crearTextViewPersonalizado(Context c,float size,int color,String texto){
+       TextView tv= new TextView(c);
+       tv.setTextSize(size);
+       tv.setTextColor(color);
+       tv.setText(texto);
 
+       return tv;
+    }
+
+    public static void mostrarProgressBar(Context c){
+        //ProgressBar pbar= new ProgressBar(c,null,android.R.attr.progressBarStyleLarge);
+        //pbar.setIndeterminate(true);
+        //pbar.setVisibility(View.VISIBLE);
+
+        //return false;
+    }
+
+    public static void cancelarProgressBar(){
+
+    }
 }

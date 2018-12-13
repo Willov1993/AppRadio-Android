@@ -39,33 +39,33 @@ import java.util.Map;
 public class RestServices {
 
     //CON VOLLEY TA JODIDO
-    public void postLogin(final Context context, String username, String password){
+    public void postLogin(final Context context, String username, String password) {
         //Genero el string al servicio
-        Uri.Builder builder = Uri.parse(""+Constants.serverDomain + Constants.uriLogIn).buildUpon();
-        System.out.println("URI:"+ builder.toString());
+        Uri.Builder builder = Uri.parse("" + Constants.serverDomain + Constants.uriLogIn).buildUpon();
+        System.out.println("URI:" + builder.toString());
         RequestQueue requestQueue = Volley.newRequestQueue(context);
 
 
         JSONArray jsonArray = new JSONArray();
         JSONObject usuario = new JSONObject();
 
-        Map<String, String > params = new HashMap();
-        params.put("username",username);
+        Map<String, String> params = new HashMap();
+        params.put("username", username);
         params.put("email", "");
-        params.put("password",password);
+        params.put("password", password);
 
         JSONObject object2Send = new JSONObject(params);
-        System.out.println("json:"+object2Send.toString());
+        System.out.println("json:" + object2Send.toString());
 
 
-        JsonObjectRequest jsonobj = new JsonObjectRequest(Request.Method.POST, builder.toString(),object2Send,
+        JsonObjectRequest jsonobj = new JsonObjectRequest(Request.Method.POST, builder.toString(), object2Send,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        System.out.println("Respuesta:"+response.toString());
-                        try{
+                        System.out.println("Respuesta:" + response.toString());
+                        try {
 
-                        }catch(Exception e){
+                        } catch (Exception e) {
 
                         }
 
@@ -74,11 +74,11 @@ public class RestServices {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        System.out.println("ERROR:"+error.toString());
+                        System.out.println("ERROR:" + error.toString());
                         return;
                     }
                 }
-        ){
+        ) {
             //here I want to post data to sever
         };
         requestQueue.add(jsonobj);
@@ -86,113 +86,111 @@ public class RestServices {
     }
 
 
-
-
-
-    public static ResultadoLogIn postLoginSpring(final Context context, String username, String password){
+    public static ResultadoLogIn postLoginSpring(final Context context, String username, String password) {
         ResultadoLogIn resultadoLogIn;
-        try{
-            LogUser user = new LogUser(username,"",password);
+        try {
+            LogUser user = new LogUser(username, "", password);
 
             // Set the Content-Type header
             HttpHeaders requestHeaders = new HttpHeaders();
-            requestHeaders.setContentType(new MediaType("application","json"));
-            HttpEntity<LogUser> requestEntity = new HttpEntity<LogUser>(user,requestHeaders);
+            requestHeaders.setContentType(new MediaType("application", "json"));
+            HttpEntity<LogUser> requestEntity = new HttpEntity<LogUser>(user, requestHeaders);
             //Create a new RestTemplate instance
             RestTemplate restTemplate = new RestTemplate();
             // Add the Jackson and String message converters
             restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
 
             //restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
-            System.out.println("POST arraydf: "+ user.toString());
+            System.out.println("POST arraydf: " + user.toString());
             // Make the HTTP POST request, marshaling the request to JSON, and the response to a String
-            ResponseEntity<String> responseEntity = restTemplate.exchange(Constants.serverDomain+Constants.uriLogIn, HttpMethod.POST, requestEntity, String.class);
-            System.out.println("Cuerpo de RespuestaLogin:"+responseEntity.getBody());
+            ResponseEntity<String> responseEntity = restTemplate.exchange(Constants.serverDomain + Constants.uriLogIn, HttpMethod.POST, requestEntity, String.class);
+            System.out.println("Cuerpo de RespuestaLogin:" + responseEntity.getBody());
 
-            resultadoLogIn = new ResultadoLogIn(responseEntity.getBody(),responseEntity.getStatusCode().value());
+            resultadoLogIn = new ResultadoLogIn(responseEntity.getBody(), responseEntity.getStatusCode().value());
             HttpStatus status = responseEntity.getStatusCode();
-            System.out.println("status Post Login "+status);
+            System.out.println("status Post Login " + status);
 
         } catch (HttpStatusCodeException exception) {
             int statusCode = exception.getStatusCode().value();
-            resultadoLogIn = new ResultadoLogIn("",statusCode);
+            resultadoLogIn = new ResultadoLogIn("", statusCode);
             resultadoLogIn.setErrorMessage(exception.getResponseBodyAsString());
 
 
-        }catch(Exception e){
-            resultadoLogIn = new ResultadoLogIn("",500);
+        } catch (Exception e) {
+            resultadoLogIn = new ResultadoLogIn("", 500);
         }
 
-        return  resultadoLogIn;
+        return resultadoLogIn;
     }
-    public static ResultadoRegister postRegisterSpring(final Context context, RegisterUser usuario){
+
+    public static ResultadoRegister postRegisterSpring(final Context context, RegisterUser usuario) {
         ResultadoRegister resultadoLogIn;
-        try{
+        try {
             // Set the Content-Type header
             HttpHeaders requestHeaders = new HttpHeaders();
-            requestHeaders.setContentType(new MediaType("application","json"));
-            HttpEntity<RegisterUser> requestEntity = new HttpEntity<>(usuario,requestHeaders);
+            requestHeaders.setContentType(new MediaType("application", "json"));
+            HttpEntity<RegisterUser> requestEntity = new HttpEntity<>(usuario, requestHeaders);
 
             RestTemplate restTemplate = new RestTemplate();
             restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
 
-            System.out.println("POST arraydf: "+ usuario.toString());
-            ResponseEntity<String> responseEntity = restTemplate.exchange(Constants.serverDomain+Constants.uriRegister, HttpMethod.POST, requestEntity, String.class);
-            System.out.println("Cuerpo de RespuestaRegister:"+responseEntity.getBody());
+            System.out.println("POST arraydf: " + usuario.toString());
+            ResponseEntity<String> responseEntity = restTemplate.exchange(Constants.serverDomain + Constants.uriRegister, HttpMethod.POST, requestEntity, String.class);
+            System.out.println("Cuerpo de RespuestaRegister:" + responseEntity.getBody());
 
-            resultadoLogIn = new ResultadoRegister(responseEntity.getBody(),responseEntity.getStatusCode().value());
+            resultadoLogIn = new ResultadoRegister(responseEntity.getBody(), responseEntity.getStatusCode().value());
             HttpStatus status = responseEntity.getStatusCode();
-            System.out.println("status Post Register "+status);
+            System.out.println("status Post Register " + status);
 
         } catch (HttpStatusCodeException exception) {
             int statusCode = exception.getStatusCode().value();
-            resultadoLogIn = new ResultadoRegister("",statusCode);
+            resultadoLogIn = new ResultadoRegister("", statusCode);
             resultadoLogIn.setErrorMessage(exception.getResponseBodyAsString());
 
 
-        }catch(Exception e){
-            resultadoLogIn = new ResultadoRegister("",500);
+        } catch (Exception e) {
+            resultadoLogIn = new ResultadoRegister("", 500);
         }
 
-        return  resultadoLogIn;
+        return resultadoLogIn;
     }
 
-    public static List<Emisora> consultarEmisoras(Context c){
-        System.out.println("USER TOKEN: "+ SessionConfig.getSessionConfig(c).userToken);
-        HttpHeaders reqHeaders= new HttpHeaders();
-        reqHeaders.setAccept(Collections.singletonList(new MediaType("application","json")));
-        reqHeaders.set("Authorization",SessionConfig.getSessionConfig(c).userToken);
+    public static List<Emisora> consultarEmisoras(Context c) {
+        System.out.println("USER TOKEN: " + SessionConfig.getSessionConfig(c).userToken);
+        HttpHeaders reqHeaders = new HttpHeaders();
+        reqHeaders.setAccept(Collections.singletonList(new MediaType("application", "json")));
+        reqHeaders.set("Authorization", SessionConfig.getSessionConfig(c).userToken);
         HttpEntity<?> requestEntity = new HttpEntity<Object>(reqHeaders);
         Emisora[] emisoras = null;
-        RestTemplate restTemplate= new RestTemplate();
-        String url= Constants.serverDomain + Constants.uriEmisoras;
+        RestTemplate restTemplate = new RestTemplate();
+        String url = Constants.serverDomain + Constants.uriEmisoras;
 
-        try{
-            ResponseEntity<Emisora[]> responseEntity= restTemplate.exchange(url,HttpMethod.GET,requestEntity,Emisora[].class);
-            if(responseEntity.getStatusCode() == HttpStatus.OK) {
+        try {
+            ResponseEntity<Emisora[]> responseEntity = restTemplate.exchange(url, HttpMethod.GET, requestEntity, Emisora[].class);
+            if (responseEntity.getStatusCode() == HttpStatus.OK) {
                 emisoras = responseEntity.getBody();
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             Log.e("RestGetError", e.getMessage());
             return null;
         }
         return new ArrayList<>(Arrays.asList(emisoras));
     }
 
-    public static List<Segmento> consultarSegmentos(Context c){
-        HttpHeaders reqHeaders= new HttpHeaders();
-        reqHeaders.setAccept(Collections.singletonList(new MediaType("application","json")));
-        reqHeaders.set("Authorization",SessionConfig.getSessionConfig(c).userToken);
+    public static List<Segmento> consultarSegmentos(Context c) {
+        HttpHeaders reqHeaders = new HttpHeaders();
+        reqHeaders.setAccept(Collections.singletonList(new MediaType("application", "json")));
+        reqHeaders.set("Authorization", SessionConfig.getSessionConfig(c).userToken);
         HttpEntity<?> requestEntity = new HttpEntity<Object>(reqHeaders);
-        Segmento[] segmentos= null;
-        RestTemplate restTemplate= new RestTemplate();
-        String url= Constants.serverDomain + Constants.uriSegmentos;
-        try{
-            ResponseEntity<Segmento[]> responseEntity= restTemplate.exchange(url,HttpMethod.GET,requestEntity,Segmento[].class);
-            if(responseEntity.getStatusCode() == HttpStatus.OK) {
-                segmentos= responseEntity.getBody();
+        Segmento[] segmentos = null;
+        RestTemplate restTemplate = new RestTemplate();
+        String url = Constants.serverDomain + Constants.uriSegmentos;
+        try {
+            ResponseEntity<Segmento[]> responseEntity = restTemplate.exchange(url, HttpMethod.GET, requestEntity, Segmento[].class);
+            if (responseEntity.getStatusCode() == HttpStatus.OK) {
+                segmentos = responseEntity.getBody();
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             Log.e("RestGetError", e.getMessage());
             return null;
         }
@@ -200,21 +198,21 @@ public class RestServices {
         return new ArrayList<>(Arrays.asList(segmentos));
     }
 
-    public static List<Segmento> consultarSegmentosEmisora(Context c,int idEmisora){
-        HttpHeaders reqHeaders= new HttpHeaders();
-        reqHeaders.setAccept(Collections.singletonList(new MediaType("application","json")));
-        reqHeaders.set("Authorization",SessionConfig.getSessionConfig(c).userToken);
+    public static List<Segmento> consultarSegmentosEmisora(Context c, int idEmisora) {
+        HttpHeaders reqHeaders = new HttpHeaders();
+        reqHeaders.setAccept(Collections.singletonList(new MediaType("application", "json")));
+        reqHeaders.set("Authorization", SessionConfig.getSessionConfig(c).userToken);
         HttpEntity<?> requestEntity = new HttpEntity<Object>(reqHeaders);
-        Segmento[] segmentos= null;
-        RestTemplate restTemplate= new RestTemplate();
-        String url= Constants.serverDomain + String.format(Constants.uriSegmentosEmisora,idEmisora);
+        Segmento[] segmentos = null;
+        RestTemplate restTemplate = new RestTemplate();
+        String url = Constants.serverDomain + String.format(Constants.uriSegmentosEmisora, idEmisora);
 
-        try{
-            ResponseEntity<Segmento[]> responseEntity= restTemplate.exchange(url,HttpMethod.GET,requestEntity,Segmento[].class);
-            if(responseEntity.getStatusCode() == HttpStatus.OK) {
-                segmentos= responseEntity.getBody();
+        try {
+            ResponseEntity<Segmento[]> responseEntity = restTemplate.exchange(url, HttpMethod.GET, requestEntity, Segmento[].class);
+            if (responseEntity.getStatusCode() == HttpStatus.OK) {
+                segmentos = responseEntity.getBody();
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             Log.e("RestGetError", e.getMessage());
             return null;
         }
@@ -222,21 +220,21 @@ public class RestServices {
         return new ArrayList<>(Arrays.asList(segmentos));
     }
 
-    public static List<Segmento> consultarSegmentosDelDia(Context c){
-        HttpHeaders reqHeaders= new HttpHeaders();
-        reqHeaders.setAccept(Collections.singletonList(new MediaType("application","json")));
-        reqHeaders.set("Authorization",SessionConfig.getSessionConfig(c).userToken);
+    public static List<Segmento> consultarSegmentosDelDia(Context c) {
+        HttpHeaders reqHeaders = new HttpHeaders();
+        reqHeaders.setAccept(Collections.singletonList(new MediaType("application", "json")));
+        reqHeaders.set("Authorization", SessionConfig.getSessionConfig(c).userToken);
         HttpEntity<?> requestEntity = new HttpEntity<Object>(reqHeaders);
-        Segmento[] segmentos= null;
-        RestTemplate restTemplate= new RestTemplate();
-        String url= Constants.serverDomain + Constants.uriSegmentosDelDia;
+        Segmento[] segmentos = null;
+        RestTemplate restTemplate = new RestTemplate();
+        String url = Constants.serverDomain + Constants.uriSegmentosDelDia;
 
-        try{
-            ResponseEntity<Segmento[]> responseEntity= restTemplate.exchange(url,HttpMethod.GET,requestEntity,Segmento[].class);
-            if(responseEntity.getStatusCode() == HttpStatus.OK) {
-                segmentos= responseEntity.getBody();
+        try {
+            ResponseEntity<Segmento[]> responseEntity = restTemplate.exchange(url, HttpMethod.GET, requestEntity, Segmento[].class);
+            if (responseEntity.getStatusCode() == HttpStatus.OK) {
+                segmentos = responseEntity.getBody();
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             Log.e("RestGetError", e.getMessage());
             return null;
         }
@@ -244,25 +242,31 @@ public class RestServices {
         return new ArrayList<>(Arrays.asList(segmentos));
     }
 
-    public static List<Segmento> consultarSegmentosDelDia(Context c,int idEmisora){
-        HttpHeaders reqHeaders= new HttpHeaders();
-        reqHeaders.setAccept(Collections.singletonList(new MediaType("application","json")));
-        reqHeaders.set("Authorization",SessionConfig.getSessionConfig(c).userToken);
+    public static List<Segmento> consultarSegmentosDelDia(Context c, int idEmisora) {
+        HttpHeaders reqHeaders = new HttpHeaders();
+        reqHeaders.setAccept(Collections.singletonList(new MediaType("application", "json")));
+        reqHeaders.set("Authorization", SessionConfig.getSessionConfig(c).userToken);
         HttpEntity<?> requestEntity = new HttpEntity<Object>(reqHeaders);
-        Segmento[] segmentos= null;
-        RestTemplate restTemplate= new RestTemplate();
-        String url= Constants.serverDomain + String.format(Constants.uriSegmentosDelDiaEmisora,idEmisora);
+        Segmento[] segmentos = null;
+        RestTemplate restTemplate = new RestTemplate();
+        String url = Constants.serverDomain + String.format(Constants.uriSegmentosDelDiaEmisora, idEmisora);
 
-        try{
-            ResponseEntity<Segmento[]> responseEntity= restTemplate.exchange(url,HttpMethod.GET,requestEntity,Segmento[].class);
-            if(responseEntity.getStatusCode() == HttpStatus.OK) {
-                segmentos= responseEntity.getBody();
+        try {
+            ResponseEntity<Segmento[]> responseEntity = restTemplate.exchange(url, HttpMethod.GET, requestEntity, Segmento[].class);
+            if (responseEntity.getStatusCode() == HttpStatus.OK) {
+                segmentos = responseEntity.getBody();
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             Log.e("RestGetError", e.getMessage());
             return null;
         }
 
         return new ArrayList<>(Arrays.asList(segmentos));
     }
+
+    public static List<Segmento> consultarSegmentosEnVivo(Context c) {
+
+        return null;
+    }
+
 }

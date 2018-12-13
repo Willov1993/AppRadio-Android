@@ -240,6 +240,8 @@ public class SegmentosFragment extends Fragment {
                 return;
             }
 
+
+
             Map<Horario,Segmento> mapa_segmentos=new TreeMap<>();
             for (int i = 0; i < listaSegmentos.size(); i++) {
                 Segmento segmento =  listaSegmentos.get(i);

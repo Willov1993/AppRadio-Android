@@ -11,18 +11,29 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="40dp"
         android:layout_marginStart="40dp"
-        android:layout_marginTop="15dp">
+        android:background="@android:color/white"
+        android:backgroundTint="#6F000000"
+        app:cardBackgroundColor="@android:color/white"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="5dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:background="@drawable/corner_edge">
 
             <ImageView
                 android:id="@+id/img_hitem_segmento"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/linly_hitem_container"
+                android:layout_alignParentBottom="false"
+                android:layout_alignParentEnd="false"
+                android:layout_alignParentTop="false"
+                android:layout_alignTop="@+id/linly_hitem_container"
                 android:adjustViewBounds="true"
-                android:scaleType="centerCrop"
+                android:padding="2dp"
+                android:scaleType="fitXY"
                 android:tint="#6F000000"
                 app:srcCompat="@drawable/vecina" />
 
@@ -38,10 +49,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="8dp"
                     android:gravity="center_horizontal"
                     android:text="Nombre Radio"
-                    android:textColor="@android:color/white" />
+                    android:textAllCaps="true"
+                    android:textColor="@android:color/white"
+                    android:textSize="15sp" />
 
                 <TextView
                     android:id="@+id/tv_hitem_frecuencia"
@@ -50,43 +63,72 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="3dp"
                     android:gravity="center_horizontal"
-                    android:text="Frecuencia"
-                    android:textColor="@android:color/white" />
+                    android:text="102.5 FM"
+                    android:textAllCaps="true"
+                    android:textColor="@android:color/white"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <ImageButton
+                    android:id="@+id/btn_hitem_chat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/chat" />
+
+                <TextView
+                    android:id="@+id/textView8"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="1dp"
+                    android:gravity="center"
+                    android:text="Chat"
+                    android:textColor="@color/textoGris"
+                    android:textSize="11sp" />
 
                 <TextView
                     android:id="@+id/tv_hitem_prog_actual"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginTop="25dp"
+                    android:layout_marginTop="20dp"
                     android:gravity="center_horizontal"
                     android:lines="2"
                     android:text="Nombre Programa"
                     android:textColor="@android:color/white"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/tv_hitem_horario"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginTop="4dp"
+                    android:layout_marginTop="1dp"
                     android:gravity="center_horizontal"
                     android:text="HH:MM - HH:MM"
-                    android:textColor="@android:color/white" />
+                    android:textColor="@color/textoGris"
+                    android:textSize="13sp" />
 
-                <Button
-                    android:id="@+id/btn_hitem_programacion"
-                    android:layout_width="100dp"
-                    android:layout_height="30dp"
+                <ImageButton
+                    android:id="@+id/btn_hitem_favorito"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical|center_horizontal"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginEnd="100dp"
-                    android:layout_marginStart="100dp"
-                    android:layout_marginTop="20dp"
-                    android:background="@drawable/btn_ver_prog"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/favorito1"
                     android:foregroundGravity="center_vertical|center_horizontal" />
+
+                <TextView
+                    android:id="@+id/tv_hitem_favorito"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:gravity="center"
+                    android:text="Añadir a favoritos"
+                    android:textColor="@color/textoGris"
+                    android:textSize="11sp" />
             </LinearLayout>
         </RelativeLayout>
 

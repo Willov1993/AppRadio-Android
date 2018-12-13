@@ -313,7 +313,7 @@ public class RadioStreamService extends Service implements AudioManager.OnAudioF
             if (BROADCAST_TO_SERVICE.equalsIgnoreCase(action)) {
                 String trackURL = intent.hasExtra(PLAYER_TRACK_URL) ? intent.getStringExtra(PLAYER_TRACK_URL) : "";
                 radioURL= trackURL;
-                Log.e("URL",trackURL);
+                Log.e("URL",trackURL == null ? "" : trackURL);
                 int function = intent.getIntExtra(PLAYER_FUNCTION_TYPE, 0);
                 switch (function) {
                     case CHANGE_PLAYER_TRACK:
@@ -423,11 +423,9 @@ public class RadioStreamService extends Service implements AudioManager.OnAudioF
                         break;
                     case TelephonyManager.CALL_STATE_IDLE:
                         // Phone idle. Start playing.
-                        if (mPlayer != null) {
-                            if (ongoingCall) {
+                        if (mPlayer != null && ongoingCall) {
                                 ongoingCall = false;
                                 resumePlayer();
-                            }
                         }
                         break;
                 }

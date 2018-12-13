@@ -3,7 +3,7 @@
     <item
         android:id="@+id/navigation_segmentos"
         android:icon="@drawable/navigation_segmentos"
-        android:title="@string/title_segmentos" />
+        android:title="" />
 
     <item
         android:id="@+id/navigation_favoritos"
@@ -18,7 +18,7 @@
     <item
         android:id="@+id/navigation_chat"
         android:icon="@drawable/navigation_chat"
-        android:title="@string/title_chat" />
+        android:title="" />
 
     <item
         android:id="@+id/navigation_noticias"
