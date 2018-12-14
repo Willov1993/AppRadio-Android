@@ -1,10 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="ciudades">
-        <item>GUAYAQUIL</item>
-        <item>QUITO</item>
-        <item>CUENCA</item>
-        <item>MANTA</item>
-        <item>BABAHOYO</item>
+        <item>AZUAY</item>
+        <item>BOLIVAR</item>
+        <item>CAÑAR</item>
+        <item>CARCHI</item>
+        <item>CHIMBORAZO</item>
+        <item>COTOPAXI</item>
+        <item>EL ORO</item>
+        <item>ESMERALDAS</item>
+        <item>GUAYAS</item>
+        <item>IMBABURA</item>
+        <item>LOJA</item>
+        <item>LOS RIOS</item>
+        <item>MANABI</item>
+        <item>MORONA SANTIAGO</item>
+        <item>NAPO</item>
+        <item>ORELLANA</item>
+        <item>PASTAZA</item>
+        <item>PICHINCHA</item>
+        <item>SANTA ELENA</item>
+        <item>STO. DOMINGO DE LOS TSACHILAS</item>
+        <item>SUCUMBIOS</item>
+        <item>TUNGURAHUA</item>
+        <item>ZAMORA CHINCHIPE</item>
     </string-array>
 </resources>

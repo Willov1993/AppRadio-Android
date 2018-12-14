@@ -31,6 +31,7 @@ import android.util.Log;
 
 import com.innovasystem.appradio.R;
 import com.innovasystem.appradio.Utils.PlaybackStatus;
+import com.innovasystem.appradio.Utils.Utils;
 
 import java.io.IOException;
 
@@ -48,6 +49,7 @@ public class RadioStreamService extends Service implements AudioManager.OnAudioF
     public static final int RESUME_MEDIA_PLAYER = 3;
     public static final int STOP_MEDIA_PLAYER = 4;
     public static final int CHANGE_PLAYER_TRACK = 5;
+    public static final int MUTE_MEDIA_PLAYER= 6;
     public static final String PLAYER_STATUS_KEY = "PlayerCurrentStatus";
 
 
@@ -238,11 +240,9 @@ public class RadioStreamService extends Service implements AudioManager.OnAudioF
             mPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
 
                 public void onPrepared(MediaPlayer mp) {
-                    System.out.println("PLAYING RADIO!!!");
+                    Utils.ocultarSnackBar();
                     mPlayer.start();
                     sendPlayerStatus("playing");
-
-
                 }
             });
 
@@ -311,8 +311,9 @@ public class RadioStreamService extends Service implements AudioManager.OnAudioF
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
             if (BROADCAST_TO_SERVICE.equalsIgnoreCase(action)) {
+                System.out.println("LINE BEFORE TRACK URL");
                 String trackURL = intent.hasExtra(PLAYER_TRACK_URL) ? intent.getStringExtra(PLAYER_TRACK_URL) : "";
-                radioURL= trackURL;
+                radioURL= (!trackURL.equals("")) ? trackURL : radioURL;
                 Log.e("URL",trackURL == null ? "" : trackURL);
                 int function = intent.getIntExtra(PLAYER_FUNCTION_TYPE, 0);
                 switch (function) {

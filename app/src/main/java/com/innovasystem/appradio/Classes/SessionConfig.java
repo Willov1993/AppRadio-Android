@@ -10,7 +10,8 @@ import static com.innovasystem.appradio.Utils.Utils.encrypt;
 
 public class SessionConfig implements Config {
 
-    String userToken;
+    public String userToken;
+    public String provincia="";
     private static SessionConfig sessionConfig;
 
     private SessionConfig(Context c){

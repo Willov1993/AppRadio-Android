@@ -3,8 +3,11 @@ package com.innovasystem.appradio.Utils;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.support.design.widget.Snackbar;
 import android.util.Base64;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -22,6 +25,7 @@ import java.util.List;
 /*Clase que contiene metodos estaticos para realizar actividades especificas */
 public class Utils {
 
+    private static Snackbar mSnackBar;
 
     /**
      * Este metodo detecta si existe una conexion activa a traves de WiFi o a traves de conexion
@@ -174,15 +178,28 @@ public class Utils {
        return tv;
     }
 
-    public static void mostrarProgressBar(Context c){
-        //ProgressBar pbar= new ProgressBar(c,null,android.R.attr.progressBarStyleLarge);
-        //pbar.setIndeterminate(true);
-        //pbar.setVisibility(View.VISIBLE);
-
-        //return false;
+    public static Snackbar mostrarMensajeSnackBar(View v,String mensaje){
+        mSnackBar = Snackbar.make(v, mensaje, Snackbar.LENGTH_INDEFINITE);
+        View view = mSnackBar.getView();
+        FrameLayout.LayoutParams params =(FrameLayout.LayoutParams)view.getLayoutParams();
+        params.gravity = Gravity.TOP;
+        view.setLayoutParams(params);
+        TextView mainTextView = (TextView) (view).findViewById(android.support.design.R.id.snackbar_text);
+        mSnackBar.setAction("Ignorar",new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                mSnackBar.dismiss();
+            }
+        });
+        mSnackBar.setActionTextColor(v.getContext().getResources().getColor(R.color.seleccion_nav));
+        mSnackBar.show();
+        return mSnackBar;
     }
 
-    public static void cancelarProgressBar(){
-
+    public static void ocultarSnackBar(){
+        if(mSnackBar != null && mSnackBar.isShown()){
+            mSnackBar.dismiss();
+        }
     }
+
 }

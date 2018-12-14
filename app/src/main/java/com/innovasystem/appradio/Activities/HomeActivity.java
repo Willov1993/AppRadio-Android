@@ -4,7 +4,9 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.se.omapi.Session;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
@@ -16,6 +18,7 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.innovasystem.appradio.Classes.SessionConfig;
 import com.innovasystem.appradio.Fragments.EmisorasFragment;
 import com.innovasystem.appradio.Fragments.HomeFragment;
 import com.innovasystem.appradio.Fragments.NotificacionesFragment;
@@ -23,6 +26,7 @@ import com.innovasystem.appradio.Fragments.PerfilUserFragment;
 import com.innovasystem.appradio.Fragments.SugerenciasFragment;
 import com.innovasystem.appradio.R;
 import com.innovasystem.appradio.Services.RadioStreamService;
+import com.innovasystem.appradio.Utils.Utils;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -39,6 +43,11 @@ public class HomeActivity extends AppCompatActivity {
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         navigation.setSelectedItemId(R.id.navigation_home);
+
+        //Carga de Provincia Guardada
+        SharedPreferences preferences = getSharedPreferences("session", MODE_PRIVATE);
+        SessionConfig.getSessionConfig(getApplication()).provincia= preferences.getString("provincia","");
+
     }
 
     @Override
@@ -129,10 +138,10 @@ public class HomeActivity extends AppCompatActivity {
 
                 switch(currentPlayerStatus){
                     case "erroronplaying":
-                        toast= Toast.makeText(context, "Error al conectarse al servicio de streaming de radio, revise su conexion a internet", Toast.LENGTH_LONG);
+                        Utils.mostrarMensajeSnackBar(getWindow().getDecorView().getRootView(), "Error al conectarse al servicio de streaming de radio, revise su conexion a internet");
                         break;
                     default:
-                        //toast= Toast.makeText(context, "Current status of StreamService: " + currentPlayerStatus, Toast.LENGTH_LONG);
+
                         break;
                 }
 

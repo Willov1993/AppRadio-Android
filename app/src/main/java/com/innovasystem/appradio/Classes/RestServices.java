@@ -11,6 +11,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.innovasystem.appradio.Classes.Models.Emisora;
+import com.innovasystem.appradio.Classes.Models.Fecha;
 import com.innovasystem.appradio.Classes.Models.Segmento;
 import com.innovasystem.appradio.Utils.Constants;
 import com.innovasystem.appradio.Utils.LogUser;
@@ -35,6 +36,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class RestServices {
 
@@ -155,7 +157,34 @@ public class RestServices {
         return resultadoLogIn;
     }
 
-    public static List<Emisora> consultarEmisoras(Context c) {
+    public static Fecha consultarHoraActual(Context c){
+        HttpHeaders reqHeaders = new HttpHeaders();
+        reqHeaders.setAccept(Collections.singletonList(new MediaType("application", "json")));
+        reqHeaders.set("Authorization", SessionConfig.getSessionConfig(c).userToken);
+        HttpEntity<?> requestEntity = new HttpEntity<Object>(reqHeaders);
+        RestTemplate restTemplate = new RestTemplate();
+        String url = Constants.serverDomain + Constants.uriHora;
+        try {
+            ResponseEntity<Fecha> responseEntity = restTemplate.exchange(url, HttpMethod.GET, requestEntity, Fecha.class);
+            if (responseEntity.getStatusCode() == HttpStatus.OK) {
+                return responseEntity.getBody();
+            }
+        } catch (Exception e) {
+            Log.e("RestGetError", e.getMessage());
+            return null;
+        }
+
+        return null;
+    }
+
+
+    /**
+     *
+     * @param c Contexto de la actividad que llama a este metodo
+     * @param provincia OPCIONAL: especifica de que provincia se desea consultar
+     * @return una Lista con Emisoras
+     */
+    public static List<Emisora> consultarEmisoras(Context c,String provincia) {
         System.out.println("USER TOKEN: " + SessionConfig.getSessionConfig(c).userToken);
         HttpHeaders reqHeaders = new HttpHeaders();
         reqHeaders.setAccept(Collections.singletonList(new MediaType("application", "json")));
@@ -163,7 +192,7 @@ public class RestServices {
         HttpEntity<?> requestEntity = new HttpEntity<Object>(reqHeaders);
         Emisora[] emisoras = null;
         RestTemplate restTemplate = new RestTemplate();
-        String url = Constants.serverDomain + Constants.uriEmisoras;
+        String url = Constants.serverDomain + Constants.uriEmisoras + (provincia != null ? String.format("?provincia=%s",provincia) : "" );
 
         try {
             ResponseEntity<Emisora[]> responseEntity = restTemplate.exchange(url, HttpMethod.GET, requestEntity, Emisora[].class);
@@ -220,14 +249,20 @@ public class RestServices {
         return new ArrayList<>(Arrays.asList(segmentos));
     }
 
-    public static List<Segmento> consultarSegmentosDelDia(Context c) {
+    /**
+     *
+     * @param c El contexto de la actividad que llama a este metodo
+     * @param provincia OPCIONAL: la provincia en la cual se desea hacer la consulta
+     * @return una lista con los Segmentos del dia actual.
+     */
+    public static List<Segmento> consultarSegmentosDelDia(Context c,String provincia) {
         HttpHeaders reqHeaders = new HttpHeaders();
         reqHeaders.setAccept(Collections.singletonList(new MediaType("application", "json")));
         reqHeaders.set("Authorization", SessionConfig.getSessionConfig(c).userToken);
         HttpEntity<?> requestEntity = new HttpEntity<Object>(reqHeaders);
         Segmento[] segmentos = null;
         RestTemplate restTemplate = new RestTemplate();
-        String url = Constants.serverDomain + Constants.uriSegmentosDelDia;
+        String url = Constants.serverDomain + Constants.uriSegmentosDelDia + (provincia != null ? String.format("?provincia=%s",provincia) : "" );
 
         try {
             ResponseEntity<Segmento[]> responseEntity = restTemplate.exchange(url, HttpMethod.GET, requestEntity, Segmento[].class);

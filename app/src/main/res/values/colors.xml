@@ -12,6 +12,7 @@
     <color name="TitleColor">#ff7f8a</color>
     <color name="TextColor">#47525E</color>
     <color name="infoColor">#FFBA5C</color>
+    <color name="seleccion_nav">#FF9100</color>
     <color name="itemBottomNavColor">#FFFFFF</color>
     <color name="itemBottomNavSelect">#CCCFFF</color>
     <color name="bgCintaCiudad">#262626</color>

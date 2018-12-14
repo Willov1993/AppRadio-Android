@@ -4,9 +4,11 @@
     android:layout_height="match_parent">
 
     <LinearLayout
+        android:id="@+id/proginfo_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="15dp"
+        android:background="@color/seleccion_nav"
         android:orientation="horizontal">
 
         <TextView

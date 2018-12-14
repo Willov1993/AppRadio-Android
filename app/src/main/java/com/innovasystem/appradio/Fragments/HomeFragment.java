@@ -2,25 +2,22 @@ package com.innovasystem.appradio.Fragments;
 
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.LinearSnapHelper;
-import android.support.v7.widget.PagerSnapHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SnapHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.TableLayout;
-import android.widget.TableRow;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.azoft.carousellayoutmanager.CarouselLayoutManager;
@@ -29,9 +26,11 @@ import com.azoft.carousellayoutmanager.CenterScrollListener;
 import com.innovasystem.appradio.Classes.Adapters.EmisoraHomeAdapter;
 import com.innovasystem.appradio.Classes.Adapters.ProgramacionAdapter;
 import com.innovasystem.appradio.Classes.Models.Emisora;
+import com.innovasystem.appradio.Classes.Models.Fecha;
 import com.innovasystem.appradio.Classes.Models.Horario;
 import com.innovasystem.appradio.Classes.Models.Segmento;
 import com.innovasystem.appradio.Classes.RestServices;
+import com.innovasystem.appradio.Classes.SessionConfig;
 import com.innovasystem.appradio.R;
 import com.innovasystem.appradio.Services.RadioStreamService;
 import com.innovasystem.appradio.Utils.NotificationManagement;
@@ -42,11 +41,15 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
+import java.util.TreeSet;
+
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -57,12 +60,18 @@ public class HomeFragment extends Fragment {
 
     //Variables de control
     private String streamingActual;
+    private static boolean radion_on=true;
+    private static boolean muted= false;
+    String[] ciudades;
+    String provinciaActual="";
+    Snackbar snackMessage;
 
     //Layout views
     private RecyclerView rv_home;
     private HorizontalPicker ciudad_picker;
     private ListView listview_programacion;
-    private ProgressBar progress_emisoras,progress_programacion;
+    private ProgressBar progress_emisoras, progress_programacion;
+    private ImageButton btn_apagar, btn_silenciar;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -100,10 +109,36 @@ public class HomeFragment extends Fragment {
         listview_programacion= root.findViewById(R.id.listv_programas);
         progress_emisoras= root.findViewById(R.id.progressBar_emisoras);
         progress_programacion= root.findViewById(R.id.progressBar_programacion);
+        btn_apagar= root.findViewById(R.id.btn_apagar);
+        btn_silenciar= root.findViewById(R.id.btn_mute);
 
         //Inicializacion de la cinta de ciudades
-        String[] ciudades= getResources().getStringArray(R.array.ciudades);
+        ciudades= getResources().getStringArray(R.array.ciudades);
         ciudad_picker.setValues(ciudades);
+        ciudad_picker.setOnItemSelectedListener(new HorizontalPicker.OnItemSelected(){
+            @Override
+            public void onItemSelected(int index) {
+                Toast.makeText(getContext(), ciudad_picker.getValues()[index], Toast.LENGTH_SHORT).show();
+                SessionConfig.getSessionConfig(getContext()).provincia= ciudades[index];
+                SharedPreferences preferences= getContext().getSharedPreferences("session", MODE_PRIVATE);
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putString("provincia",ciudades[index]);
+                editor.apply();
+                editor.commit();
+                new RestFetchEmisoraHomeTask().execute();
+                new RestFetchProgramacionTask().execute();
+            }
+        });
+        int indiceProvincia= Arrays.binarySearch(ciudades, SessionConfig.getSessionConfig(getContext()).provincia);
+        if(indiceProvincia>=0) {
+            ciudad_picker.setSelectedItem(indiceProvincia);
+            provinciaActual= ciudades[indiceProvincia];
+        }
+        else{
+            ciudad_picker.setSelectedItem(0);
+            SessionConfig.getSessionConfig(getContext()).provincia= ciudades[0];
+            provinciaActual= ciudades[0];
+        }
 
         //Inicializacion de recyclerview para las tarjetas
         final CarouselLayoutManager lmanager = new CarouselLayoutManager(CarouselLayoutManager.HORIZONTAL,true);
@@ -119,12 +154,13 @@ public class HomeFragment extends Fragment {
                     int itemPos= ((CarouselLayoutManager) recyclerView.getLayoutManager()).getCenterItemPosition();
                     Emisora em=((EmisoraHomeAdapter)recyclerView.getAdapter()).emisoras_keys.get(itemPos);
                     streamingActual= em.getUrl_streaming();
-                    if(!streamingActual.equals(RadioStreamService.radioURL)) {
+                    if(!streamingActual.equals(RadioStreamService.radioURL) && radion_on && !muted) {
                         Intent intent = new Intent();
                         intent.setAction(RadioStreamService.BROADCAST_TO_SERVICE);
                         intent.putExtra(RadioStreamService.PLAYER_FUNCTION_TYPE, RadioStreamService.CHANGE_PLAYER_TRACK);
                         intent.putExtra(RadioStreamService.PLAYER_TRACK_URL, streamingActual);
                         getActivity().sendBroadcast(intent);
+                        Utils.mostrarMensajeSnackBar(getView(),"Conectando al servidor de la emisora....");
                     }
                 }
             }
@@ -137,14 +173,26 @@ public class HomeFragment extends Fragment {
         SnapHelper snapHelper= new LinearSnapHelper();
         snapHelper.attachToRecyclerView(rv_home);
 
-        //Inicializacion de la tabla de programacion de emisoras
+        //Inicializacion de listeners de botones
+        btn_apagar.setOnClickListener(btn_apagar_listener);
+        btn_silenciar.setOnClickListener(btn_mute_listener);
 
+        if(radion_on){
+            btn_apagar.setBackground(getContext().getDrawable(R.drawable.round_button_enabled));
+        }
 
+        if(muted){
+            btn_silenciar.setBackground(getContext().getDrawable(R.drawable.round_button_enabled));
+        }
+
+        //Extraccion de datos de emisoras y programacion
         new RestFetchEmisoraHomeTask().execute();
         new RestFetchProgramacionTask().execute();
 
         return root;
     }
+
+
 
     /*----Metodos Utilitarios-----*/
 
@@ -164,6 +212,82 @@ public class HomeFragment extends Fragment {
     }
 
 
+
+    /*---------- Listeners ---------*/
+
+    /**
+     * Listener para el boton de Apagar, Detiene por completo el streaming de la emisora
+     */
+    private final View.OnClickListener btn_apagar_listener= new View.OnClickListener(){
+
+        @Override
+        public void onClick(View view) {
+            if(!radion_on){
+                System.out.println("Start Playing!!!!!");
+                if(Utils.isNetworkAvailable(getContext())) {
+                    btn_apagar.setBackground(getContext().getDrawable(R.drawable.round_button_enabled));
+                    radion_on = true;
+                    new StartStreamingTask().execute();
+                    if(muted){
+                        btn_silenciar.setBackground(getContext().getDrawable(R.drawable.round_button));
+                        muted= false;
+                    }
+                }
+                else{
+                    Toast.makeText(getContext(), "No se puede reproducir la emisora debido a que no tiene internet," +
+                            "revise su conexion", Toast.LENGTH_SHORT).show();
+                }
+            }
+            else{
+                btn_apagar.setBackground(getContext().getDrawable(R.drawable.round_button));
+                Intent intent = new Intent();
+                intent.setAction(RadioStreamService.BROADCAST_TO_SERVICE);
+                intent.putExtra(RadioStreamService.PLAYER_FUNCTION_TYPE, RadioStreamService.STOP_MEDIA_PLAYER);
+                getActivity().sendBroadcast(intent);
+                radion_on =false;
+            }
+        }
+    };
+
+    private final View.OnClickListener btn_mute_listener= new View.OnClickListener(){
+
+        @Override
+        public void onClick(View view) {
+            if(!muted){
+                btn_silenciar.setBackground(getContext().getDrawable(R.drawable.round_button_enabled));
+                Intent intent = new Intent();
+                intent.setAction(RadioStreamService.BROADCAST_TO_SERVICE);
+                intent.putExtra(RadioStreamService.PLAYER_FUNCTION_TYPE, RadioStreamService.PAUSE_MEDIA_PLAYER);
+                getActivity().sendBroadcast(intent);
+                muted=true;
+            }
+            else{
+                btn_silenciar.setBackground(getContext().getDrawable(R.drawable.round_button));
+                Intent intent = new Intent();
+
+                if(RadioStreamService.radioURL.equals(streamingActual)) {
+                    intent.setAction(RadioStreamService.BROADCAST_TO_SERVICE);
+                    intent.putExtra(RadioStreamService.PLAYER_FUNCTION_TYPE, RadioStreamService.RESUME_MEDIA_PLAYER);
+                }
+                else{
+                    intent.setAction(RadioStreamService.BROADCAST_TO_SERVICE);
+                    intent.putExtra(RadioStreamService.PLAYER_FUNCTION_TYPE, RadioStreamService.CHANGE_PLAYER_TRACK);
+                    intent.putExtra(RadioStreamService.PLAYER_TRACK_URL, streamingActual);
+                    Utils.mostrarMensajeSnackBar(getView(),"Conectando al servidor de la emisora....");
+                }
+                getActivity().sendBroadcast(intent);
+                muted=false;
+            }
+        }
+    };
+
+
+    /*---------- Tasks -------------*/
+
+    /**
+     * Esta clase asincrona obtiene los datos de emisoras para presentarlos en la pantalla principal
+     * como tarjetas
+     */
     private class RestFetchEmisoraHomeTask extends AsyncTask<Void,Void,Void> {
         List<Emisora> emisoras;
         List<Segmento> segmentos;
@@ -176,8 +300,8 @@ public class HomeFragment extends Fragment {
         @Override
         protected Void doInBackground(Void... voids) {
             System.out.println("EXTRAYENDO DATOS");
-            emisoras= RestServices.consultarEmisoras(getContext());
-            segmentos= RestServices.consultarSegmentosDelDia(getContext());
+            emisoras= RestServices.consultarEmisoras(getContext(),SessionConfig.getSessionConfig(getContext()).provincia);
+            segmentos= RestServices.consultarSegmentosDelDia(getContext(),SessionConfig.getSessionConfig(getContext()).provincia);
             return null;
         }
 
@@ -191,11 +315,15 @@ public class HomeFragment extends Fragment {
                 Toast.makeText(getContext(), "Ocurrio un error con el servidor, intente mas tarde", Toast.LENGTH_SHORT).show();
                 return;
             }
+            else if(emisoras.size() == 0){
+                Toast.makeText(getContext(), "No hay informacion para presentar o ocurrio un error de conexion!", Toast.LENGTH_SHORT).show();
+            }
 
             System.out.println("DATASETS: " + emisoras + "\n" + segmentos);
-            /*codigo para hacer pruebas con emisoras y segmentos de prueba*/
+
 
             /*
+            //codigo para hacer pruebas con emisoras y segmentos de prueba
             emisoras=Utils.generarEmisorasPrueba();
             segmentos= new ArrayList<>();
             for (int i = 0; i < emisoras.size(); i++) {
@@ -228,23 +356,48 @@ public class HomeFragment extends Fragment {
                 }
             }
 
-            Log.i("RV ITEMS: ", "" + mapa_emisoras.size());
 
             EmisoraHomeAdapter adapter = new EmisoraHomeAdapter(mapa_emisoras, getContext());
             rv_home.setAdapter(adapter);
 
-            if(!RadioStreamService.radioURL.equals("")){
-                for (int i = 0; i < adapter.emisoras_keys.size(); i++) {
-                    if(adapter.emisoras_keys.get(i).getUrl_streaming().equals(RadioStreamService.radioURL)){
-                        rv_home.scrollToPosition(i);
+            Log.i("RV ITEMS: ", "" + mapa_emisoras.size());
+
+            /*Se busca la posicion de la url en el adapter para hacer que el recyclerview se dirija
+            * a la posicion de la emisora en reproduccion actualmente
+            */
+            if(adapter.getItemCount() != 0) {
+                if (!RadioStreamService.radioURL.equals("")) {
+                    for (int i = 0; i < adapter.emisoras_keys.size(); i++) {
+                        if (adapter.emisoras_keys.get(i).getUrl_streaming().equals(RadioStreamService.radioURL)) {
+                            rv_home.scrollToPosition(i);
+                            streamingActual = adapter.emisoras_keys.get(i).getUrl_streaming();
+                        }
+                    }
+
+                } else if (!RadioStreamService.radioURL.equals(adapter.emisoras_keys.get(0).getUrl_streaming())) {
+                    streamingActual = adapter.emisoras_keys.get(0).getUrl_streaming();
+                    if (radion_on && !muted) {
+                        new StartStreamingTask().execute();
                     }
                 }
 
+                //Verificar si se ha cambiado de provincia
+                if (!provinciaActual.equals(SessionConfig.getSessionConfig(getContext()).provincia)) {
+                    System.out.println("****** LA PROVINCIA HA CAMBIADO *******!!!!");
+                    streamingActual = adapter.emisoras_keys.get(0).getUrl_streaming();
+                    if (radion_on && !muted) {
+                        Intent intent = new Intent();
+                        intent.setAction(RadioStreamService.BROADCAST_TO_SERVICE);
+                        intent.putExtra(RadioStreamService.PLAYER_FUNCTION_TYPE, RadioStreamService.CHANGE_PLAYER_TRACK);
+                        intent.putExtra(RadioStreamService.PLAYER_TRACK_URL, streamingActual);
+                        getActivity().sendBroadcast(intent);
+                       Utils.mostrarMensajeSnackBar(getView(),"Conectando al servidor de la emisora....");
+                    }
+                }
             }
-            else if(!RadioStreamService.radioURL.equals(adapter.emisoras_keys.get(0).getUrl_streaming())){
-                streamingActual = adapter.emisoras_keys.get(0).getUrl_streaming();
-                new DetectConnectionTask().execute();
-            }
+
+            provinciaActual= SessionConfig.getSessionConfig(getContext()).provincia;
+
         }
     }
 
@@ -252,7 +405,7 @@ public class HomeFragment extends Fragment {
      * Esta clase interna realiza el trabajo de detectar la conexion a internet
      * del telefono, si hay una conexion activa, entonces inicia el reproductor
      */
-    private class DetectConnectionTask extends AsyncTask<Object,Object,Boolean>{
+    private class StartStreamingTask extends AsyncTask<Object,Object,Boolean>{
 
         @Override
         protected void onPreExecute() {
@@ -267,6 +420,7 @@ public class HomeFragment extends Fragment {
         @Override
         protected void onPostExecute(Boolean result) {
             if(result) {
+                Utils.mostrarMensajeSnackBar(getView(),"Conectando al servidor de la emisora....");
                 startMediaPlayer(streamingActual);
             }
             else{
@@ -278,9 +432,10 @@ public class HomeFragment extends Fragment {
     }
 
     /**
-     * Clase Asincrona para extraer La info de La programacion del dia
+     * Clase Asincrona para extraer La info de La programacion del dia y presentarla en una ListView
      */
     private class RestFetchProgramacionTask extends AsyncTask<Void,Void,List<Segmento>>{
+        Fecha horaActual;
 
         @Override
         protected void onPreExecute() {
@@ -289,7 +444,8 @@ public class HomeFragment extends Fragment {
 
         @Override
         protected List<Segmento> doInBackground(Void... voids) {
-            return RestServices.consultarSegmentosDelDia(getContext());
+            horaActual= RestServices.consultarHoraActual(getContext());
+            return RestServices.consultarSegmentosDelDia(getContext(),SessionConfig.getSessionConfig(getContext()).provincia);
         }
 
         @Override
@@ -297,10 +453,15 @@ public class HomeFragment extends Fragment {
             progress_programacion.setVisibility(View.GONE);
             System.out.println("IMPRIMIENDO RESULTADO_______");
             System.out.println(Arrays.toString(listaSegmentos.toArray()));
+            System.out.println("FECHA ACTUAL: " + horaActual);
             if(listaSegmentos == null){
                 Toast.makeText(getContext(), "Ocurrio un error con el servidor, intente mas tarde", Toast.LENGTH_SHORT).show();
                 return;
             }
+            else if(listaSegmentos.size()==0){
+                Toast.makeText(getContext(), "No hay programacion para presentar o ocurrio algun error!", Toast.LENGTH_SHORT).show();
+            }
+
 
 
             /*
@@ -314,34 +475,33 @@ public class HomeFragment extends Fragment {
             System.out.println("LISta PRUEBA: "+listaSegmentos);
             */
 
-            Map<Horario,Segmento> mapa_segmentos=new TreeMap<>();
+            Map<Horario,Set<Segmento>> mapa_segmentos=new TreeMap<>();
             for (int i = 0; i < listaSegmentos.size(); i++) {
                 Segmento segmento =  listaSegmentos.get(i);
                 for (int j = 0; j < segmento.getHorarios().length; j++) {
                     Horario h = segmento.getHorarios()[j];
-                    mapa_segmentos.put(h,segmento);
+                    if(mapa_segmentos.containsKey(h)){
+                        mapa_segmentos.get(h).add(segmento);
+                    }
+                    else {
+                        mapa_segmentos.put(h, new HashSet<>());
+                        mapa_segmentos.get(h).add(segmento);
+                    }
                 }
             }
 
-            ProgramacionAdapter adapter= new ProgramacionAdapter(getContext(),mapa_segmentos);
-            listview_programacion.setAdapter(adapter);
-            /*
-            for (Horario h: mapa_segmentos.keySet()) {
-                Segmento seg= mapa_segmentos.get(h);
-                TableRow filaPrograma= new TableRow(getContext());
-                filaPrograma.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
-                LinearLayout infoContainer= new LinearLayout(getContext());
+            ArrayList<Horario> horarios= new ArrayList<>();
+            ArrayList<Segmento> segmentos= new ArrayList<>();
 
-                TextView tv_horario=Utils.crearTextViewPersonalizado(getContext(),14,getContext().getResources().getColor(R.color.text_color),
-                        String.format("%s - %s",h.getFecha_inicio(),h.getFecha_fin() ));
-                TextView tv_programa= Utils.crearTextViewPersonalizado(getContext(),14,getContext().getResources().getColor(R.color.text_color),seg.getNombre());
-                TextView tv_emisora= Utils.crearTextViewPersonalizado(getContext(),14,getContext().getResources().getColor(R.color.text_color),seg.getEmisora().getNombre());
-                infoContainer.addView(tv_horario);
-                infoContainer.addView(tv_programa);
-                infoContainer.addView(tv_emisora);
-                filaPrograma.addView(infoContainer);
-                tabla_programacion.addView(filaPrograma);
-            }*/
+            for(Horario h: mapa_segmentos.keySet()){
+                for(Segmento seg: mapa_segmentos.get(h)){
+                    horarios.add(h);
+                    segmentos.add(seg);
+                }
+            }
+
+            ProgramacionAdapter adapter= new ProgramacionAdapter(getContext(),horarios,segmentos,horaActual);
+            listview_programacion.setAdapter(adapter);
 
         }
 

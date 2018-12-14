@@ -90,7 +90,7 @@ public class LoginActivity extends AppCompatActivity {
         SharedPreferences preferences = getSharedPreferences("account", MODE_PRIVATE);
         String tokenEncrypted = preferences.getString(encrypt("token"), "default");
         String token;
-        System.out.println("Token encriptado:"+tokenEncrypted);
+        System.out.println("====> Token encriptado:"+tokenEncrypted);
         if(!tokenEncrypted.equals("default")){
             token = Utils.decrypt(tokenEncrypted);
             Toast.makeText(this,

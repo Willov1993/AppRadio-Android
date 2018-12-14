@@ -89,7 +89,7 @@ public class EmisorasFragment extends Fragment{
 
         @Override
         protected List<Emisora> doInBackground(Void... voids) {
-            return RestServices.consultarEmisoras(getContext());
+            return RestServices.consultarEmisoras(getContext(),null);
         }
 
         @Override
