@@ -179,6 +179,9 @@ public class Utils {
     }
 
     public static Snackbar mostrarMensajeSnackBar(View v,String mensaje){
+        if(v.getParent() == null){
+            return null;
+        }
         mSnackBar = Snackbar.make(v, mensaje, Snackbar.LENGTH_INDEFINITE);
         View view = mSnackBar.getView();
         FrameLayout.LayoutParams params =(FrameLayout.LayoutParams)view.getLayoutParams();

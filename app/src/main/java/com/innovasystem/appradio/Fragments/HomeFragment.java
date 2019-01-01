@@ -455,11 +455,13 @@ public class HomeFragment extends Fragment {
             System.out.println(Arrays.toString(listaSegmentos.toArray()));
             System.out.println("FECHA ACTUAL: " + horaActual);
             if(listaSegmentos == null){
-                Toast.makeText(getContext(), "Ocurrio un error con el servidor, intente mas tarde", Toast.LENGTH_SHORT).show();
+                if(getContext() != null)
+                    Toast.makeText(getContext(), "Ocurrio un error con el servidor, intente mas tarde", Toast.LENGTH_SHORT).show();
                 return;
             }
             else if(listaSegmentos.size()==0){
-                Toast.makeText(getContext(), "No hay programacion para presentar o ocurrio algun error!", Toast.LENGTH_SHORT).show();
+                if(getContext() != null)
+                    Toast.makeText(getContext(), "No hay programacion para presentar o ocurrio algun error!", Toast.LENGTH_SHORT).show();
             }
 
 
