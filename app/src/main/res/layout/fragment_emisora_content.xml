@@ -44,6 +44,7 @@
             android:textSize="18sp" />
 
         <android.support.design.widget.TabLayout
+            android:id="@+id/tablayout_info_emisora"
             style="@style/AppTabLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -424,7 +424,8 @@ public class HomeFragment extends Fragment {
                 startMediaPlayer(streamingActual);
             }
             else{
-                NotificationManagement.notificarError("AppRadio - Error de Reproduccion","No se puede conectar al servidor de la radio",getActivity().getApplicationContext());
+
+                //NotificationManagement.notificarError("AppRadio - Error de Reproduccion","No se puede conectar al servidor de la radio",getActivity().getApplicationContext());
                 Toast.makeText(getContext(), "No se puede reproducir la emisora debido a que no tiene internet," +
                         "revise su conexion", Toast.LENGTH_SHORT).show();
             }

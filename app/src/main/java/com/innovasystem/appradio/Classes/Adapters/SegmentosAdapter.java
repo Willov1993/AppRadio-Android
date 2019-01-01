@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,28 +37,21 @@ public class SegmentosAdapter extends RecyclerView.Adapter<SegmentosAdapter.View
 
     public static class ViewHolder extends  RecyclerView.ViewHolder{
 
-        ImageView iv_segmento;
-        TextView tv_titulo_segmento;
-        TextView tv_horario_segmento;
+        Button btn_titulo_segmento;
+        Button btn_horario_segmento;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            this.iv_segmento= itemView.findViewById(R.id.iv_segmento_item);
-            this.tv_titulo_segmento= itemView.findViewById(R.id.tv_titulo_segmento_item);
-            this.tv_horario_segmento= itemView.findViewById(R.id.tv_horario_segmento_item);
+            this.btn_titulo_segmento= itemView.findViewById(R.id.btn_segmento_titulo);
+            this.btn_horario_segmento= itemView.findViewById(R.id.btn_segmento_horario);
         }
     }
-
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v= LayoutInflater.from(parent.getContext()).inflate(R.layout.rv_item_seleccion_segmento,parent,false);
         ViewHolder vh= new ViewHolder(v);
-        v.setOnClickListener((View view)->
-        {
-            listener.OnItemClick(view,vh.getAdapterPosition());
-        });
         return vh;
     }
 
@@ -65,15 +59,12 @@ public class SegmentosAdapter extends RecyclerView.Adapter<SegmentosAdapter.View
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Horario hor= keysList.get(position);
         Segmento seg= segmentos_dataset.get(hor);
-        holder.tv_titulo_segmento.setText(seg.getNombre());
-        holder.tv_horario_segmento.setText(String.format("%s - %s",
-                hor.getFecha_inicio().substring(0,5),
-                hor.getFecha_fin()).substring(0,5));
-        Picasso.with(context)
-                .load(seg.getImagen())
-                .placeholder(R.drawable.radio_icon_48)
-                .resize(80,80).centerCrop()
-                .into(holder.iv_segmento);
+        holder.btn_titulo_segmento.setText(seg.getNombre());
+        holder.btn_horario_segmento.setText( hor.getFecha_inicio().substring(0,5) + " - " + hor.getFecha_fin().substring(0,5));
+
+        holder.btn_titulo_segmento.setOnClickListener((View v)->{
+            listener.OnItemClick(v,position);
+        });
 
     }
 
