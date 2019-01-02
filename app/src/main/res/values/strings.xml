@@ -54,26 +54,31 @@
 
 
     <!--STRING PARA VENTANA DE REGISTRO-->
+    <string name="text_tittle_create_acc">"Crear Cuenta"</string>
+    <string name="btn_next">"Siguiente"</string>
+
+
     <string name="text_obligatory_fields">Campos Obligatorios *</string>
-    <string name="text_names">Nombres *</string>
-    <string name="text_lastname">Apellidos *</string>
-    <string name="text_user">Usuario *</string>
-    <string name="text_password">Contraseña *</string>
-    <string name="text_mail">Correo Electrónico *</string>
-    <string name="text_number">Número de Telefono</string>
-    <string name="text_birthday">Fecha de Nacimiento *</string>
-    <string name="text_register_btn">Regístrarse</string>
+    <string name="text_names">Nombres</string>
+    <string name="text_lastname">Apellidos</string>
+    <string name="text_user">Escribe un nombre de usuario</string>
+    <string name="text_password">Escribe una contraseña</string>
+    <string name="text_mail">¿Cuál es tu correo electrónico?</string>
+    <string name="text_number">¿Cual es tu número de celular?</string>
+    <string name="text_birthday">¿Cuál es tu fecha de nacimiento?</string>
+    <string name="text_register_btn">Regístrarme</string>
     <string name="text_day">Día</string>
     <string name="text_month">Mes</string>
     <string name="text_year">Año</string>
 
 
-    <string name="hint_names_lastnames">Ingrese sus nombres</string>
-    <string name="hint_lastnames">Ingrese sus apellidos</string>
-    <string name="hint_user">Ingrese un nombre de usuario</string>
-    <string name="hint_mail">Ingrese su correo electronico</string>
+    <string name="hint_names_lastnames">Nombres</string>
+    <string name="hint_lastnames">Apellidos</string>
+    <string name="hint_user">Nombre de usuario</string>
+    <string name="hint_mail">Correo electrónico</string>
     <string name="hint_password_register">Contraseña</string>
-    <string name="hint_phone_number">Ingrese su numero de teléfono</string>
+    <string name="hint_phone_number">Numero de teléfono</string>
+    <string name="hint_birthday">DD-MM-AAAA</string>
 
 
     <string-array name="array_days">
