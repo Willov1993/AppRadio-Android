@@ -24,6 +24,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -65,12 +66,12 @@ public class LoginActivity extends AppCompatActivity {
     private UserLoginTask mAuthTask = null;
 
     // UI references.
-    private AutoCompleteTextView mEmailView;
+    private EditText mEmailView;
     private EditText mPasswordView;
     private View mProgressItem;
     private View mLoginFormView;
     private LinearLayout mLoadingView;
-
+    private ImageButton fake_btn_fb_login;
 
 
     @Override
@@ -115,7 +116,19 @@ public class LoginActivity extends AppCompatActivity {
         printKeyHash();
         callbackManager = CallbackManager.Factory.create();
 
+
         LoginButton btn_login_fb1 = (LoginButton) findViewById(R.id.btn_logfb);
+
+        fake_btn_fb_login = (ImageButton) findViewById(R.id.btn_login_fb2);
+
+        fake_btn_fb_login.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                btn_login_fb1.performClick();
+            }
+        });
+
+
         btn_login_fb1.setReadPermissions(Arrays.asList("public_profile","email","user_birthday","user_friends"));
         imageViewPortada = (ImageView) findViewById(R.id.imageViewPortada);
         btn_login_fb1.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
@@ -165,7 +178,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
         // Set up the login form.
-        mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
+        mEmailView = (EditText) findViewById(R.id.username);
 
         mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
