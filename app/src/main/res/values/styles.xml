@@ -8,6 +8,7 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="coordinatorLayoutStyle">@style/Widget.Design.NavigationView</item>
         <item name="bottomNavigationStyle">@style/Widget.Design.BottomNavigationView</item>
+<<<<<<< HEAD
         <item name="textInputStyle">@style/Widget.Design.TextInputLayout</item>
 
         <!-- Customize textinputlayout -->
@@ -20,6 +21,9 @@
 
     <style name="TextAppearance.App.TextInputLayout" parent="@android:style/TextAppearance">
     <item name="android:textColor">@color/textoGris</item>
+=======
+
+>>>>>>> 9602d2aeb1bc04f8a1bdd14e8cb5b5d511ba920c
     </style>
 
 
@@ -28,12 +32,31 @@
         <item name="colorAccent">@android:color/holo_orange_dark</item>
     </style>
 
+<<<<<<< HEAD
     <style name="FacebookLoginButton">
         <item name="android:background">@drawable/facebook</item>
 
         <item name="android:layout_marginTop">10dp</item>
         <item name="android:layout_marginBottom">10dp</item>
         <item name="android:layout_gravity">center_horizontal</item>
+=======
+    <style name="AppTabLayout" parent="Widget.Design.TabLayout">
+        <item name="tabIndicatorColor">@color/textoGris</item>
+        <item name="tabPaddingStart">2dp</item>
+        <item name="tabPaddingEnd">2dp</item>
+        <!--item name="tabBackground">@drawable/underline_background</item-->
+        <item name="tabTextAppearance">@style/AppTabTextAppearance</item>
+        <item name="tabSelectedTextColor">@color/seleccion_nav</item>
+        <item name="tabIndicatorHeight">5000dp</item>
+    </style>
+
+    <!-- for text -->
+    <style name="AppTabTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/text_color</item>
+        <item name="android:textStyle">bold</item>
+        <item name="textAllCaps">false</item>
+>>>>>>> 9602d2aeb1bc04f8a1bdd14e8cb5b5d511ba920c
     </style>
 
 </resources>

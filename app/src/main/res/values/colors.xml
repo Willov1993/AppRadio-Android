@@ -10,7 +10,7 @@
     <color name="appColorTheme2Saturated1">#ff7f8a</color>
     <color name="appColorTheme2Saturated2">#ffa5ad</color>
     <color name="TitleColor">#ff7f8a</color>
-    <color name="TextColor">#47525E</color>
+    <color name="TextColor">#47525e</color>
     <color name="infoColor">#FFBA5C</color>
     <color name="seleccion_nav">#FF9100</color>
     <color name="itemBottomNavColor">#FFFFFF</color>

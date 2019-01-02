@@ -14,6 +14,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,7 +32,7 @@ import com.innovasystem.appradio.Utils.Utils;
 public class HomeActivity extends AppCompatActivity {
 
     private TextView mTextMessage;
-
+    BottomNavigationView navigation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,8 +40,9 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
         startService(new Intent(this, RadioStreamService.class));
         registerReceiver(receiverFromservice, new IntentFilter(RadioStreamService.SERVICE_TO_ACTIVITY));
+
         mTextMessage = (TextView) findViewById(R.id.message);
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         navigation.setSelectedItemId(R.id.navigation_home);
 
@@ -62,6 +64,26 @@ public class HomeActivity extends AppCompatActivity {
         unregisterReceiver(receiverFromservice);
     }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_BACK){
+
+
+            if(getSupportFragmentManager().findFragmentById(R.id.frame_container)instanceof HomeFragment){
+                finish();
+            }
+            //Si no queda ningun elemento en el Stack del Manager, entonces volvemos al home
+            if(getSupportFragmentManager().getBackStackEntryCount() == 0){
+                navigation.setSelectedItemId(R.id.navigation_home);
+            }
+            else{
+                getSupportFragmentManager().popBackStackImmediate();
+            }
+
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 
     /*=== Metodos utilitarios ===*/
 
@@ -70,12 +92,17 @@ public class HomeActivity extends AppCompatActivity {
      *
      * @param fragment El fragmento nuevo, que va mostrarse y reemplazara al anterior.
      * @param viewResource El id del contenedor donde se va a mostrar el fragment
+     * @param addToStack Un valor booleano para indicar si se debe agregar al stack del
+     *                   FragmentManager (util para cuando se desea regresar de un fragment
+     *                   al anterior)
      * @return void
      */
-    public void changeFragment(Fragment fragment, int viewResource) {
+    public void changeFragment(Fragment fragment, int viewResource,boolean addToStack) {
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         ft.replace(viewResource, fragment);
+        if(addToStack)
+            ft.addToBackStack(null); //Esto hace que el fragmentManager mantenga en su stack este fragment
         ft.commit();
     }
 
@@ -93,22 +120,22 @@ public class HomeActivity extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
                     contentFragmet= new HomeFragment();
-                    HomeActivity.this.changeFragment(contentFragmet,R.id.frame_container);
+                    HomeActivity.this.changeFragment(contentFragmet,R.id.frame_container,false);
                     return true;
 
                 case R.id.navigation_concursos:
                     contentFragmet= new SugerenciasFragment();
-                    HomeActivity.this.changeFragment(contentFragmet,R.id.frame_container);
+                    HomeActivity.this.changeFragment(contentFragmet,R.id.frame_container,false);
                     return true;
 
                 case R.id.navigation_emisoras:
                     contentFragmet= new EmisorasFragment();
-                    HomeActivity.this.changeFragment(contentFragmet,R.id.frame_container);
+                    HomeActivity.this.changeFragment(contentFragmet,R.id.frame_container,false);
                     return true;
 
                 case R.id.navigation_encuestas:
                     contentFragmet= new NotificacionesFragment();
-                    HomeActivity.this.changeFragment(contentFragmet,R.id.frame_container);
+                    HomeActivity.this.changeFragment(contentFragmet,R.id.frame_container,false);
                     return true;
 
                 case R.id.navigation_menu:

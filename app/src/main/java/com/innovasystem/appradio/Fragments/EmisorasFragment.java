@@ -3,6 +3,7 @@ package com.innovasystem.appradio.Fragments;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -17,7 +18,10 @@ import com.innovasystem.appradio.Classes.Models.Emisora;
 import com.innovasystem.appradio.Classes.RestServices;
 import com.innovasystem.appradio.R;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -30,11 +34,9 @@ public class EmisorasFragment extends Fragment{
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     RecyclerView rv_emisoras;
+    GridLayoutManager lmanager;
 
 
     public EmisorasFragment() {
@@ -63,8 +65,7 @@ public class EmisorasFragment extends Fragment{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+
         }
     }
 
@@ -76,7 +77,7 @@ public class EmisorasFragment extends Fragment{
 
         rv_emisoras= root.findViewById(R.id.rv_emisoras);
         rv_emisoras.setHasFixedSize(true);
-        LinearLayoutManager lmanager= new LinearLayoutManager(getContext());
+        lmanager= new GridLayoutManager(getContext(),2);
         rv_emisoras.setLayoutManager(lmanager);
 
         new RestFetchEmisoraTask().execute();
@@ -85,15 +86,39 @@ public class EmisorasFragment extends Fragment{
     }
 
 
-    private class RestFetchEmisoraTask extends AsyncTask<Void,Void,List<Emisora>> {
+    private class RestFetchEmisoraTask extends AsyncTask<Void,Void,List<Object>> {
 
         @Override
-        protected List<Emisora> doInBackground(Void... voids) {
-            return RestServices.consultarEmisoras(getContext(),null);
+        protected List<Object> doInBackground(Void... voids) {
+            List<Emisora> lista_emisoras= RestServices.consultarEmisoras(getContext(),null);
+            if(lista_emisoras==null){
+                return null;
+            }
+
+            Map<String,List<Emisora>> mapa_emisoras_provincia=new TreeMap<>();
+            for(Emisora em: lista_emisoras){
+                if(mapa_emisoras_provincia.containsKey(em.getProvincia())){
+                    mapa_emisoras_provincia.get(em.getProvincia()).add(em);
+                }
+                else{
+                    mapa_emisoras_provincia.put(em.getProvincia(),new ArrayList<>());
+                    mapa_emisoras_provincia.get(em.getProvincia()).add(em);
+                }
+            }
+
+            ArrayList lista_emisoras_provincias= new ArrayList();
+            for(String prov: mapa_emisoras_provincia.keySet()){
+                lista_emisoras_provincias.add(prov);
+                for(Emisora em: mapa_emisoras_provincia.get(prov)){
+                    lista_emisoras_provincias.add(em);
+                }
+            }
+
+            return lista_emisoras_provincias;
         }
 
         @Override
-        protected void onPostExecute(List<Emisora> listaEmisoras){
+        protected void onPostExecute(List<Object> listaEmisoras){
             if(listaEmisoras == null){
                 Toast.makeText(getContext(), "Ocurrio un error con el servidor, intente mas tarde", Toast.LENGTH_SHORT).show();
                 return;
@@ -105,13 +130,22 @@ public class EmisorasFragment extends Fragment{
 
             /**/
 
-            for(Emisora e: listaEmisoras){
+            for(Object e: listaEmisoras){
                 Log.i("Emisora: ",e.toString());
             }
+
+
 
             EmisorasAdapter adapter= new EmisorasAdapter(listaEmisoras,getContext());
             rv_emisoras.setAdapter(adapter);
             rv_emisoras.getAdapter().notifyDataSetChanged();
+            lmanager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+                @Override
+                public int getSpanSize(int i) {
+                    return adapter.isTitle(adapter.emisoras_dataset.get(i)) ? lmanager.getSpanCount() : 1;
+                }
+            });
+
 
         }
     }
