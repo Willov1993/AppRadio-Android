@@ -12,7 +12,9 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.innovasystem.appradio.Classes.Models.Emisora;
 import com.innovasystem.appradio.Classes.Models.Fecha;
+import com.innovasystem.appradio.Classes.Models.RedSocialEmisora;
 import com.innovasystem.appradio.Classes.Models.Segmento;
+import com.innovasystem.appradio.Classes.Models.TelefonoEmisora;
 import com.innovasystem.appradio.Utils.Constants;
 import com.innovasystem.appradio.Utils.LogUser;
 import com.innovasystem.appradio.Utils.RegisterUser;
@@ -299,9 +301,50 @@ public class RestServices {
         return new ArrayList<>(Arrays.asList(segmentos));
     }
 
-    public static List<Segmento> consultarSegmentosEnVivo(Context c) {
+    /**
+     * Obtiene los telefonos de una emisora dada
+     * @param c
+     * @param idEmisora
+     * @return
+     */
+    public static List<TelefonoEmisora> consultarTelefonosEmisora(Context c,int idEmisora){
+        HttpHeaders reqHeaders = new HttpHeaders();
+        reqHeaders.setAccept(Collections.singletonList(new MediaType("application", "json")));
+        reqHeaders.set("Authorization", SessionConfig.getSessionConfig(c).userToken);
+        HttpEntity<?> requestEntity = new HttpEntity<Object>(reqHeaders);
+        TelefonoEmisora[] telefonos= null;
+        RestTemplate restTemplate= new RestTemplate();
+        String url = Constants.serverDomain + String.format(Constants.uriTelefonosEmisora, idEmisora);
+        try {
+            ResponseEntity<TelefonoEmisora[]> responseEntity = restTemplate.exchange(url, HttpMethod.GET, requestEntity, TelefonoEmisora[].class);
+            if (responseEntity.getStatusCode() == HttpStatus.OK) {
+                telefonos = responseEntity.getBody();
+            }
+        } catch (Exception e) {
+            Log.e("RestGetError", e.getMessage());
+            return null;
+        }
+        return new ArrayList<>(Arrays.asList(telefonos));
+    }
 
-        return null;
+    public static List<RedSocialEmisora> consultarRedesEmisora(Context c, int idEmisora){
+        HttpHeaders reqHeaders = new HttpHeaders();
+        reqHeaders.setAccept(Collections.singletonList(new MediaType("application", "json")));
+        reqHeaders.set("Authorization", SessionConfig.getSessionConfig(c).userToken);
+        HttpEntity<?> requestEntity = new HttpEntity<Object>(reqHeaders);
+        RedSocialEmisora[] redes= null;
+        RestTemplate restTemplate= new RestTemplate();
+        String url = Constants.serverDomain + String.format(Constants.uriRedesEmisora, idEmisora);
+        try {
+            ResponseEntity<RedSocialEmisora[]> responseEntity = restTemplate.exchange(url, HttpMethod.GET, requestEntity, RedSocialEmisora[].class);
+            if (responseEntity.getStatusCode() == HttpStatus.OK) {
+                redes = responseEntity.getBody();
+            }
+        } catch (Exception e) {
+            Log.e("RestGetError", e.getMessage());
+            return null;
+        }
+        return new ArrayList<>(Arrays.asList(redes));
     }
 
 }

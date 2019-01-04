@@ -8,6 +8,7 @@
     android:background="@color/appColorTheme">
 
     <LinearLayout
+        android:id="@+id/lin_layout_info_emisora"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/appColorTheme"
@@ -36,6 +37,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.05"
+                android:adjustViewBounds="true"
                 android:background="@color/seleccion_nav"
                 android:src="@drawable/ic_notifications_black_24dp" />
 
@@ -43,6 +45,7 @@
                 android:id="@+id/tv_web_emisora"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:layout_marginStart="12dp"
                 android:layout_weight="0.95"
                 android:text="TextView"
@@ -62,13 +65,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.05"
+                android:adjustViewBounds="true"
                 android:background="@color/seleccion_nav"
+                android:baselineAlignBottom="false"
+                android:cropToPadding="false"
                 android:src="@drawable/ic_notifications_black_24dp" />
 
             <TextView
                 android:id="@+id/tv_telef_emisora"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:layout_marginStart="12dp"
                 android:layout_weight="0.95"
                 android:text="TextView"
@@ -80,21 +87,25 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="15dp"
+            android:layout_marginBottom="40dp"
             android:orientation="horizontal">
 
             <ImageView
                 android:id="@+id/imageView5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:layout_weight="0.05"
+                android:adjustViewBounds="true"
                 android:background="@color/seleccion_nav"
+                android:cropToPadding="false"
                 android:src="@drawable/ic_notifications_black_24dp" />
 
             <TextView
                 android:id="@+id/tv_ubicacion_emisora"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:layout_marginStart="12dp"
                 android:layout_weight="0.95"
                 android:lines="2"

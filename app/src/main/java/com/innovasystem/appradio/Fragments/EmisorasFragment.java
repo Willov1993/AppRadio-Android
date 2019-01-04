@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 import android.support.v4.app.Fragment;
 
@@ -37,6 +38,7 @@ public class EmisorasFragment extends Fragment{
 
     RecyclerView rv_emisoras;
     GridLayoutManager lmanager;
+    ProgressBar progressBar;
 
 
     public EmisorasFragment() {
@@ -79,6 +81,7 @@ public class EmisorasFragment extends Fragment{
         rv_emisoras.setHasFixedSize(true);
         lmanager= new GridLayoutManager(getContext(),2);
         rv_emisoras.setLayoutManager(lmanager);
+        progressBar= root.findViewById(R.id.progressBar_emisoras);
 
         new RestFetchEmisoraTask().execute();
 
@@ -87,6 +90,11 @@ public class EmisorasFragment extends Fragment{
 
 
     private class RestFetchEmisoraTask extends AsyncTask<Void,Void,List<Object>> {
+
+        @Override
+        protected void onPreExecute() {
+            progressBar.setVisibility(View.VISIBLE);
+        }
 
         @Override
         protected List<Object> doInBackground(Void... voids) {
@@ -119,6 +127,7 @@ public class EmisorasFragment extends Fragment{
 
         @Override
         protected void onPostExecute(List<Object> listaEmisoras){
+            progressBar.setVisibility(View.GONE);
             if(listaEmisoras == null){
                 Toast.makeText(getContext(), "Ocurrio un error con el servidor, intente mas tarde", Toast.LENGTH_SHORT).show();
                 return;

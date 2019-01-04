@@ -19,12 +19,12 @@
 
     <item
         android:id="@+id/navigation_encuestas"
-        android:icon="@android:drawable/ic_menu_agenda"
+        android:icon="@drawable/encuestas"
         android:title="@string/title_encuestas" />
 
     <item
         android:id="@+id/navigation_menu"
-        android:icon="@android:drawable/ic_menu_sort_by_size"
+        android:icon="@drawable/menu"
         android:title="@string/title_navigation" />
 
 </menu>
