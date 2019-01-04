@@ -1,11 +1,11 @@
 package com.innovasystem.appradio.Classes.Models;
 
 public class Persona {
-    private long id;
-    private String imagen;
-    private String first_name;
-    private String last_name;
-    private String fecha_nac;
+    protected long id;
+    protected String imagen;
+    protected String first_name;
+    protected String last_name;
+    protected String fecha_nac;
 
     public long getId() {
         return id;

@@ -103,7 +103,7 @@ public class SegmentoInfoFragment extends Fragment {
                 return;
             }
 
-            ConductoresAdapter adapter= new ConductoresAdapter(getContext(),lista_conductores);
+            ConductoresAdapter adapter= new ConductoresAdapter(getContext(),lista_conductores,segInfo.getNombre());
             rv_conductores.setAdapter(adapter);
             rv_conductores.getAdapter().notifyDataSetChanged();
             lmanager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {

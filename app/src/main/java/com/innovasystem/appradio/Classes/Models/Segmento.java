@@ -147,6 +147,6 @@ public class Segmento implements Parcelable{
         parcel.writeString(imagen);
         parcel.writeString(descripcion);
         parcel.writeValue(emisora);
-        parcel.writeArray(horarios);
+        //parcel.writeArray(horarios);
     }
 }

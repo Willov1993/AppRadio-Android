@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/appColorTheme">
+
+    <LinearLayout
+        android:id="@+id/linlayout_locutor_info"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginEnd="15dp"
+        android:layout_marginStart="15dp"
+        android:background="@color/appColorTheme"
+        android:orientation="vertical"
+        tools:context=".Fragments.SegmentoInfoFragment">
+
+        <!-- TODO: Update blank fragment layout -->
+        <TextView
+            android:id="@+id/tv_locutor_info_titulo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:text="Locutor"
+            android:textAlignment="center"
+            android:textAllCaps="true"
+            android:textColor="@color/text_color"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_locutor_emisora"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="5dp"
+            android:text="Emisora"
+            android:textAlignment="center"
+            android:textAllCaps="true"
+            android:textColor="@color/textoGris"
+            android:textSize="18sp" />
+
+        <ImageView
+            android:id="@+id/iv_imagen_locutor"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="20dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="20dp"
+            android:adjustViewBounds="true"
+            android:src="@drawable/com_facebook_profile_picture_blank_portrait" />
+
+        <TextView
+            android:id="@+id/textView33"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="BIOGRAFÍA"
+            android:textColor="@android:color/holo_orange_dark"
+            android:textSize="16sp" />
+
+        <com.uncopt.android.widget.text.justify.JustifiedTextView
+            android:id="@+id/tv_locutor_biografia"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="TextView"
+            android:textColor="@color/text_color"
+            android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/textView34"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="FECHA DE NACIMIENTO"
+            android:textColor="@android:color/holo_orange_dark"
+            android:textSize="16sp" />
+
+        <com.uncopt.android.widget.text.justify.JustifiedTextView
+            android:id="@+id/tv_locutor_fecha"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:lineSpacingExtra="8sp"
+            android:text="TextView"
+            android:textColor="@color/text_color" />
+
+        <TextView
+            android:id="@+id/textView35"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="HOBBIES"
+            android:textColor="@android:color/holo_orange_dark"
+            android:textSize="16sp" />
+
+        <com.uncopt.android.widget.text.justify.JustifiedTextView
+            android:id="@+id/tv_locutor_hobbies"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="TextView"
+            android:textColor="@color/text_color"
+            android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/textView30"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="APODO"
+            android:textColor="@android:color/holo_orange_dark"
+            android:textSize="16sp" />
+
+        <com.uncopt.android.widget.text.justify.JustifiedTextView
+            android:id="@+id/tv_locutor_apodo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="TextView"
+            android:textColor="@color/text_color"
+            android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/textView36"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="20dp"
+            android:text="REDES SOCIALES"
+            android:textColor="@android:color/holo_orange_dark"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
+</ScrollView>
