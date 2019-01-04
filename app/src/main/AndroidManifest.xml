@@ -19,9 +19,6 @@
         <activity
             android:name=".Activities.LoginActivity"
             android:label="@string/app_name" />
-        <activity
-            android:name=".Activities.EmisoraActivity"
-            android:label="@string/app_name" />
 
         <service android:name=".Services.RadioStreamService" />
 

@@ -10,6 +10,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.innovasystem.appradio.Classes.Models.Conductor;
 import com.innovasystem.appradio.Classes.Models.Emisora;
 import com.innovasystem.appradio.Classes.Models.Fecha;
 import com.innovasystem.appradio.Classes.Models.RedSocialEmisora;
@@ -345,6 +346,26 @@ public class RestServices {
             return null;
         }
         return new ArrayList<>(Arrays.asList(redes));
+    }
+
+    public static List<Conductor> consultarLocutores(Context c,int idSegmento){
+        HttpHeaders reqHeaders = new HttpHeaders();
+        reqHeaders.setAccept(Collections.singletonList(new MediaType("application", "json")));
+        reqHeaders.set("Authorization", SessionConfig.getSessionConfig(c).userToken);
+        HttpEntity<?> requestEntity = new HttpEntity<Object>(reqHeaders);
+        Conductor[] conductores= null;
+        RestTemplate restTemplate= new RestTemplate();
+        String url = Constants.serverDomain + String.format(Constants.uriLocutoresSegmento, idSegmento);
+        try {
+            ResponseEntity<Conductor[]> responseEntity = restTemplate.exchange(url, HttpMethod.GET, requestEntity, Conductor[].class);
+            if (responseEntity.getStatusCode() == HttpStatus.OK) {
+                conductores = responseEntity.getBody();
+            }
+        } catch (Exception e) {
+            Log.e("RestGetError", e.getMessage());
+            return null;
+        }
+        return new ArrayList<>(Arrays.asList(conductores));
     }
 
 }
