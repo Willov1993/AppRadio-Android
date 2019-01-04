@@ -64,7 +64,71 @@ public class LocutorInfoFragment extends Fragment {
                     .fit()
                     .into(img_locutor);
         }
-        
+        //Creacion de botones de redes sociales
+        if(loc.getRedesSociales()!= null){
+            LinearLayout lcontainer;
+            Button button;
+            ImageView imgView;
+
+            for(RedSocialPersona red: loc.getRedesSociales()){
+                if(red.getNombre().equalsIgnoreCase("Facebook")){
+                    imgView= new ImageView(getContext());
+                    Picasso.with(getContext()).load(R.drawable.facebook).resize(90,100).into(imgView);
+
+                }
+                else if(red.getNombre().equalsIgnoreCase("Twitter")){
+                    imgView= new ImageView(getContext());
+                    Picasso.with(getContext()).load(R.drawable.twitter_icon).resize(90,100).into(imgView);
+                }
+                else if(red.getNombre().equalsIgnoreCase("Youtube")){
+                    imgView= new ImageView(getContext());
+                    Picasso.with(getContext()).load(R.drawable.youtube_icon).resize(90,100).into(imgView);
+                }
+                else{
+                    imgView= new ImageView(getContext());
+                    Picasso.with(getContext()).load(R.drawable.social_media_icon).centerInside().into(imgView);
+                }
+                LinearLayout.LayoutParams layoutParams= new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT,0.05f);
+                layoutParams.setMarginStart(30);
+                layoutParams.setMarginEnd(60);
+                layoutParams.gravity= Gravity.CENTER;
+                imgView.setLayoutParams(layoutParams);
+
+                SpannableString username;
+                if(red.getLink().matches("(.*)\\.com/(\\w|\\s|\\d)+")){
+                    int index= red.getLink().indexOf("com/");
+                    username= new SpannableString(red.getLink().substring(index+4,red.getLink().length() ) );
+                }
+                else{
+                    username= new SpannableString(red.getLink());
+                }
+
+                username.setSpan(new UnderlineSpan(), 0,username.length(),0);
+                button=new Button(getContext());
+                button.setBackgroundColor(getContext().getResources().getColor(android.R.color.transparent));
+                button.setText(username);
+                button.setTextSize(16);
+                button.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
+                button.setAllCaps(false);
+                button.setTextColor(getContext().getResources().getColor(R.color.text_color));
+                button.setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT,0.95f));
+                button.setOnClickListener((View v)->{
+                    WebFragment fragment= new WebFragment();
+                    Bundle args= new Bundle();
+                    args.putString("url",red.getLink());
+                    fragment.setArguments(args);
+                    ((HomeActivity) getContext()).changeFragment(fragment,R.id.frame_container,true);
+                });
+
+                lcontainer= new LinearLayout(getContext());
+                lcontainer.addView(imgView);
+                lcontainer.addView(button);
+
+                layoutManager.addView(lcontainer);
+
+
+            }
+        }
 
         return root;
     }
