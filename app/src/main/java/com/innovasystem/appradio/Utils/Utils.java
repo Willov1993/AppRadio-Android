@@ -179,7 +179,7 @@ public class Utils {
     }
 
     public static Snackbar mostrarMensajeSnackBar(View v,String mensaje){
-        if(v.getParent() == null){
+        if(v==null || v.getParent() == null){
             return null;
         }
         mSnackBar = Snackbar.make(v, mensaje, Snackbar.LENGTH_INDEFINITE);

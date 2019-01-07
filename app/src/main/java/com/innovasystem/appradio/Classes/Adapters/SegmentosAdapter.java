@@ -1,6 +1,7 @@
 package com.innovasystem.appradio.Classes.Adapters;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,9 +12,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.innovasystem.appradio.Activities.HomeActivity;
 import com.innovasystem.appradio.Classes.ItemClickListener;
 import com.innovasystem.appradio.Classes.Models.Horario;
 import com.innovasystem.appradio.Classes.Models.Segmento;
+import com.innovasystem.appradio.Fragments.SegmentoInfoFragment;
 import com.innovasystem.appradio.R;
 import com.squareup.picasso.Picasso;
 
@@ -86,7 +89,11 @@ public class SegmentosAdapter extends RecyclerView.Adapter<SegmentosAdapter.View
         @Override
         public void OnItemClick(View v, int position) {
             Segmento seg= segmentos_dataset.get(keysList.get(position));
-            Toast.makeText(context, "SEGMENTO: "+seg.getNombre()+" POS: "+position, Toast.LENGTH_SHORT).show();
+            Bundle args= new Bundle();
+            args.putParcelable("segmento",seg);
+            SegmentoInfoFragment fragment= new SegmentoInfoFragment();
+            fragment.setArguments(args);
+            ((HomeActivity) context).changeFragment(fragment,R.id.frame_container,true);
         }
     };
 }

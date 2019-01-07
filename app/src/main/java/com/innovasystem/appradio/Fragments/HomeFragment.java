@@ -208,7 +208,8 @@ public class HomeFragment extends Fragment {
         intent.setAction(RadioStreamService.BROADCAST_TO_SERVICE);
         intent.putExtra(RadioStreamService.PLAYER_FUNCTION_TYPE, RadioStreamService.PLAY_MEDIA_PLAYER);
         intent.putExtra(RadioStreamService.PLAYER_TRACK_URL, url);
-        getActivity().sendBroadcast(intent);
+        if(getActivity()!=null)
+            getActivity().sendBroadcast(intent);
     }
 
 
