@@ -72,6 +72,7 @@ public class LoginActivity extends AppCompatActivity {
     private View mLoginFormView;
     private LinearLayout mLoadingView;
     private ImageButton fake_btn_fb_login;
+    private LoginButton btn_login_fb1;
 
 
     @Override
@@ -117,7 +118,7 @@ public class LoginActivity extends AppCompatActivity {
         callbackManager = CallbackManager.Factory.create();
 
 
-        LoginButton btn_login_fb1 = (LoginButton) findViewById(R.id.btn_logfb);
+        btn_login_fb1 = (LoginButton) findViewById(R.id.btn_logfb);
 
         fake_btn_fb_login = (ImageButton) findViewById(R.id.btn_login_fb2);
 
@@ -127,6 +128,7 @@ public class LoginActivity extends AppCompatActivity {
                 btn_login_fb1.performClick();
             }
         });
+
 
 
         btn_login_fb1.setReadPermissions(Arrays.asList("public_profile","email","user_birthday","user_friends"));
