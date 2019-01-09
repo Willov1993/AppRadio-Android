@@ -19,5 +19,6 @@ public class Constants {
     public static final String uriTelefonosEmisora= "/api/emisoras/%d/telefonos";
     public static final String uriRedesEmisora= "/api/emisoras/%d/redes_sociales";
     public static final String uriLocutoresSegmento= "/api/segmentos/%d/locutores";
+    public static final String uriPasswordReset= "/password_reset/";
     public static final String USER_AGENT = "Mozilla/5.0";
 }

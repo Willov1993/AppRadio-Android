@@ -17,6 +17,7 @@ import com.innovasystem.appradio.Classes.Models.RedSocialEmisora;
 import com.innovasystem.appradio.Classes.Models.Segmento;
 import com.innovasystem.appradio.Classes.Models.TelefonoEmisora;
 import com.innovasystem.appradio.Utils.Constants;
+import com.innovasystem.appradio.Utils.ForgotPassword;
 import com.innovasystem.appradio.Utils.LogUser;
 import com.innovasystem.appradio.Utils.RegisterUser;
 import com.innovasystem.appradio.Utils.ResultadoRegister;
@@ -367,5 +368,45 @@ public class RestServices {
         }
         return new ArrayList<>(Arrays.asList(conductores));
     }
+
+    public static ResultadoForgotPassword postForgotPasswordSpring(final Context context, String email) {
+        ResultadoForgotPassword resultadoLogIn;
+        try {
+            ForgotPassword user = new ForgotPassword(email);
+
+            // Set the Content-Type header
+            HttpHeaders requestHeaders = new HttpHeaders();
+            requestHeaders.setContentType(new MediaType("application", "json"));
+            HttpEntity<ForgotPassword> requestEntity = new HttpEntity<ForgotPassword>(user, requestHeaders);
+            //Create a new RestTemplate instance
+            RestTemplate restTemplate = new RestTemplate();
+            // Add the Jackson and String message converters
+            restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+
+            //restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
+            System.out.println("POST arraydf: " + user.toString());
+            // Make the HTTP POST request, marshaling the request to JSON, and the response to a String
+            ResponseEntity<String> responseEntity = restTemplate.exchange(Constants.serverDomain + Constants.uriResetPass, HttpMethod.POST, requestEntity, String.class);
+            System.out.println("Cuerpo de ForgotPassword:" + responseEntity.getBody());
+
+            resultadoLogIn = new ResultadoForgotPassword(responseEntity.getBody(), responseEntity.getStatusCode().value());
+            HttpStatus status = responseEntity.getStatusCode();
+            System.out.println("status Post Resetpassword " + status);
+
+        } catch (HttpStatusCodeException exception) {
+            int statusCode = exception.getStatusCode().value();
+            resultadoLogIn = new ResultadoForgotPassword("", statusCode);
+            resultadoLogIn.setErrorMessage(exception.getResponseBodyAsString());
+
+
+        } catch (Exception e) {
+            resultadoLogIn = new ResultadoForgotPassword("", 500);
+        }
+
+        return resultadoLogIn;
+    }
+
+
+
 
 }

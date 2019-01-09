@@ -3,11 +3,14 @@ package com.innovasystem.appradio.Activities;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.ActivityNotFoundException;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 
 import android.os.AsyncTask;
@@ -40,6 +43,7 @@ import com.facebook.login.widget.LoginButton;
 import com.innovasystem.appradio.R;
 import com.innovasystem.appradio.Classes.RestServices;
 import com.innovasystem.appradio.Classes.ResultadoLogIn;
+import com.innovasystem.appradio.Utils.Constants;
 import com.innovasystem.appradio.Utils.Utils;
 import com.squareup.picasso.Picasso;
 
@@ -73,6 +77,8 @@ public class LoginActivity extends AppCompatActivity {
     private LinearLayout mLoadingView;
     private ImageButton fake_btn_fb_login;
     private LoginButton btn_login_fb1;
+
+    private TextView tv_forgot_password;
 
 
     @Override
@@ -205,7 +211,36 @@ public class LoginActivity extends AppCompatActivity {
         mLoginFormView = findViewById(R.id.login_form);
         mProgressItem = findViewById(R.id.login_progress);
         mLoadingView = (LinearLayout) findViewById(R.id.loading_view);
+
+        tv_forgot_password = (TextView) findViewById(R.id.tv_forgot_password);
+
+
+        tv_forgot_password.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                /*String url = Constants.serverDomain + Constants.uriPasswordReset;
+                try {
+                    Intent i = new Intent("android.intent.action.MAIN");
+                    i.setComponent(ComponentName.unflattenFromString("com.android.chrome/com.android.chrome.Main"));
+                    i.addCategory("android.intent.category.LAUNCHER");
+                    i.setData(Uri.parse(url));
+                    startActivity(i);
+                }
+                catch(ActivityNotFoundException e) {
+                    // Chrome is not installed
+                    Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                    startActivity(i);
+                }*/
+                Intent i = new Intent(LoginActivity.this,ForgotPasswordActivity.class);
+                startActivity(i);
+
+
+            }
+        });
+
+
     }
+
 
     private void getFacebookData(JSONObject object) {
         try{
