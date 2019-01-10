@@ -160,7 +160,7 @@ public class HomeFragment extends Fragment {
                         intent.putExtra(RadioStreamService.PLAYER_FUNCTION_TYPE, RadioStreamService.CHANGE_PLAYER_TRACK);
                         intent.putExtra(RadioStreamService.PLAYER_TRACK_URL, streamingActual);
                         getActivity().sendBroadcast(intent);
-                        Utils.mostrarMensajeSnackBar(getView(),"Conectando al servidor de la emisora....");
+                        Utils.mostrarMensajeSnackBar(getActivity().getWindow().getDecorView().getRootView(),"Conectando al servidor de la emisora....");
                     }
                 }
             }
@@ -274,7 +274,7 @@ public class HomeFragment extends Fragment {
                     intent.setAction(RadioStreamService.BROADCAST_TO_SERVICE);
                     intent.putExtra(RadioStreamService.PLAYER_FUNCTION_TYPE, RadioStreamService.CHANGE_PLAYER_TRACK);
                     intent.putExtra(RadioStreamService.PLAYER_TRACK_URL, streamingActual);
-                    Utils.mostrarMensajeSnackBar(getView(),"Conectando al servidor de la emisora....");
+                    Utils.mostrarMensajeSnackBar(getActivity().getWindow().getDecorView().getRootView(),"Conectando al servidor de la emisora....");
                 }
                 getActivity().sendBroadcast(intent);
                 muted=false;
@@ -312,11 +312,12 @@ public class HomeFragment extends Fragment {
         protected void onPostExecute(Void aVoid) {
             progress_emisoras.setVisibility(View.GONE);
             System.out.println("INICIALIZANDO DATASET!!");
-            if (emisoras == null || segmentos == null) {
-                Toast.makeText(getContext(), "Ocurrio un error con el servidor, intente mas tarde", Toast.LENGTH_SHORT).show();
-                return;
+            if ((emisoras == null || segmentos == null) && getContext() != null) {
+
+                    Toast.makeText(getContext(), "Ocurrio un error con el servidor, intente mas tarde", Toast.LENGTH_SHORT).show();
+                    return;
             }
-            else if(emisoras.size() == 0){
+            else if(emisoras.size() == 0 && getContext() != null){
                 Toast.makeText(getContext(), "No hay informacion para presentar o ocurrio un error de conexion!", Toast.LENGTH_SHORT).show();
             }
 
@@ -392,7 +393,7 @@ public class HomeFragment extends Fragment {
                         intent.putExtra(RadioStreamService.PLAYER_FUNCTION_TYPE, RadioStreamService.CHANGE_PLAYER_TRACK);
                         intent.putExtra(RadioStreamService.PLAYER_TRACK_URL, streamingActual);
                         getActivity().sendBroadcast(intent);
-                       Utils.mostrarMensajeSnackBar(getView(),"Conectando al servidor de la emisora....");
+                       Utils.mostrarMensajeSnackBar(getActivity().getWindow().getDecorView().getRootView(),"Conectando al servidor de la emisora....");
                     }
                 }
             }
@@ -421,7 +422,7 @@ public class HomeFragment extends Fragment {
         @Override
         protected void onPostExecute(Boolean result) {
             if(result) {
-                Utils.mostrarMensajeSnackBar(getView(),"Conectando al servidor de la emisora....");
+                Utils.mostrarMensajeSnackBar(getActivity().getWindow().getDecorView().getRootView(),"Conectando al servidor de la emisora....");
                 startMediaPlayer(streamingActual);
             }
             else{

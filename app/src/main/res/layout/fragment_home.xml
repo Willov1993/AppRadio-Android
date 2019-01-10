@@ -56,6 +56,7 @@
                 android:marqueeRepeatLimit="-1"
                 android:textColor="@android:color/white"
                 android:textSize="14sp"
+                android:fontFamily="@font/app_font"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -102,7 +103,7 @@
                 android:id="@+id/btn_apagar"
                 android:layout_width="33dp"
                 android:layout_height="33dp"
-                android:layout_marginEnd="50dp"
+                android:layout_marginEnd="80dp"
                 android:adjustViewBounds="false"
                 android:background="@drawable/round_button"
                 android:cropToPadding="true"
@@ -110,14 +111,13 @@
                 android:scaleType="fitXY"
                 android:src="@drawable/apagar"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/rv_home" />
 
             <ImageButton
                 android:id="@+id/btn_mute"
                 android:layout_width="33dp"
                 android:layout_height="33dp"
-                android:layout_marginStart="18dp"
+                android:layout_marginStart="12dp"
                 android:adjustViewBounds="false"
                 android:background="@drawable/round_button"
                 android:cropToPadding="true"
@@ -149,9 +149,10 @@
 
                 <TextView
                     android:id="@+id/textView15"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="2"
+                    android:layout_weight="0.2"
+                    android:fontFamily="@font/app_font"
                     android:text="PROGRAMACIÓN"
                     android:textAlignment="center"
                     android:textColor="@android:color/background_light"
@@ -186,6 +187,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:fontFamily="@font/app_font"
                     android:text="HORARIO"
                     android:textColor="@color/textoGris"
                     android:textSize="11sp" />
@@ -195,6 +197,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:fontFamily="@font/app_font"
                     android:text="PROGRAMA"
                     android:textColor="@color/textoGris"
                     android:textSize="11sp" />
@@ -204,6 +207,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:fontFamily="@font/app_font"
                     android:text="EMISORA"
                     android:textAlignment="textStart"
                     android:textColor="@color/textoGris"

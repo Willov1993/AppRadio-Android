@@ -32,6 +32,7 @@
                 android:layout_alignParentTop="false"
                 android:layout_alignTop="@+id/linly_hitem_container"
                 android:adjustViewBounds="true"
+                android:alpha="0.7"
                 android:padding="2dp"
                 android:scaleType="fitXY"
                 android:tint="#6F000000"
@@ -50,11 +51,12 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="8dp"
+                    android:fontFamily="@font/app_font"
                     android:gravity="center_horizontal"
                     android:text="Nombre Radio"
                     android:textAllCaps="true"
                     android:textColor="@android:color/white"
-                    android:textSize="15sp" />
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/tv_hitem_frecuencia"
@@ -62,11 +64,12 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="3dp"
+                    android:fontFamily="@font/app_font"
                     android:gravity="center_horizontal"
                     android:text="102.5 FM"
                     android:textAllCaps="true"
                     android:textColor="@android:color/white"
-                    android:textSize="15sp"
+                    android:textSize="16sp"
                     android:textStyle="bold" />
 
                 <ImageButton
@@ -82,10 +85,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="1dp"
+                    android:fontFamily="@font/app_font"
                     android:gravity="center"
                     android:text="Chat"
                     android:textColor="@color/textoGris"
-                    android:textSize="11sp" />
+                    android:textSize="13sp" />
 
                 <TextView
                     android:id="@+id/tv_hitem_prog_actual"
@@ -93,11 +97,11 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="20dp"
+                    android:fontFamily="@font/app_font"
                     android:gravity="center_horizontal"
-                    android:lines="2"
                     android:text="Nombre Programa"
                     android:textColor="@android:color/white"
-                    android:textSize="14sp" />
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/tv_hitem_horario"
@@ -105,10 +109,11 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="1dp"
+                    android:fontFamily="@font/app_font"
                     android:gravity="center_horizontal"
                     android:text="HH:MM - HH:MM"
                     android:textColor="@color/textoGris"
-                    android:textSize="13sp" />
+                    android:textSize="15sp" />
 
                 <ImageButton
                     android:id="@+id/btn_hitem_favorito"
@@ -125,10 +130,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
+                    android:fontFamily="@font/app_font"
                     android:gravity="center"
                     android:text="Añadir a favoritos"
                     android:textColor="@color/textoGris"
-                    android:textSize="11sp" />
+                    android:textSize="13sp" />
             </LinearLayout>
         </RelativeLayout>
 

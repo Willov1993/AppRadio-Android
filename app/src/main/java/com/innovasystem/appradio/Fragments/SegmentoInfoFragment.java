@@ -78,6 +78,8 @@ public class SegmentoInfoFragment extends Fragment {
             );
         }
 
+        horarioString = horarioString.substring(0,horarioString.length() - 1);
+
         tv_horario.setText(horarioString);
 
         lmanager= new GridLayoutManager(getContext(),2);
