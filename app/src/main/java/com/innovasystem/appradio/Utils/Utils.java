@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.innovasystem.appradio.Classes.Models.Emisora;
 import com.innovasystem.appradio.Classes.Models.Horario;
+import com.innovasystem.appradio.Classes.Models.Multimedia;
 import com.innovasystem.appradio.Classes.Models.Segmento;
 import com.innovasystem.appradio.R;
 
@@ -20,6 +21,7 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /*Clase que contiene metodos estaticos para realizar actividades especificas */
@@ -128,35 +130,34 @@ public class Utils {
         return lista_emisora;
     }
 
-    public static List<Segmento> generarSegmentosPrueba(Emisora idEmisora){
-        int muestra= 18;
-        String[] dias= new String[]{"Lunes", "Martes", "Miercoles", "Jueves" , "Viernes" , "Sabado", "Domingo"};
-        String[] horariosInicio= new String[]{
+    public static List<Segmento> generarSegmentosPrueba(Emisora idEmisora) {
+        int muestra = 18;
+        String[] dias = new String[]{"Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"};
+        String[] horariosInicio = new String[]{
                 "06:00:00", "07:00:00", "08:00:00", "09:00:00", "10:00:00", "11:00:00", "12:00:00", "13:00:00", "14:00:00", "15:00:00",
                 "16:00:00", "17:00:00", "18:00:00", "19:00:00", "20:00:00", "21:00:00", "22:00:00", "23:00:00", "00:00:00",
                 "06:30:00", "07:30:00", "08:30:00", "09:30:00", "10:30:00", "11:30:00", "12:30:00", "13:30:00", "14:30:00", "15:30:00",
                 "16:30:00", "17:30:00", "18:30:00", "19:30:00", "20:30:00", "21:30:00", "22:30:00", "23:30:00", "00:30:00"};
-        String[] horariosFin= new String[]{
+        String[] horariosFin = new String[]{
                 "07:00:00", "08:00:00", "09:00:00", "10:00:00", "11:00:00", "12:00:00", "13:00:00", "14:00:00", "15:00:00", "16:00:00",
                 "17:00:00", "18:00:00", "19:00:00", "20:00:00", "21:00:00", "22:00:00", "23:00:00", "00:00:00", "01:00:00",
                 "07:30:00", "08:30:00", "09:30:00", "10:30:00", "11:30:00", "12:30:00", "13:30:00", "14:30:00", "15:30:00", "16:30:00",
                 "17:30:00", "18:30:00", "19:30:00", "20:30:00", "21:30:00", "22:30:00", "23:30:00", "00:30:00", "01:30:00"};
 
-        List<Segmento> lista_segmentos= new ArrayList<>();
-        for (int i = 0; i <muestra ; i++) {
-            Segmento seg= new Segmento();
-            seg.setNombre("Segmento de Prueba " + (i+1));
+        List<Segmento> lista_segmentos = new ArrayList<>();
+        for (int i = 0; i < muestra; i++) {
+            Segmento seg = new Segmento();
+            seg.setNombre("Segmento de Prueba " + (i + 1));
             seg.setEmisora(idEmisora);
-            Horario[] horariosdePrueba= new Horario[7];
+            Horario[] horariosdePrueba = new Horario[7];
 
             for (int j = 0; j < dias.length; j++) {
                 Horario h = new Horario();
                 h.setDia(dias[j]);
-                if(i < muestra/2){
+                if (i < muestra / 2) {
                     h.setFecha_inicio(horariosInicio[i]);
                     h.setFecha_fin(horariosFin[i]);
-                }
-                else{
+                } else {
                     h.setFecha_inicio(horariosInicio[19 + i]);
                     h.setFecha_fin(horariosFin[19 + i]);
                 }
@@ -167,6 +168,30 @@ public class Utils {
             lista_segmentos.add(seg);
         }
         return lista_segmentos;
+    }
+
+    public static List<Multimedia> generarListaLinksImagenesPrueba(){
+        List<Multimedia> lista= new ArrayList<Multimedia>();
+        lista.add(new Multimedia("https://www.guidedogs.org/wp-content/uploads/2018/01/Mobile.jpg","imagen perrito 1","15-01-2019"));
+        lista.add(new Multimedia("https://upload.wikimedia.org/wikipedia/commons/c/c1/American-Eskimo-dog.jpg","imagen perrito 2","15-01-2019"));
+        lista.add(new Multimedia("https://ae01.alicdn.com/kf/HTB1Tvg.PVXXXXaqapXXq6xXFXXXJ/Qualidade-resina-bonito-Ingl-s-bull-dog-figura-estilo-do-carro-decora-o-do-quarto-de.jpg","imagen perrito 3","15-01-2019"));
+        lista.add(new Multimedia("https://shop-cdn-m.shpp.ext.zooplus.io/bilder/kong/puppy/brinquedo/de/snacks/para/cachorros/3/400/66215_kong_puppy_hellblau_s_lifestyle_3.jpg","imagen perrito 4","15-01-2019"));
+        lista.add(new Multimedia("https://upload.wikimedia.org/wikipedia/commons/6/6c/Beagle_puppy_sitting_on_grass.jpg","imagen perrito 5","15-01-2019"));
+        lista.add(new Multimedia("http://data.whicdn.com/images/99657956/original.jpg","imagen perrito 6","15-01-2019"));
+        lista.add(new Multimedia("http://www.veterinarialamascota.com/2012/images/VET/articulos/m_perdida/m_perdido3.jpg","imagen perrito 7","15-01-2019"));
+        lista.add(new Multimedia("https://cdn.vox-cdn.com/thumbor/wng90rt7pFT3o_oPRNV21iK-2x8=/0x0:4560x3041/1200x800/filters:focal(1916x1157:2644x1885)/cdn.vox-cdn.com/uploads/chorus_image/image/58504395/911428568.jpg.0.jpg","imagen perrito 8","15-01-2019"));
+        lista.add(new Multimedia("https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Dog_coat_variation.png/220px-Dog_coat_variation.png","imagen perrito 9","15-01-2019"));
+        lista.add(new Multimedia("https://www.guidedogs.org/wp-content/uploads/2018/01/Mobile.jpg","imagen perrito 1","15-01-2019"));
+        lista.add(new Multimedia("https://upload.wikimedia.org/wikipedia/commons/c/c1/American-Eskimo-dog.jpg","imagen perrito 2","15-01-2019"));
+        lista.add(new Multimedia("https://ae01.alicdn.com/kf/HTB1Tvg.PVXXXXaqapXXq6xXFXXXJ/Qualidade-resina-bonito-Ingl-s-bull-dog-figura-estilo-do-carro-decora-o-do-quarto-de.jpg","imagen perrito 3","15-01-2019"));
+        lista.add(new Multimedia("https://shop-cdn-m.shpp.ext.zooplus.io/bilder/kong/puppy/brinquedo/de/snacks/para/cachorros/3/400/66215_kong_puppy_hellblau_s_lifestyle_3.jpg","imagen perrito 4","15-01-2019"));
+        lista.add(new Multimedia("https://upload.wikimedia.org/wikipedia/commons/6/6c/Beagle_puppy_sitting_on_grass.jpg","imagen perrito 5","15-01-2019"));
+        lista.add(new Multimedia("http://data.whicdn.com/images/99657956/original.jpg","imagen perrito 6","15-01-2019"));
+        lista.add(new Multimedia("http://www.veterinarialamascota.com/2012/images/VET/articulos/m_perdida/m_perdido3.jpg","imagen perrito 7","15-01-2019"));
+        lista.add(new Multimedia("https://cdn.vox-cdn.com/thumbor/wng90rt7pFT3o_oPRNV21iK-2x8=/0x0:4560x3041/1200x800/filters:focal(1916x1157:2644x1885)/cdn.vox-cdn.com/uploads/chorus_image/image/58504395/911428568.jpg.0.jpg","imagen perrito 8","15-01-2019"));
+        lista.add(new Multimedia("https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Dog_coat_variation.png/220px-Dog_coat_variation.png","imagen perrito 9","15-01-2019"));
+        Collections.shuffle(lista);
+        return lista;
     }
 
     public static TextView crearTextViewPersonalizado(Context c,float size,int color,String texto){

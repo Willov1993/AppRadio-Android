@@ -26,7 +26,7 @@
     </style>
 
     <style name="AppTabLayout" parent="Widget.Design.TabLayout">
-        <item name="tabIndicatorColor">@color/textoGris</item>
+        <item name="tabIndicatorColor">@color/tab_color_bg</item>
         <item name="tabPaddingStart">2dp</item>
         <item name="tabPaddingEnd">2dp</item>
         <!--item name="tabBackground">@drawable/underline_background</item-->

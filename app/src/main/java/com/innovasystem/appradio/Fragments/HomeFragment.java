@@ -421,7 +421,7 @@ public class HomeFragment extends Fragment {
 
         @Override
         protected void onPostExecute(Boolean result) {
-            if(result) {
+            if(result && getActivity() != null){
                 Utils.mostrarMensajeSnackBar(getActivity().getWindow().getDecorView().getRootView(),"Conectando al servidor de la emisora....");
                 startMediaPlayer(streamingActual);
             }

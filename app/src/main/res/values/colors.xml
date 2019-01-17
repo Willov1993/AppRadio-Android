@@ -19,6 +19,7 @@
     <color name="textoGris">#afaeae</color>
     <color name="bottomNavColor">#1c1c1c</color>
     <color name="text_color">#ffffff</color>
+    <color name="tab_color_bg">#5e5e5e</color>
 
 
     <color name="bgColor">#000000</color>

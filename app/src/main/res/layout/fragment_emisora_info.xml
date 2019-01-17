@@ -38,8 +38,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.05"
                 android:adjustViewBounds="true"
-                android:background="@color/seleccion_nav"
-                android:src="@drawable/ic_notifications_black_24dp" />
+                android:src="@drawable/web_emisora" />
 
             <TextView
                 android:id="@+id/tv_web_emisora"

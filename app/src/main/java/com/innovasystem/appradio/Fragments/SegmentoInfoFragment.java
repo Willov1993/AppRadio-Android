@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.innovasystem.appradio.Activities.HomeActivity;
 import com.innovasystem.appradio.Classes.Adapters.ConductoresAdapter;
 import com.innovasystem.appradio.Classes.Models.Conductor;
 import com.innovasystem.appradio.Classes.Models.Horario;
@@ -84,6 +85,17 @@ public class SegmentoInfoFragment extends Fragment {
 
         lmanager= new GridLayoutManager(getContext(),2);
         rv_conductores.setLayoutManager(lmanager);
+
+        btn_galeria.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                GaleriaFragment fragment= new GaleriaFragment();
+                Bundle args= new Bundle();
+                args.putParcelable("segmento",segInfo);
+                fragment.setArguments(args);
+                ((HomeActivity) getContext()).changeFragment(fragment,R.id.frame_container,true);
+            }
+        });
 
         new RestFetchConductoresTask().execute();
 

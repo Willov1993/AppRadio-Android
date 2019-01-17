@@ -81,7 +81,6 @@
     <string name="hint_birthday">DD-MM-AAAA</string>
 
 
-
     <!--STRING PARA VENTANA DE REGISTRO-->
     <string name="text_tittle_forgot_password">Resetear Contraseña</string>
     <string name="text_btn_send">Enviar</string>
