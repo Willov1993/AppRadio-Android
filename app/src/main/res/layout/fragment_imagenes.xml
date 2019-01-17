@@ -15,6 +15,17 @@
 
     </android.support.v7.widget.RecyclerView>
 
+    <TextView
+        android:id="@+id/tv_mensaje_imagen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="No hay videos para mostrar"
+        android:textColor="@color/text_color"
+        android:textSize="18sp"
+        android:visibility="invisible" />
+
     <ProgressBar
         android:id="@+id/progress_imagenes"
         style="?android:attr/progressBarStyle"

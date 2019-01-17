@@ -1,14 +1,26 @@
 package com.innovasystem.appradio.Classes.Models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Multimedia{
     String url;
-    String fecha;
+    String fecha_creacion;
     String descripcion;
+    String segmento;
+
+    public Multimedia(String url, String descripcion, String fecha,String segmento) {
+        this.url = url;
+        this.fecha_creacion = fecha;
+        this.descripcion = descripcion;
+        this.segmento= segmento;
+    }
 
     public Multimedia(String url, String descripcion, String fecha) {
         this.url = url;
-        this.fecha = fecha;
+        this.fecha_creacion = fecha;
         this.descripcion = descripcion;
+        this.segmento= segmento;
     }
 
     public Multimedia() {
@@ -23,11 +35,11 @@ public class Multimedia{
     }
 
     public String getFecha() {
-        return fecha;
+        return fecha_creacion;
     }
 
     public void setFecha(String fecha) {
-        this.fecha = fecha;
+        this.fecha_creacion = fecha;
     }
 
     public String getDescripcion() {
@@ -36,5 +48,13 @@ public class Multimedia{
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+
+    public String getSegmento() {
+        return segmento;
+    }
+
+    public void setSegmento(String segmento) {
+        this.segmento = segmento;
     }
 }

@@ -10,12 +10,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.innovasystem.appradio.Classes.Adapters.MultimediaAdapter;
 import com.innovasystem.appradio.Classes.Models.Multimedia;
+import com.innovasystem.appradio.Classes.RestServices;
 import com.innovasystem.appradio.R;
 import com.innovasystem.appradio.Utils.Utils;
+
+import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -26,6 +30,7 @@ public class VideosFragment extends Fragment {
 
     RecyclerView rv_videos;
     ProgressBar progressBar;
+    TextView tv_mensaje;
 
     public VideosFragment() {
         // Required empty public constructor
@@ -40,6 +45,7 @@ public class VideosFragment extends Fragment {
 
         rv_videos= root.findViewById(R.id.rv_videos);
         progressBar= root.findViewById(R.id.progress_videos);
+        tv_mensaje= root.findViewById(R.id.tv_mensaje_video);
 
         rv_videos.setHasFixedSize(true);
         rv_videos.setLayoutManager(new GridLayoutManager(getContext(),3));
@@ -58,7 +64,7 @@ public class VideosFragment extends Fragment {
 
         @Override
         protected List<Multimedia> doInBackground(Void... voids) {
-            List lista= Utils.generarListaLinksVideosPrueba();
+            List lista= RestServices.consultarMultimediaSegmento(getContext(),GaleriaFragment.segmento.getId().intValue(),true);//Utils.generarListaLinksVideosPrueba();
             return lista;
         }
 
@@ -67,6 +73,7 @@ public class VideosFragment extends Fragment {
             progressBar.setVisibility(View.GONE);
             if(lista_imagenes== null || lista_imagenes.size() == 0){
                 Toast.makeText(getContext(), "No se pudo obtener los videos, intente mas tarde", Toast.LENGTH_SHORT).show();
+                tv_mensaje.setVisibility(View.VISIBLE);
                 return;
             }
 

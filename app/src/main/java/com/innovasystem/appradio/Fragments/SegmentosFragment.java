@@ -36,6 +36,7 @@ public class SegmentosFragment extends Fragment {
     /* Variables de referencia de las views de la ventana */
     RecyclerView rv_segmentos;
     Emisora emisora;
+    TextView tv_mensaje;
 
 
 
@@ -56,6 +57,7 @@ public class SegmentosFragment extends Fragment {
                              Bundle savedInstanceState) {
         View root= inflater.inflate(R.layout.fragment_segmentos, container, false);
         rv_segmentos= root.findViewById(R.id.rv_segmentos);
+        tv_mensaje= root.findViewById(R.id.tv_mensaje_segmentos);
 
         rv_segmentos.setHasFixedSize(true);
         RecyclerView.LayoutManager lmanager= new LinearLayoutManager(getContext());
@@ -124,6 +126,12 @@ public class SegmentosFragment extends Fragment {
             System.out.println(Arrays.toString(listaSegmentos.toArray()));
             if(listaSegmentos == null){
                 Toast.makeText(getContext(), "Ocurrio un error con el servidor, intente mas tarde", Toast.LENGTH_SHORT).show();
+                tv_mensaje.setVisibility(View.VISIBLE);
+                return;
+            }
+
+            if(listaSegmentos.size() == 0){
+                tv_mensaje.setVisibility(View.VISIBLE);
                 return;
             }
 

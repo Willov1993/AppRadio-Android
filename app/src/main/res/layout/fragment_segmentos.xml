@@ -40,6 +40,7 @@
 
         </LinearLayout>
 
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_segmentos"
             android:layout_width="match_parent"
@@ -47,5 +48,16 @@
             android:layout_marginTop="8dp"></android.support.v7.widget.RecyclerView>
 
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_mensaje_segmentos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="No hay informacion para mostrar"
+        android:textColor="@color/text_color"
+        android:textSize="18sp"
+        android:visibility="invisible" />
 
 </FrameLayout>

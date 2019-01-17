@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.azoft.carousellayoutmanager.CarouselLayoutManager;
@@ -36,6 +37,8 @@ import com.innovasystem.appradio.Services.RadioStreamService;
 import com.innovasystem.appradio.Utils.NotificationManagement;
 import com.innovasystem.appradio.Utils.Utils;
 import com.wefika.horizontalpicker.HorizontalPicker;
+
+import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -72,6 +75,8 @@ public class HomeFragment extends Fragment {
     private ListView listview_programacion;
     private ProgressBar progress_emisoras, progress_programacion;
     private ImageButton btn_apagar, btn_silenciar;
+    private TextView tv_mensaje_programacion;
+    private TextView tv_mensaje_emisoras_envivo;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -111,6 +116,11 @@ public class HomeFragment extends Fragment {
         progress_programacion= root.findViewById(R.id.progressBar_programacion);
         btn_apagar= root.findViewById(R.id.btn_apagar);
         btn_silenciar= root.findViewById(R.id.btn_mute);
+        tv_mensaje_programacion= root.findViewById(R.id.tv_mensaje_home);
+        tv_mensaje_emisoras_envivo= root.findViewById(R.id.tv_mensaje_emisoras_envivo);
+
+        tv_mensaje_emisoras_envivo.setVisibility(View.INVISIBLE);
+        tv_mensaje_programacion.setVisibility(View.INVISIBLE);
 
         //Inicializacion de la cinta de ciudades
         ciudades= getResources().getStringArray(R.array.ciudades);
@@ -313,14 +323,19 @@ public class HomeFragment extends Fragment {
             progress_emisoras.setVisibility(View.GONE);
             System.out.println("INICIALIZANDO DATASET!!");
             if ((emisoras == null || segmentos == null) && getContext() != null) {
-
-                    Toast.makeText(getContext(), "Ocurrio un error con el servidor, intente mas tarde", Toast.LENGTH_SHORT).show();
-                    return;
+                Toast.makeText(getContext(), "Ocurrio un error con el servidor, intente mas tarde", Toast.LENGTH_SHORT).show();
+                tv_mensaje_emisoras_envivo.setVisibility(View.VISIBLE);
+                rv_home.setAdapter(null);
+                return;
             }
             else if(emisoras.size() == 0 && getContext() != null){
                 Toast.makeText(getContext(), "No hay informacion para presentar o ocurrio un error de conexion!", Toast.LENGTH_SHORT).show();
+                tv_mensaje_emisoras_envivo.setVisibility(View.VISIBLE);
+                rv_home.setAdapter(null);
+                return;
             }
 
+            tv_mensaje_emisoras_envivo.setVisibility(View.INVISIBLE);
             System.out.println("DATASETS: " + emisoras + "\n" + segmentos);
 
 
@@ -461,12 +476,19 @@ public class HomeFragment extends Fragment {
             if(listaSegmentos == null){
                 if(getContext() != null)
                     Toast.makeText(getContext(), "Ocurrio un error con el servidor, intente mas tarde", Toast.LENGTH_SHORT).show();
+                tv_mensaje_programacion.setVisibility(View.VISIBLE);
+                listview_programacion.setAdapter(null);
                 return;
             }
             else if(listaSegmentos.size()==0){
                 if(getContext() != null)
                     Toast.makeText(getContext(), "No hay programacion para presentar o ocurrio algun error!", Toast.LENGTH_SHORT).show();
+                tv_mensaje_programacion.setVisibility(View.VISIBLE);
+                listview_programacion.setAdapter(null);
+                return;
             }
+
+            tv_mensaje_programacion.setVisibility(View.INVISIBLE);
 
 
 

@@ -13,6 +13,7 @@ import com.android.volley.toolbox.Volley;
 import com.innovasystem.appradio.Classes.Models.Conductor;
 import com.innovasystem.appradio.Classes.Models.Emisora;
 import com.innovasystem.appradio.Classes.Models.Fecha;
+import com.innovasystem.appradio.Classes.Models.Multimedia;
 import com.innovasystem.appradio.Classes.Models.RedSocialEmisora;
 import com.innovasystem.appradio.Classes.Models.Segmento;
 import com.innovasystem.appradio.Classes.Models.TelefonoEmisora;
@@ -367,6 +368,26 @@ public class RestServices {
             return null;
         }
         return new ArrayList<>(Arrays.asList(conductores));
+    }
+
+    public static List<Multimedia> consultarMultimediaSegmento(Context c, int idSegmento,boolean consultarVideos){
+        HttpHeaders reqHeaders = new HttpHeaders();
+        reqHeaders.setAccept(Collections.singletonList(new MediaType("application", "json")));
+        reqHeaders.set("Authorization", SessionConfig.getSessionConfig(c).userToken);
+        HttpEntity<?> requestEntity = new HttpEntity<Object>(reqHeaders);
+        Multimedia[] recursos_multimedia= null;
+        RestTemplate restTemplate= new RestTemplate();
+        String url = Constants.serverDomain + String.format(consultarVideos ? Constants.uriVideosSegmento :Constants.uriImagenesSegmento, idSegmento);
+        try {
+            ResponseEntity<Multimedia[]> responseEntity = restTemplate.exchange(url, HttpMethod.GET, requestEntity, Multimedia[].class);
+            if (responseEntity.getStatusCode() == HttpStatus.OK) {
+                recursos_multimedia = responseEntity.getBody();
+            }
+        } catch (Exception e) {
+            Log.e("RestGetError", e.getMessage());
+            return null;
+        }
+        return new ArrayList<>(Arrays.asList(recursos_multimedia));
     }
 
     public static ResultadoForgotPassword postForgotPasswordSpring(final Context context, String email) {

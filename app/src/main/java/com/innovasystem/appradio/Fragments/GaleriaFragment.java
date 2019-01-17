@@ -25,7 +25,7 @@ public class GaleriaFragment extends Fragment {
     TextView tv_segmento;
     FragmentsAdapter adapter;
 
-    Segmento segmento;
+    public static Segmento segmento;
 
     public GaleriaFragment() {
         // Required empty public constructor

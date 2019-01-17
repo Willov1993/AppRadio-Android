@@ -46,6 +46,33 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/listv_programas" />
 
+            <TextView
+                android:id="@+id/tv_mensaje_home"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginTop="40dp"
+                android:text="No hay informacion para mostrar"
+                android:textColor="@color/text_color"
+                android:textSize="18sp"
+                android:visibility="invisible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/listv_programas" />
+
+            <TextView
+                android:id="@+id/tv_mensaje_emisoras_envivo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No hay informacion para mostrar"
+                android:textColor="@color/text_color"
+                android:textSize="18sp"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="@+id/rv_home"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/rv_home" />
+
             <com.wefika.horizontalpicker.HorizontalPicker
                 android:id="@+id/ciudad_picker"
                 android:layout_width="0dp"
@@ -53,10 +80,10 @@
                 android:layout_marginTop="5dp"
                 android:background="@color/bgCintaCiudad"
                 android:backgroundTint="@color/bgCintaCiudad"
+                android:fontFamily="@font/app_font"
                 android:marqueeRepeatLimit="-1"
                 android:textColor="@android:color/white"
                 android:textSize="14sp"
-                android:fontFamily="@font/app_font"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -229,6 +256,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/linearTitle">
+
 
             </ListView>
 

@@ -25,6 +25,6 @@
         android:id="@+id/iv_video_galeria"
         android:layout_width="100dp"
         android:layout_height="80dp"
-        app:srcCompat="@drawable/com_facebook_close" />
+        app:srcCompat="@android:drawable/presence_video_online" />
 
 </android.support.constraint.ConstraintLayout>
