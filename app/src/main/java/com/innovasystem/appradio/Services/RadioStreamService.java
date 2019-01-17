@@ -13,8 +13,10 @@ import android.graphics.BitmapFactory;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.session.MediaSessionManager;
+import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.IBinder;
+import android.os.PowerManager;
 import android.os.RemoteException;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.Nullable;
@@ -62,6 +64,7 @@ public class RadioStreamService extends Service implements AudioManager.OnAudioF
     private boolean ongoingCall = false;
     private PhoneStateListener phoneStateListener;
     private TelephonyManager telephonyManager;
+    WifiManager.WifiLock wifiLock;
 
     public static final String ACTION_PLAY = "com.valdioveliu.valdio.audioplayer.ACTION_PLAY";
     public static final String ACTION_PAUSE = "com.valdioveliu.valdio.audioplayer.ACTION_PAUSE";
@@ -182,6 +185,7 @@ public class RadioStreamService extends Service implements AudioManager.OnAudioF
             mPlayer.stop();
             mPlayer.release();
             mPlayer = null;
+            wifiLock.release();
             sendPlayerStatus("stopped");
             removeNotification();
 
@@ -202,6 +206,13 @@ public class RadioStreamService extends Service implements AudioManager.OnAudioF
             return;
         if (mPlayer == null)
             mPlayer = new MediaPlayer();
+            mPlayer.setWakeMode(getApplicationContext(), PowerManager.PARTIAL_WAKE_LOCK);
+            wifiLock = ((WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE))
+                    .createWifiLock(WifiManager.WIFI_MODE_FULL, "mylock");
+            wifiLock.acquire();
+
+
+
         try {
 
             mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);

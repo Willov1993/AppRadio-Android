@@ -60,6 +60,7 @@ dependencies {
     implementation 'com.azoft.carousellayoutmanager:carousel:1.2.4'
     implementation 'com.wefika:horizontal-picker:1.1.1'
     implementation 'com.uncopt:android.justified:1.0'
+    implementation 'com.google.android.exoplayer:exoplayer:2.9.0'
 }
 
 /*apply plugin: 'findbugs'

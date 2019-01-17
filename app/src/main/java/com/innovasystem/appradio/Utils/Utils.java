@@ -194,6 +194,14 @@ public class Utils {
         return lista;
     }
 
+    public static List<Multimedia> generarListaLinksVideosPrueba(){
+        List<Multimedia> lista= new ArrayList<Multimedia>();
+        lista.add(new Multimedia("http://techslides.com/demos/sample-videos/small.mp4","Video de Prueba 1","16-01-2019"));
+        lista.add(new Multimedia("http://mirrors.standaloneinstaller.com/video-sample/lion-sample.mp4","Video de Prueba 2","15-01-2019"));
+        Collections.shuffle(lista);
+        return lista;
+    }
+
     public static TextView crearTextViewPersonalizado(Context c,float size,int color,String texto){
        TextView tv= new TextView(c);
        tv.setTextSize(size);
