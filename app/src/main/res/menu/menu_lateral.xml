@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/nav_item_favoritos"
+        android:title="Favoritos"/>
+    <item android:id="@+id/nav_item_notificaciones"
+        android:title="Notificaciones"/>
+    <item android:id="@+id/nav_item_sugerencias"
+        android:title="Sugerencias"/>
+
+    <!--group android:id="@+id/group_menu">
+        <item android:id="@+id/nav_item_cerrar_sesion"
+            android:title="Cerrar Sesion"/>
+    </group-->
+</menu>

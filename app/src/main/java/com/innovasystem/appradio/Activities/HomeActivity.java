@@ -8,11 +8,14 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -20,6 +23,7 @@ import android.widget.Toast;
 
 import com.innovasystem.appradio.Classes.SessionConfig;
 import com.innovasystem.appradio.Fragments.EmisorasFragment;
+import com.innovasystem.appradio.Fragments.FavoritosFragment;
 import com.innovasystem.appradio.Fragments.HomeFragment;
 import com.innovasystem.appradio.Fragments.NotificacionesFragment;
 import com.innovasystem.appradio.Fragments.SugerenciasFragment;
@@ -31,6 +35,10 @@ public class HomeActivity extends AppCompatActivity {
 
     private TextView mTextMessage;
     BottomNavigationView navigation;
+    DrawerLayout nav_drawer;
+    NavigationView nav_view;
+
+    boolean menuOpened=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,9 +49,36 @@ public class HomeActivity extends AppCompatActivity {
 
         mTextMessage = (TextView) findViewById(R.id.message);
         navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        nav_drawer= (DrawerLayout) findViewById(R.id.home_drawer);
+        nav_view= (NavigationView) findViewById(R.id.nav_lateral);
+
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         navigation.setSelectedItemId(R.id.navigation_home);
         navigation.setLabelVisibilityMode(BottomNavigationView.VISIBLE);
+
+
+        nav_view.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                Fragment contentFragmet;
+                switch (item.getItemId()){
+                    case R.id.nav_item_favoritos:
+                        contentFragmet= new FavoritosFragment();
+                        HomeActivity.this.changeFragment(contentFragmet,R.id.frame_container,false);
+                        nav_drawer.closeDrawer(Gravity.END);
+                        break;
+                    case R.id.nav_item_notificaciones:
+                        nav_drawer.closeDrawer(Gravity.END);
+                        break;
+                    case R.id.nav_item_sugerencias:
+                        nav_drawer.closeDrawer(Gravity.END);
+                        break;
+                }
+
+                nav_drawer.closeDrawer(Gravity.END);
+                return true;
+            }
+        });
 
         //Carga de Provincia Guardada
         SharedPreferences preferences = getSharedPreferences("session", MODE_PRIVATE);
@@ -138,6 +173,14 @@ public class HomeActivity extends AppCompatActivity {
                     return true;
 
                 case R.id.navigation_menu:
+                    if(!menuOpened) {
+                        nav_drawer.openDrawer(Gravity.END);
+                        menuOpened=true;
+                    }
+                    else{
+                        nav_drawer.closeDrawer(Gravity.END);
+                        menuOpened=false;
+                    }
                     return true;
             }
             return false;

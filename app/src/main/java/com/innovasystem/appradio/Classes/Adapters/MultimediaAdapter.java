@@ -72,7 +72,8 @@ public class MultimediaAdapter extends RecyclerView.Adapter<MultimediaAdapter.Vi
         if(!isVideoDataset) {
             Picasso.with(context)
                     .load(multimedia_dataset.get(i).getUrl())
-                    .placeholder(R.drawable.com_facebook_profile_picture_blank_portrait)
+                    .placeholder(R.drawable.image_placeholder)
+                    .error(R.drawable.no_image)
                     .fit()
                     .into(viewHolder.iv_preview);
 
@@ -205,6 +206,8 @@ public class MultimediaAdapter extends RecyclerView.Adapter<MultimediaAdapter.Vi
             if(uri!=null) {
                 Picasso.with(context)
                         .load(uri)
+                        .placeholder(R.drawable.video_placeholder)
+                        .error(R.drawable.video_placeholder)
                         .fit()
                         .into(viewHolder.iv_preview);
             }

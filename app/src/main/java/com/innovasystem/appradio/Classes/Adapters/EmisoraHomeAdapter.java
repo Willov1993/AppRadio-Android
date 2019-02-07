@@ -32,7 +32,7 @@ public class EmisoraHomeAdapter extends  RecyclerView.Adapter<EmisoraHomeAdapter
     }
 
     public static class ViewHolder extends  RecyclerView.ViewHolder{
-        TextView tv_radio, tv_frecuencia,tv_segmento,tv_horario;
+        TextView tv_radio, tv_frecuencia,tv_segmento,tv_horario,tv_txtfavorito;
         ImageButton btn_chat,btn_addfav;
         ImageView img_segmento;
         public ViewHolder(@NonNull View itemView) {
@@ -44,6 +44,7 @@ public class EmisoraHomeAdapter extends  RecyclerView.Adapter<EmisoraHomeAdapter
             this.btn_chat= itemView.findViewById(R.id.btn_hitem_chat);
             this.btn_addfav= itemView.findViewById(R.id.btn_hitem_favorito);
             this.img_segmento= itemView.findViewById(R.id.img_hitem_segmento);
+            this.tv_txtfavorito= itemView.findViewById(R.id.tv_hitem_favorito);
         }
     }
 
@@ -78,7 +79,9 @@ public class EmisoraHomeAdapter extends  RecyclerView.Adapter<EmisoraHomeAdapter
         }
         else{
             viewHolder.tv_segmento.setText("No hay información disponible");
-            //viewHolder.tv_horario.setVisibility(View.GONE);
+            viewHolder.tv_horario.setVisibility(View.GONE);
+            viewHolder.btn_addfav.setVisibility(View.INVISIBLE);
+            viewHolder.tv_txtfavorito.setVisibility(View.INVISIBLE);
             System.out.println("img w: "+viewHolder.img_segmento.getLayoutParams().width);
             System.out.println("img h: "+viewHolder.img_segmento.getLayoutParams().height);
             Picasso.with(this.context)

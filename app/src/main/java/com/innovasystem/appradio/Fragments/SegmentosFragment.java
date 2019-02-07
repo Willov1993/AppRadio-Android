@@ -123,7 +123,7 @@ public class SegmentosFragment extends Fragment {
         @Override
         protected void onPostExecute(List<Segmento> listaSegmentos){
             System.out.println("IMPRIMIENDO RESULTADO_______");
-            System.out.println(Arrays.toString(listaSegmentos.toArray()));
+            //System.out.println(Arrays.toString(listaSegmentos.toArray()));
             if(listaSegmentos == null){
                 Toast.makeText(getContext(), "Ocurrio un error con el servidor, intente mas tarde", Toast.LENGTH_SHORT).show();
                 tv_mensaje.setVisibility(View.VISIBLE);
