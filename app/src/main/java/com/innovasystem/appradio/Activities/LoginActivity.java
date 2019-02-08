@@ -11,6 +11,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.net.Uri;
+import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 
 import android.os.AsyncTask;
@@ -94,9 +95,17 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
 
+
+        if (android.os.Build.VERSION.SDK_INT > 9)
+        {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
+
         // Read Shared Preferences
         SharedPreferences preferences = getSharedPreferences("account", MODE_PRIVATE);
         String tokenEncrypted = preferences.getString(encrypt("token"), "default");
+        //String tokenEncrypted = preferences.getString(encrypt("token"), "default");
         String token;
         System.out.println("====> Token encriptado:"+tokenEncrypted);
         if(!tokenEncrypted.equals("default")){
@@ -298,7 +307,7 @@ public class LoginActivity extends AppCompatActivity {
             mEmailView.setError(getString(R.string.error_field_required));
             focusView = mEmailView;
             cancel = true;
-        } else if (username.length() < 6) {
+        } else if (username.length() < 5) {
             mEmailView.setError(getString(R.string.error_invalid_username));
             focusView = mEmailView;
             cancel = true;
