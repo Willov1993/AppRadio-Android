@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/nav_item_favoritos"
-        android:title="Favoritos"/>
+        android:title="Favoritos"
+        android:icon="@drawable/favoritos_nav_lateralmdpi"/>
     <item android:id="@+id/nav_item_notificaciones"
-        android:title="Notificaciones"/>
+        android:title="Notificaciones"
+        android:icon="@drawable/notificaciones_nav_lateralmdpi"/>
     <item android:id="@+id/nav_item_sugerencias"
-        android:title="Sugerencias"/>
+        android:title="Sugerencias"
+        android:icon="@drawable/sugerencias_nav_lateralmdpi"/>
 
     <!--group android:id="@+id/group_menu">
         <item android:id="@+id/nav_item_cerrar_sesion"

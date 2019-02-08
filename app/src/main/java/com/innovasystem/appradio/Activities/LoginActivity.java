@@ -395,6 +395,7 @@ public class LoginActivity extends AppCompatActivity {
                         SharedPreferences preferences = getSharedPreferences("account", MODE_PRIVATE);
                         SharedPreferences.Editor editor = preferences.edit();
                         editor.putString(Utils.encrypt("token"), Utils.encrypt(resultado.getToken()));
+                        editor.putString("username",mEmail);
                         editor.apply(); // Or commit if targeting old devices
                         editor.commit();
                         return true;

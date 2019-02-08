@@ -121,16 +121,17 @@ public class Utils {
         for (int i = 0; i <muestra ; i++) {
             Emisora e= new Emisora();
             e.setId((long) (i+ 1));
-            e.setNombre("Emisora de Prueba " + (i+1));
-            e.setFrecuencia_dial("9" + i + "." + (i+1));
+            e.setNombre("Emisora " + (i+1));
+            e.setFrecuencia_dial("9" + i + "." + (i+1) + " FM");
             e.setUrl_streaming("http://pruebastreaming.com");
+            e.setCiudad("Guayaquil");
 
             lista_emisora.add(e);
         }
         return lista_emisora;
     }
 
-    public static List<Segmento> generarSegmentosPrueba(Emisora idEmisora) {
+    public static List<Segmento> generarSegmentosPrueba(Emisora emisora) {
         int muestra = 18;
         String[] dias = new String[]{"Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"};
         String[] horariosInicio = new String[]{
@@ -147,8 +148,8 @@ public class Utils {
         List<Segmento> lista_segmentos = new ArrayList<>();
         for (int i = 0; i < muestra; i++) {
             Segmento seg = new Segmento();
-            seg.setNombre("Segmento de Prueba " + (i + 1));
-            seg.setEmisora(idEmisora);
+            seg.setNombre("Segmento " + (i + 1));
+            seg.setEmisora(emisora);
             Horario[] horariosdePrueba = new Horario[7];
 
             for (int j = 0; j < dias.length; j++) {

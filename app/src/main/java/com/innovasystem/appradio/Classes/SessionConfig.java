@@ -12,6 +12,7 @@ public class SessionConfig implements Config {
 
     public String userToken;
     public String provincia="";
+    public String usuario;
     private static SessionConfig sessionConfig;
 
     private SessionConfig(Context c){
@@ -23,6 +24,7 @@ public class SessionConfig implements Config {
         SharedPreferences preferences = context.getSharedPreferences("account", MODE_PRIVATE);
         String tokenEncrypted = preferences.getString(encrypt("token"), "default");
         this.userToken= Utils.decrypt(tokenEncrypted);
+        this.usuario= preferences.getString("username","default");
     }
 
     @Override

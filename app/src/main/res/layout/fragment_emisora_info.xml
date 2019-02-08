@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="35dp"
             android:layout_marginTop="20dp"
-            android:text="@string/hello_blank_fragment"
+            android:text="Descripcion"
             android:textColor="@color/text_color" />
 
         <LinearLayout
@@ -36,9 +36,11 @@
                 android:id="@+id/imageView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="5dp"
                 android:layout_weight="0.05"
                 android:adjustViewBounds="true"
-                android:src="@drawable/web_emisora" />
+                android:src="@drawable/website_emisoramdpi" />
 
             <TextView
                 android:id="@+id/tv_web_emisora"
@@ -47,7 +49,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="12dp"
                 android:layout_weight="0.95"
-                android:text="TextView"
+                android:text="Ninguna"
                 android:textColor="@color/text_color"
                 android:textSize="17sp" />
 
@@ -63,21 +65,22 @@
                 android:id="@+id/imageView4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="5dp"
                 android:layout_weight="0.05"
                 android:adjustViewBounds="true"
-                android:background="@color/seleccion_nav"
                 android:baselineAlignBottom="false"
                 android:cropToPadding="false"
-                android:src="@drawable/ic_notifications_black_24dp" />
+                android:src="@drawable/telefono_emisoramdpi" />
 
             <TextView
                 android:id="@+id/tv_telef_emisora"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginStart="12dp"
+                android:layout_marginStart="20dp"
                 android:layout_weight="0.95"
-                android:text="TextView"
+                android:text="Ninguna"
                 android:textColor="@color/text_color"
                 android:textSize="17sp" />
 
@@ -93,22 +96,22 @@
                 android:id="@+id/imageView5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
+                android:layout_gravity="center"
+                android:layout_marginStart="5dp"
                 android:layout_weight="0.05"
                 android:adjustViewBounds="true"
-                android:background="@color/seleccion_nav"
                 android:cropToPadding="false"
-                android:src="@drawable/ic_notifications_black_24dp" />
+                android:src="@drawable/ubicacion_emisoramdpi" />
 
             <TextView
                 android:id="@+id/tv_ubicacion_emisora"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginStart="12dp"
+                android:layout_marginStart="15dp"
                 android:layout_weight="0.95"
                 android:lines="2"
-                android:text="TextView"
+                android:text="Ninguna"
                 android:textColor="@color/text_color"
                 android:textSize="17sp" />
 

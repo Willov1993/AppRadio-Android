@@ -3,56 +3,66 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@color/appColorTheme">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="25dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:layout_weight="0.3"
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/textView"
+                android:id="@+id/tv_favitem_emisora"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="Emisora"
                 android:textAlignment="center"
-                android:textColor="@color/TextColor"
+                android:textColor="@color/textoGris"
                 android:textSize="12sp" />
 
             <TextView
-                android:id="@+id/textView37"
+                android:id="@+id/tv_favitem_frecuencia"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="00.0 FM"
                 android:textAlignment="center"
-                android:textColor="@color/TextColor"
+                android:textColor="@color/textoGris"
                 android:textSize="12sp" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="10dp"
             android:layout_weight="0.5"
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/textView39"
+                android:id="@+id/tv_favitem_segmento"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Nombre Segmento"
-                android:textColor="@color/text_color" />
+                android:textColor="@color/text_color"
+                android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/textView38"
+                android:id="@+id/tv_favitem_ciudad"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Ciudad"
@@ -62,11 +72,14 @@
         </LinearLayout>
 
         <ImageButton
-            android:id="@+id/imageButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.2"
-            app:srcCompat="@drawable/favorito2"
+            android:id="@+id/btn_favitem_favorito"
+            android:layout_width="10dp"
+            android:layout_height="15dp"
+            android:layout_gravity="center"
+            android:layout_weight="0.1"
+            android:background="@android:color/transparent"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/favoritos_nav_lateralhdpi"
             tools:layout_editor_absoluteX="59dp" />
     </LinearLayout>
 

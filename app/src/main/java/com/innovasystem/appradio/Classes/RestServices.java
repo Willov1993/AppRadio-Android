@@ -428,6 +428,25 @@ public class RestServices {
     }
 
 
+    public static List<Segmento> consultarFavoritos(Context c,String username){
+        HttpHeaders reqHeaders = new HttpHeaders();
+        reqHeaders.setAccept(Collections.singletonList(new MediaType("application", "json")));
+        reqHeaders.set("Authorization", SessionConfig.getSessionConfig(c).userToken);
+        HttpEntity<?> requestEntity = new HttpEntity<Object>(reqHeaders);
+        Segmento[] segmentos= null;
+        RestTemplate restTemplate= new RestTemplate();
+        String url = Constants.serverDomain + String.format(Constants.uriFavoritos, username);
+        try {
+            ResponseEntity<Segmento[]> responseEntity = restTemplate.exchange(url, HttpMethod.GET, requestEntity, Segmento[].class);
+            if (responseEntity.getStatusCode() == HttpStatus.OK) {
+                segmentos = responseEntity.getBody();
+            }
+        } catch (Exception e) {
+            Log.e("RestGetError", e.getMessage());
+            return null;
+        }
+        return new ArrayList<>(Arrays.asList(segmentos));
+    }
 
 
 }
