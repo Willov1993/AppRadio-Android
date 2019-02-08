@@ -61,6 +61,14 @@ dependencies {
     implementation 'com.wefika:horizontal-picker:1.1.1'
     implementation 'com.uncopt:android.justified:1.0'
     implementation 'com.google.android.exoplayer:exoplayer:2.9.0'
+
+
+
+
+    implementation group: 'com.google.code.gson', name: 'gson', version: '2.7'
+
+    // https://mvnrepository.com/artifact/org.twitter4j/twitter4j-core
+    implementation group: 'org.twitter4j', name: 'twitter4j-core', version: '4.0.1'
 }
 
 /*apply plugin: 'findbugs'

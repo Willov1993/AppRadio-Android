@@ -39,7 +39,11 @@ public class RegisterTwoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_two);
+        Intent i = getIntent();
 
+        first_name = i.getStringExtra("names");
+        last_name = i.getStringExtra("lastnames");
+        email = i.getStringExtra("email");
         btn_register= (Button) findViewById(R.id.btn_register);
 
         editText_username = (EditText) findViewById(R.id.editText_username);
