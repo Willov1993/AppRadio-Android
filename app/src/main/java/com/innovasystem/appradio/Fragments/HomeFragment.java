@@ -302,6 +302,7 @@ public class HomeFragment extends Fragment {
     private class RestFetchEmisoraHomeTask extends AsyncTask<Void,Void,Void> {
         List<Emisora> emisoras;
         List<Segmento> segmentos;
+        List<Segmento> favoritos;
 
         @Override
         protected void onPreExecute() {
@@ -311,6 +312,7 @@ public class HomeFragment extends Fragment {
         @Override
         protected Void doInBackground(Void... voids) {
             System.out.println("EXTRAYENDO DATOS");
+            favoritos= RestServices.consultarFavoritos(getContext(),SessionConfig.getSessionConfig(getContext()).usuario);
             emisoras= RestServices.consultarEmisoras(getContext(),SessionConfig.getSessionConfig(getContext()).provincia);
             segmentos= RestServices.consultarSegmentosDelDia(getContext(),SessionConfig.getSessionConfig(getContext()).provincia);
             return null;
@@ -374,7 +376,7 @@ public class HomeFragment extends Fragment {
             }
 
 
-            EmisoraHomeAdapter adapter = new EmisoraHomeAdapter(mapa_emisoras, getContext());
+            EmisoraHomeAdapter adapter = new EmisoraHomeAdapter(mapa_emisoras,favoritos, getContext());
             rv_home.setAdapter(adapter);
 
             Log.i("RV ITEMS: ", "" + mapa_emisoras.size());
@@ -455,6 +457,7 @@ public class HomeFragment extends Fragment {
      */
     private class RestFetchProgramacionTask extends AsyncTask<Void,Void,List<Segmento>>{
         Fecha horaActual;
+        ArrayList<Segmento> favoritos;
 
         @Override
         protected void onPreExecute() {
@@ -464,6 +467,7 @@ public class HomeFragment extends Fragment {
         @Override
         protected List<Segmento> doInBackground(Void... voids) {
             horaActual= RestServices.consultarHoraActual(getContext());
+            favoritos= (ArrayList) RestServices.consultarFavoritos(getContext(),SessionConfig.getSessionConfig(getContext()).usuario);
             return RestServices.consultarSegmentosDelDia(getContext(),SessionConfig.getSessionConfig(getContext()).provincia);
         }
 
@@ -528,7 +532,7 @@ public class HomeFragment extends Fragment {
                 }
             }
 
-            ProgramacionAdapter adapter= new ProgramacionAdapter(getContext(),horarios,segmentos,horaActual);
+            ProgramacionAdapter adapter= new ProgramacionAdapter(getContext(),horarios,segmentos,horaActual,favoritos);
             listview_programacion.setAdapter(adapter);
 
         }

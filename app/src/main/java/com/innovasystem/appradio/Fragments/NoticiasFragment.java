@@ -269,7 +269,6 @@ public class NoticiasFragment extends Fragment {
             for (Status status : statuses) {
                 System.out.println("@" + status.getUser().getScreenName() + " - " + status.getText());
                 values.add(new Noticia("@" + status.getUser().getScreenName(),status.getText(),status.getUser().getBiggerProfileImageURLHttps(),status.getCreatedAt()));
-                status.
             }
 
 

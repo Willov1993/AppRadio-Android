@@ -149,4 +149,22 @@ public class Segmento implements Parcelable{
         parcel.writeValue(emisora);
         //parcel.writeArray(horarios);
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == null){
+            return false;
+        }
+
+        if(this == obj){
+            return true;
+        }
+
+        if(obj instanceof Segmento){
+            Segmento seg= (Segmento) obj;
+            return seg.id.equals(this.id);
+        }
+
+        return false;
+    }
 }

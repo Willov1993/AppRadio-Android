@@ -13,6 +13,8 @@ import android.widget.Toast;
 
 import com.innovasystem.appradio.Classes.Models.Emisora;
 import com.innovasystem.appradio.Classes.Models.Segmento;
+import com.innovasystem.appradio.Classes.RestServices;
+import com.innovasystem.appradio.Classes.SessionConfig;
 import com.innovasystem.appradio.R;
 import com.squareup.picasso.Picasso;
 
@@ -23,12 +25,14 @@ import java.util.Map;
 public class EmisoraHomeAdapter extends  RecyclerView.Adapter<EmisoraHomeAdapter.ViewHolder> {
     public Map<Emisora,Segmento> emisoras_dataset;
     public List<Emisora> emisoras_keys;
+    public List<Segmento> favoritos;
     Context context;
 
-    public EmisoraHomeAdapter(Map<Emisora,Segmento> mapa_emisoras,Context c){
+    public EmisoraHomeAdapter(Map<Emisora,Segmento> mapa_emisoras,List<Segmento> favoritos,Context c){
         this.emisoras_dataset= mapa_emisoras;
         this.emisoras_keys= new ArrayList<>(this.emisoras_dataset.keySet());
         this.context= c;
+        this.favoritos= favoritos;
     }
 
     public static class ViewHolder extends  RecyclerView.ViewHolder{
@@ -76,10 +80,16 @@ public class EmisoraHomeAdapter extends  RecyclerView.Adapter<EmisoraHomeAdapter
                     //.resize(viewHolder.img_segmento.getMaxWidth(),viewHolder.img_segmento.getMaxHeight())
                     //.centerInside()
                     .into(viewHolder.img_segmento);
+
+            if(favoritos!=null && favoritos.contains(this.emisoras_dataset.get(emisora))){
+                viewHolder.tv_txtfavorito.setText("• Programa Favorito •");
+                viewHolder.btn_addfav.setClickable(false);
+                viewHolder.btn_addfav.setImageDrawable(context.getResources().getDrawable(R.drawable.favoritos_nav_lateralmdpi));
+            }
         }
         else{
             viewHolder.tv_segmento.setText("No hay información disponible");
-            viewHolder.tv_horario.setVisibility(View.GONE);
+            viewHolder.tv_horario.setVisibility(View.INVISIBLE);
             viewHolder.btn_addfav.setVisibility(View.INVISIBLE);
             viewHolder.tv_txtfavorito.setVisibility(View.INVISIBLE);
             System.out.println("img w: "+viewHolder.img_segmento.getLayoutParams().width);
@@ -92,6 +102,7 @@ public class EmisoraHomeAdapter extends  RecyclerView.Adapter<EmisoraHomeAdapter
                     .into(viewHolder.img_segmento);
         }
 
+
         viewHolder.btn_chat.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
@@ -103,9 +114,18 @@ public class EmisoraHomeAdapter extends  RecyclerView.Adapter<EmisoraHomeAdapter
 
             @Override
             public void onClick(View view) {
-                Toast.makeText(context, "agregado a favoritos",Toast.LENGTH_SHORT).show();
+                if(RestServices.agregarFavorito(context, SessionConfig.getSessionConfig(context).usuario,emisoras_dataset.get(emisora).getId())) {
+                    Toast.makeText(context, "agregado a favoritos", Toast.LENGTH_SHORT).show();
+                    viewHolder.tv_txtfavorito.setText("• Programa Favorito •");
+                    viewHolder.btn_addfav.setClickable(false);
+                    viewHolder.btn_addfav.setImageDrawable(context.getResources().getDrawable(R.drawable.favoritos_nav_lateralmdpi));
+                }
+                else{
+                    Toast.makeText(context, "Ha ocurrido un error al procesar su solicitud, intente luego", Toast.LENGTH_SHORT).show();
+                }
             }
         });
+
     }
 
     @Override

@@ -22,6 +22,8 @@ public class Constants {
     public static final String uriImagenesSegmento= "/api/imagenes/%d";
     public static final String uriVideosSegmento= "/api/videos/%d";
     public static final String uriFavoritos= "/api/favoritos/%s";
+    public static final String uriAgregarFavoritos= "/api/favoritos_create/";
+    public static final String uriAgregarFavoritosFalse= "/api/favoritos_create/%d/%s";
     public static final String uriPasswordReset= "/password_reset/";
     public static final String USER_AGENT = "Mozilla/5.0";
 }

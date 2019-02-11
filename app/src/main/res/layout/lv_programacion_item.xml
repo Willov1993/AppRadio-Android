@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -8,30 +9,71 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="15dp"
-        android:background="@color/seleccion_nav"
+        android:background="@color/appColorTheme"
         android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/tv_programacion_horario"
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.3"
-            android:fontFamily="@font/app_font"
-            android:gravity="center_vertical"
-            android:text="TextView"
-            android:textColor="@color/text_color"
-            android:textSize="14sp" />
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tv_programacion_segmento"
+            <TextView
+                android:id="@+id/tv_programacion_horario"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.3"
+                android:fontFamily="@font/app_font"
+                android:gravity="center_vertical"
+                android:text="TextView"
+                android:textColor="@color/text_color"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tv_programacion_transmision"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="5dp"
+                android:layout_weight="0.3"
+                android:fontFamily="@font/app_font"
+                android:gravity="center_vertical"
+                android:text="• En transmisión •"
+                android:textAlignment="textStart"
+                android:textColor="@color/seleccion_nav"
+                android:textSize="11sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.3"
-            android:fontFamily="@font/app_font"
-            android:gravity="center_vertical"
-            android:text="TextView"
-            android:textColor="@color/text_color"
-            android:textSize="14sp" />
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_programacion_segmento"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/app_font"
+                android:gravity="center_vertical"
+                android:text="TextView"
+                android:textColor="@color/text_color"
+                android:textSize="14sp" />
+
+            <ImageView
+                android:id="@+id/iv_programacion_fav"
+                android:layout_width="5dp"
+                android:layout_height="10dp"
+                android:layout_gravity="center"
+                android:layout_weight="0.2"
+                android:adjustViewBounds="true"
+                android:cropToPadding="false"
+                android:visibility="gone"
+                app:srcCompat="@drawable/favoritos_nav_lateralmdpi" />
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/tv_programacion_emisora"
