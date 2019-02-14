@@ -257,7 +257,7 @@ public class HomeFragment extends Fragment {
                 }
             }
             else{
-                btn_apagar.setBackground(getContext().getDrawable(R.drawable.round_button_enabled_left));
+                btn_apagar.setBackground(getContext().getDrawable(R.drawable.round_button_left));
                 Intent intent = new Intent();
                 intent.setAction(RadioStreamService.BROADCAST_TO_SERVICE);
                 intent.putExtra(RadioStreamService.PLAYER_FUNCTION_TYPE, RadioStreamService.STOP_MEDIA_PLAYER);

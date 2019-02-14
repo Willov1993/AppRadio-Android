@@ -4,14 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/background_light"
+    android:background="@color/appColorTheme"
     tools:context=".Activities.SplashActivity">
 
     <ImageView
         android:id="@+id/imageView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="30dp"
+        android:layout_marginStart="30dp"
         android:elevation="10dp"
         android:scaleType="fitCenter"
-        app:srcCompat="@drawable/logo_caravana_splash" />
+        app:srcCompat="@drawable/logo_caravana_login" />
 </RelativeLayout>

@@ -33,13 +33,19 @@ import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.ExoPlayerFactory;
+import com.google.android.exoplayer2.PlaybackParameters;
+import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.source.ads.AdsMediaSource;
+import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.innovasystem.appradio.Fragments.HomeFragment;
 import com.innovasystem.appradio.R;
@@ -70,7 +76,7 @@ public class RadioStreamService extends Service implements AudioManager.OnAudioF
 
     /* Variables de la clase */
     private SimpleExoPlayer player;
-    private MediaPlayer mPlayer;          //ESTA VARIABLE ES LA QUE MANEJA LA REPRODUCCION DEL STREAMING
+    //private MediaPlayer mPlayer;          //ESTA VARIABLE ES LA QUE MANEJA LA REPRODUCCION DEL STREAMING
     public static String radioURL="";           //esta variable almacena el URL que se recibe como mensaje
     private AudioManager audioManager;  //esta variable representa un manejador de peticiones de sonido
 
@@ -79,6 +85,7 @@ public class RadioStreamService extends Service implements AudioManager.OnAudioF
     private PhoneStateListener phoneStateListener;
     private TelephonyManager telephonyManager;
     WifiManager.WifiLock wifiLock;
+    PowerManager.WakeLock wakeLock;
 
     public static final String ACTION_PLAY = "com.valdioveliu.valdio.audioplayer.ACTION_PLAY";
     public static final String ACTION_PAUSE = "com.valdioveliu.valdio.audioplayer.ACTION_PAUSE";
@@ -127,7 +134,7 @@ public class RadioStreamService extends Service implements AudioManager.OnAudioF
         }
         IntentFilter intentFilter = new IntentFilter(BROADCAST_TO_SERVICE);
         registerReceiver(playerReceiver, intentFilter);
-        if (mPlayer != null && mPlayer.isPlaying()) {
+        if (player !=null && isPlaying()) {
             sendPlayerStatus("playing");
         }
 
@@ -140,19 +147,36 @@ public class RadioStreamService extends Service implements AudioManager.OnAudioF
     public void onDestroy() {
 
         super.onDestroy();
-        if (mPlayer != null) {
+        if (player != null) {
             stopPlayer();
-            mPlayer.release();
+            player.release();
+            player= null;
         }
         removeAudioFocus();
         if (phoneStateListener != null) {
             telephonyManager.listen(phoneStateListener, PhoneStateListener.LISTEN_NONE);
         }
 
+        wifiLock.release();
+        wakeLock.release();
+
     }
 
 
     /*=====Metodos para manejar los estados del mediaPlayer ======*/
+
+    public boolean isPlaying() {
+        int state = player.getPlaybackState();
+        switch (state) {
+            case ExoPlayer.STATE_BUFFERING:
+            case ExoPlayer.STATE_READY:
+                return player.getPlayWhenReady();
+            case ExoPlayer.STATE_IDLE:
+            case ExoPlayer.STATE_ENDED:
+            default:
+                return false;
+        }
+    }
 
     /**
      * Este metodo pausa el mediaPlayer y envia un mensaje de pausa  con
@@ -160,9 +184,10 @@ public class RadioStreamService extends Service implements AudioManager.OnAudioF
      */
     private void pausePlayer() {
 
-        if (mPlayer != null && mPlayer.isPlaying()) {
-            mPlayer.pause();
+        if (player != null  && isPlaying()) {
+            player.setPlayWhenReady(false);
             sendPlayerStatus("pause");
+            System.out.println("=====> PAUSE PLAYER");
         }
     }
 
@@ -173,8 +198,9 @@ public class RadioStreamService extends Service implements AudioManager.OnAudioF
      */
     private void resumePlayer() {
 
-        if (mPlayer != null && !mPlayer.isPlaying()) {
-            mPlayer.start();
+        if (player != null  && !isPlaying()) {
+            System.out.println("=====> RESUMING PLAYING");
+            player.setPlayWhenReady(true);
             sendPlayerStatus("playing");
         }
     }
@@ -184,7 +210,7 @@ public class RadioStreamService extends Service implements AudioManager.OnAudioF
      * por otra URL de streaming
      */
     private void changeTrack(String url) {
-
+        System.out.println("=====> CHANGING TRACK");
         stopPlayer();
         startMediaPlayer(url);
 
@@ -195,13 +221,15 @@ public class RadioStreamService extends Service implements AudioManager.OnAudioF
      * el metodo {@link #sendPlayerStatus(String)}
      */
     private void stopPlayer() {
-        if (mPlayer != null) {
-            mPlayer.stop();
-            mPlayer.release();
-            mPlayer = null;
+        if (player != null) {
+            player.stop();
+            player.release();
+            player = null;
             wifiLock.release();
+            wakeLock.release();
             sendPlayerStatus("stopped");
             removeNotification();
+            System.out.println("=====> PLAYER STOPPED");
 
         }
     }
@@ -218,31 +246,72 @@ public class RadioStreamService extends Service implements AudioManager.OnAudioF
 
         if (TextUtils.isEmpty(url))
             return;
-        if (mPlayer == null)
-            mPlayer = new MediaPlayer();
-            mPlayer.setWakeMode(getApplicationContext(), PowerManager.PARTIAL_WAKE_LOCK);
+        if (player == null) {
+            //mPlayer = new MediaPlayer();
+            //mPlayer.setWakeMode(getApplicationContext(), PowerManager.PARTIAL_WAKE_LOCK);
+            PowerManager powerManager = (PowerManager) getSystemService(POWER_SERVICE);
+            wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
+                    "AppRadio::Wakelock");
+            wakeLock.acquire();
             wifiLock = ((WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE))
                     .createWifiLock(WifiManager.WIFI_MODE_FULL, "mylock");
             wifiLock.acquire();
-
+        }
 
 
         try {
             System.out.println("URL TO STREAM: " + url);
-            mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+            /*mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
             Map<String, String> headerMap = new HashMap<String, String>();
             headerMap.put("User-Agent","Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.134 Safari/537.36\r\n");
             //mPlayer.setDataSource(url);
             mPlayer.setDataSource(getApplicationContext(), Uri.parse("http://184.154.137.162:8006/radiocaravana"),headerMap);
             //mPlayer.prepareAsync();
-            player= ExoPlayerFactory.newSimpleInstance(getApplicationContext());
-            player.prepare(new ExtractorMediaSource(Uri.parse(url),new DefaultDataSourceFactory(getApplicationContext(),
-                    "ExoPlayerDemo"),new DefaultExtractorsFactory(),
+            */
+
+            player = ExoPlayerFactory.newSimpleInstance(getApplicationContext());
+            player.prepare(new ExtractorMediaSource(Uri.parse(url), new DefaultDataSourceFactory(getApplicationContext(),
+                    "ExoPlayerDemo"), new DefaultExtractorsFactory(),
                     new Handler(),
                     null));
             player.setPlayWhenReady(true);
 
-            mPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            player.addListener(new Player.EventListener() {
+
+                @Override
+                public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
+
+                }
+
+                @Override
+                public void onLoadingChanged(boolean isLoading) {
+
+                }
+
+                @Override
+                public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+                    if(playWhenReady && playbackState == Player.STATE_READY){
+                        Utils.ocultarSnackBar();
+                    }
+                }
+
+                @Override
+                public void onRepeatModeChanged(int repeatMode) {
+
+                }
+
+                @Override
+                public void onPlayerError(ExoPlaybackException error) {
+                    sendPlayerStatus("erroronserver");
+                }
+
+                @Override
+                public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {
+
+                }
+            });
+
+            /*mPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
 
                 public void onPrepared(MediaPlayer mp) {
                     Utils.ocultarSnackBar();
@@ -296,7 +365,7 @@ public class RadioStreamService extends Service implements AudioManager.OnAudioF
                     return false;
                 }
             });
-
+            */
             if (mediaSessionManager == null) {
                 try {
                     initMediaSession();
@@ -318,11 +387,9 @@ public class RadioStreamService extends Service implements AudioManager.OnAudioF
             System.out.println("ILLEGAL STATE ERROR");
             e.printStackTrace();
             sendPlayerStatus("erroronserver");
-        } catch (IOException e) {
-            System.out.println("ILLEGAL IO ERROR");
-            e.printStackTrace();
-            sendPlayerStatus("erroronserver");
         }
+
+
     }
 
     /**
@@ -341,7 +408,7 @@ public class RadioStreamService extends Service implements AudioManager.OnAudioF
     /**
      * Este listener maneja los mensajes que el servicio recibe de otros componentes, dependiendo
      * de la accion que se recibe como mensaje, el servicio realizara acciones sobre la variable
-     * del servicio {@link #mPlayer}
+     * del servicio {@link #player}
      *
      */
     private BroadcastReceiver playerReceiver = new BroadcastReceiver() {
@@ -379,49 +446,54 @@ public class RadioStreamService extends Service implements AudioManager.OnAudioF
     /*-----METHODS FOR AUDIOFOCUS---*/
     @Override
     public void onAudioFocusChange(int focusState) {
+        System.out.println("@@@@@ FOCUS STATE: " + focusState);
         switch (focusState) {
             case AudioManager.AUDIOFOCUS_GAIN:
+                System.out.println(">>>>>>>>>>RECOVERING AUDIO FOCUS");
                 // resume playback
-                if(!HomeFragment.muted && !HomeFragment.radion_on) {
-                    if (mPlayer == null)
+                if(HomeFragment.radion_on && !HomeFragment.muted) {
+                    if (player == null)
                         startMediaPlayer(radioURL);
-                    else if (!mPlayer.isPlaying())
-                        mPlayer.start();
+                    else if (!isPlaying())
+                        player.setPlayWhenReady(true);
 
-                    if (mPlayer != null)
-                        mPlayer.setVolume(1.0f, 1.0f);
+                    if (player != null)
+                        player.setVolume(1.0f);
                     break;
                 }
 
             case AudioManager.AUDIOFOCUS_LOSS:
+                System.out.println(">>>>>>>>>>LOSSING AUDIO FOCUS");
                 // Lost focus for an unbounded amount of time: stop playback and release media player
-                if(mPlayer == null)
+                if(player == null)
                     return;
                 else {
-                    if (mPlayer.isPlaying())
-                        mPlayer.stop();
-                    mPlayer.release();
-                    mPlayer = null;
+                    if (isPlaying())
+                        player.stop();
+                    player.release();
+                    player = null;
                 }
                 break;
 
             case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT:
+                System.out.println(">>>>>>>>>>LOSSING AUDIO FOCUS FOR A A WHILE, STOP");
                 // Lost focus for a short time, but we have to stop
                 // playback. We don't release the media player because playback
                 // is likely to resume
-                if(mPlayer == null)
+                if(player == null)
                     return;
-                if (mPlayer.isPlaying())
-                    mPlayer.pause();
+                if (isPlaying())
+                    player.setPlayWhenReady(false);
                 break;
 
             case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK:
+                System.out.println(">>>>>>>>>>LOSSING AUDIO FOCUS FOR A WHILE, VOLUME DOWN");
                 // Lost focus for a short time, but it's ok to keep playing
                 // at an attenuated level
-                if(mPlayer == null)
+                if(player == null)
                     return;
-                if (mPlayer.isPlaying())
-                    mPlayer.setVolume(0.1f, 0.1f);
+                if (isPlaying())
+                    player.setVolume(0.1f);
                 break;
 
         }
@@ -457,14 +529,14 @@ public class RadioStreamService extends Service implements AudioManager.OnAudioF
                     //pause the MediaPlayer
                     case TelephonyManager.CALL_STATE_OFFHOOK:
                     case TelephonyManager.CALL_STATE_RINGING:
-                        if (mPlayer != null) {
+                        if (player != null) {
                             pausePlayer();
                             ongoingCall = true;
                         }
                         break;
                     case TelephonyManager.CALL_STATE_IDLE:
                         // Phone idle. Start playing.
-                        if (mPlayer != null && ongoingCall) {
+                        if (player != null && ongoingCall) {
                                 ongoingCall = false;
                                 resumePlayer();
                         }

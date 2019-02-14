@@ -78,6 +78,7 @@ public class ProgramacionAdapter extends BaseAdapter{
 
         //linear_container.setBackgroundColor(context.getResources().getColor(R.color.seleccion_nav));
         tv_transimision.setVisibility(View.VISIBLE);
+        iv_fav.setVisibility(View.GONE);
 
         String hora_inicio= horario.getFecha_inicio();
         String hora_fin= horario.getFecha_fin();

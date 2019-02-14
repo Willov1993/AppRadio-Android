@@ -23,7 +23,8 @@
             android:label="@string/app_name"
             android:screenOrientation="portrait" />
 
-        <service android:name=".Services.RadioStreamService" />
+        <service android:name=".Services.RadioStreamService"
+            android:stopWithTask="false"/>
 
         <!-- FACEBOOK REQUIREMENTS -->
         <meta-data
