@@ -72,7 +72,9 @@ public class EmisoraHomeAdapter extends  RecyclerView.Adapter<EmisoraHomeAdapter
                     this.emisoras_dataset.get(emisora).getHorarios()[0].getFecha_inicio(),
                     this.emisoras_dataset.get(emisora).getHorarios()[0].getFecha_fin())
             );
-            Picasso.with(this.context)
+
+            //CODIGO PARA COLOCAR EL FONDO DE LAS TARJETAS DEL HOME
+            /*Picasso.with(this.context)
                     .load(this.emisoras_dataset.get(emisora).getImagen())
                     .placeholder(R.drawable.radio_placeholder2)
                     .fit()
@@ -80,6 +82,7 @@ public class EmisoraHomeAdapter extends  RecyclerView.Adapter<EmisoraHomeAdapter
                     //.resize(viewHolder.img_segmento.getMaxWidth(),viewHolder.img_segmento.getMaxHeight())
                     //.centerInside()
                     .into(viewHolder.img_segmento);
+            */
 
             if(favoritos!=null && favoritos.contains(this.emisoras_dataset.get(emisora))){
                 viewHolder.tv_txtfavorito.setText("• Programa Favorito •");
@@ -94,12 +97,13 @@ public class EmisoraHomeAdapter extends  RecyclerView.Adapter<EmisoraHomeAdapter
             viewHolder.tv_txtfavorito.setVisibility(View.INVISIBLE);
             System.out.println("img w: "+viewHolder.img_segmento.getLayoutParams().width);
             System.out.println("img h: "+viewHolder.img_segmento.getLayoutParams().height);
-            Picasso.with(this.context)
+            /*Picasso.with(this.context)
                     .load(emisora.getLogotipo())
                     .placeholder(R.drawable.radio_placeholder2)
                     .fit()
                     //.centerInside()
                     .into(viewHolder.img_segmento);
+             */
         }
 
 

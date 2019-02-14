@@ -11,10 +11,10 @@ import com.innovasystem.appradio.R;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link SugerenciasFragment#newInstance} factory method to
+ * Use the {@link ConcursosFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SugerenciasFragment extends Fragment {
+public class ConcursosFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -25,7 +25,7 @@ public class SugerenciasFragment extends Fragment {
     private String mParam2;
 
 
-    public SugerenciasFragment() {
+    public ConcursosFragment() {
         // Required empty public constructor
     }
 
@@ -35,11 +35,11 @@ public class SugerenciasFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment SugerenciasFragment.
+     * @return A new instance of fragment ConcursosFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static SugerenciasFragment newInstance(String param1, String param2) {
-        SugerenciasFragment fragment = new SugerenciasFragment();
+    public static ConcursosFragment newInstance(String param1, String param2) {
+        ConcursosFragment fragment = new ConcursosFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -60,7 +60,7 @@ public class SugerenciasFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_sugerencias, container, false);
+        return inflater.inflate(R.layout.fragment_concursos, container, false);
     }
 
 }

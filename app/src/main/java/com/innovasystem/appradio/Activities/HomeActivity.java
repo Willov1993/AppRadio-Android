@@ -23,10 +23,10 @@ import android.widget.Toast;
 
 import com.innovasystem.appradio.Classes.SessionConfig;
 import com.innovasystem.appradio.Fragments.EmisorasFragment;
+import com.innovasystem.appradio.Fragments.EncuestasFragment;
 import com.innovasystem.appradio.Fragments.FavoritosFragment;
 import com.innovasystem.appradio.Fragments.HomeFragment;
-import com.innovasystem.appradio.Fragments.NotificacionesFragment;
-import com.innovasystem.appradio.Fragments.SugerenciasFragment;
+import com.innovasystem.appradio.Fragments.ConcursosFragment;
 import com.innovasystem.appradio.R;
 import com.innovasystem.appradio.Services.RadioStreamService;
 import com.innovasystem.appradio.Utils.Utils;
@@ -158,7 +158,7 @@ public class HomeActivity extends AppCompatActivity {
                     return true;
 
                 case R.id.navigation_concursos:
-                    contentFragmet= new SugerenciasFragment();
+                    contentFragmet= new ConcursosFragment();
                     HomeActivity.this.changeFragment(contentFragmet,R.id.frame_container,false);
                     return true;
 
@@ -168,7 +168,7 @@ public class HomeActivity extends AppCompatActivity {
                     return true;
 
                 case R.id.navigation_encuestas:
-                    contentFragmet= new NotificacionesFragment();
+                    contentFragmet= new EncuestasFragment();
                     HomeActivity.this.changeFragment(contentFragmet,R.id.frame_container,false);
                     return true;
 
@@ -207,7 +207,13 @@ public class HomeActivity extends AppCompatActivity {
 
                 switch(currentPlayerStatus){
                     case "erroronplaying":
-                        Utils.mostrarMensajeSnackBar(getWindow().getDecorView().getRootView(), "Error al conectarse al servicio de streaming de radio, revise su conexion a internet");
+                        Utils.mostrarMensajeSnackBar(getWindow().getDecorView().getRootView(), "Error al reproducir el servicio de streaming de radio, revise su conexion a internet");
+                        break;
+                    case "erroronserver":
+                        Utils.mostrarMensajeSnackBar(getWindow().getDecorView().getRootView(), "Ha ocurrido un error en el servidor de streaming, intente mas luego");
+                        break;
+                    case "erroronconnection":
+                        Utils.mostrarMensajeSnackBar(getWindow().getDecorView().getRootView(), "Ha ocurrido un erro al conectarse al servicio de streaming, intente mas luego");
                         break;
                     default:
 

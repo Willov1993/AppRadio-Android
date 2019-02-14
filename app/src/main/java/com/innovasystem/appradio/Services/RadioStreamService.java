@@ -13,8 +13,10 @@ import android.graphics.BitmapFactory;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.session.MediaSessionManager;
+import android.net.Uri;
 import android.net.wifi.WifiManager;
 import android.os.Build;
+import android.os.Handler;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.os.RemoteException;
@@ -31,11 +33,22 @@ import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.google.android.exoplayer2.ExoPlayer;
+import com.google.android.exoplayer2.ExoPlayerFactory;
+import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
+import com.google.android.exoplayer2.source.ExtractorMediaSource;
+import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.source.ads.AdsMediaSource;
+import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
+import com.innovasystem.appradio.Fragments.HomeFragment;
 import com.innovasystem.appradio.R;
 import com.innovasystem.appradio.Utils.PlaybackStatus;
 import com.innovasystem.appradio.Utils.Utils;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /* Servicio que implementa la reproduccion de Streaming de Radio por internet */
@@ -56,6 +69,7 @@ public class RadioStreamService extends Service implements AudioManager.OnAudioF
 
 
     /* Variables de la clase */
+    private SimpleExoPlayer player;
     private MediaPlayer mPlayer;          //ESTA VARIABLE ES LA QUE MANEJA LA REPRODUCCION DEL STREAMING
     public static String radioURL="";           //esta variable almacena el URL que se recibe como mensaje
     private AudioManager audioManager;  //esta variable representa un manejador de peticiones de sonido
@@ -214,9 +228,29 @@ public class RadioStreamService extends Service implements AudioManager.OnAudioF
 
 
         try {
-
+            System.out.println("URL TO STREAM: " + url);
             mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-            mPlayer.setDataSource(url);
+            Map<String, String> headerMap = new HashMap<String, String>();
+            headerMap.put("User-Agent","Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.134 Safari/537.36\r\n");
+            //mPlayer.setDataSource(url);
+            mPlayer.setDataSource(getApplicationContext(), Uri.parse("http://184.154.137.162:8006/radiocaravana"),headerMap);
+            //mPlayer.prepareAsync();
+            player= ExoPlayerFactory.newSimpleInstance(getApplicationContext());
+            player.prepare(new ExtractorMediaSource(Uri.parse(url),new DefaultDataSourceFactory(getApplicationContext(),
+                    "ExoPlayerDemo"),new DefaultExtractorsFactory(),
+                    new Handler(),
+                    null));
+            player.setPlayWhenReady(true);
+
+            mPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+
+                public void onPrepared(MediaPlayer mp) {
+                    Utils.ocultarSnackBar();
+                    mPlayer.start();
+                    sendPlayerStatus("playing");
+                }
+            });
+
             mPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
 
                 @Override
@@ -246,16 +280,6 @@ public class RadioStreamService extends Service implements AudioManager.OnAudioF
                 }
             });
 
-            mPlayer.prepareAsync();
-
-            mPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-
-                public void onPrepared(MediaPlayer mp) {
-                    Utils.ocultarSnackBar();
-                    mPlayer.start();
-                    sendPlayerStatus("playing");
-                }
-            });
 
             mPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
 
@@ -288,13 +312,16 @@ public class RadioStreamService extends Service implements AudioManager.OnAudioF
 
         } catch (IllegalArgumentException e) {
             System.out.println("ILLEGAL ARGUMENT ERROR");
-            //e.printStackTrace();
+            e.printStackTrace();
+            sendPlayerStatus("erroronserver");
         } catch (IllegalStateException e) {
             System.out.println("ILLEGAL STATE ERROR");
-            //e.printStackTrace();
+            e.printStackTrace();
+            sendPlayerStatus("erroronserver");
         } catch (IOException e) {
             System.out.println("ILLEGAL IO ERROR");
-            //e.printStackTrace();
+            e.printStackTrace();
+            sendPlayerStatus("erroronserver");
         }
     }
 
@@ -355,14 +382,16 @@ public class RadioStreamService extends Service implements AudioManager.OnAudioF
         switch (focusState) {
             case AudioManager.AUDIOFOCUS_GAIN:
                 // resume playback
-                if (mPlayer == null)
-                    startMediaPlayer(radioURL);
-                else if (!mPlayer.isPlaying())
-                    mPlayer.start();
+                if(!HomeFragment.muted && !HomeFragment.radion_on) {
+                    if (mPlayer == null)
+                        startMediaPlayer(radioURL);
+                    else if (!mPlayer.isPlaying())
+                        mPlayer.start();
 
-                if(mPlayer != null)
-                    mPlayer.setVolume(1.0f, 1.0f);
-                break;
+                    if (mPlayer != null)
+                        mPlayer.setVolume(1.0f, 1.0f);
+                    break;
+                }
 
             case AudioManager.AUDIOFOCUS_LOSS:
                 // Lost focus for an unbounded amount of time: stop playback and release media player
@@ -604,7 +633,7 @@ public class RadioStreamService extends Service implements AudioManager.OnAudioF
             play_pauseAction = playbackAction(0);
         }
 
-        Bitmap largeIcon = BitmapFactory.decodeResource(getResources(),R.drawable.vecina); //replace with your own image
+        Bitmap largeIcon = BitmapFactory.decodeResource(getResources(),R.drawable.logo_radio_caravana); //replace with your own image
 
         // Create a new Notification
         NotificationCompat.Builder notificationBuilder = (NotificationCompat.Builder) new NotificationCompat.Builder(this)
@@ -621,8 +650,8 @@ public class RadioStreamService extends Service implements AudioManager.OnAudioF
                 .setLargeIcon(largeIcon)
                 .setSmallIcon(android.R.drawable.stat_sys_headset)
                 // Set Notification content information
-                .setContentText("Canela TV")
-                .setContentTitle("El Show de la Vecina")
+                .setContentText("AppRadio Grupo Caravana")
+                //.setContentTitle("El Show de la Vecina")
                 // Add playback actions
                 .addAction(android.R.drawable.ic_media_previous, "previous", playbackAction(3))
                 .addAction(notificationAction, "pause", play_pauseAction)

@@ -44,6 +44,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -63,8 +64,8 @@ public class HomeFragment extends Fragment {
 
     //Variables de control
     private String streamingActual;
-    private static boolean radion_on=true;
-    private static boolean muted= false;
+    public static boolean radion_on=true;
+    public static boolean muted= false;
     String[] ciudades;
     String provinciaActual="";
     Snackbar snackMessage;
@@ -123,7 +124,13 @@ public class HomeFragment extends Fragment {
         tv_mensaje_programacion.setVisibility(View.INVISIBLE);
 
         //Inicializacion de la cinta de ciudades
-        ciudades= getResources().getStringArray(R.array.ciudades);
+        List<Emisora> emisoras= RestServices.consultarEmisoras(getContext(),null);
+        ArrayList<String> ciudadesEmisoras= new ArrayList<String>();
+        for(Emisora e: emisoras){
+            if(!ciudadesEmisoras.contains(e.getProvincia().toUpperCase()))
+                ciudadesEmisoras.add(e.getProvincia().toUpperCase());
+        }
+        ciudades= ciudadesEmisoras.toArray(new String[0]);//getResources().getStringArray(R.array.ciudades);
         ciudad_picker.setValues(ciudades);
         ciudad_picker.setOnItemSelectedListener(new HorizontalPicker.OnItemSelected(){
             @Override
@@ -188,7 +195,7 @@ public class HomeFragment extends Fragment {
         btn_silenciar.setOnClickListener(btn_mute_listener);
 
         if(radion_on){
-            btn_apagar.setBackground(getContext().getDrawable(R.drawable.round_button_enabled));
+            btn_apagar.setBackground(getContext().getDrawable(R.drawable.round_button_enabled_left));
         }
 
         if(muted){
@@ -236,11 +243,11 @@ public class HomeFragment extends Fragment {
             if(!radion_on){
                 System.out.println("Start Playing!!!!!");
                 if(Utils.isNetworkAvailable(getContext())) {
-                    btn_apagar.setBackground(getContext().getDrawable(R.drawable.round_button_enabled));
+                    btn_apagar.setBackground(getContext().getDrawable(R.drawable.round_button_enabled_left));
                     radion_on = true;
                     new StartStreamingTask().execute();
                     if(muted){
-                        btn_silenciar.setBackground(getContext().getDrawable(R.drawable.round_button));
+                        btn_silenciar.setBackground(getContext().getDrawable(R.drawable.round_button_right));
                         muted= false;
                     }
                 }
@@ -250,7 +257,7 @@ public class HomeFragment extends Fragment {
                 }
             }
             else{
-                btn_apagar.setBackground(getContext().getDrawable(R.drawable.round_button));
+                btn_apagar.setBackground(getContext().getDrawable(R.drawable.round_button_enabled_left));
                 Intent intent = new Intent();
                 intent.setAction(RadioStreamService.BROADCAST_TO_SERVICE);
                 intent.putExtra(RadioStreamService.PLAYER_FUNCTION_TYPE, RadioStreamService.STOP_MEDIA_PLAYER);
@@ -273,7 +280,7 @@ public class HomeFragment extends Fragment {
                 muted=true;
             }
             else{
-                btn_silenciar.setBackground(getContext().getDrawable(R.drawable.round_button));
+                btn_silenciar.setBackground(getContext().getDrawable(R.drawable.round_button_right));
                 Intent intent = new Intent();
 
                 if(RadioStreamService.radioURL.equals(streamingActual)) {

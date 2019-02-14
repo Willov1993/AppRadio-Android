@@ -84,10 +84,10 @@ public class EmisorasAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHold
             Emisora em= (Emisora) emisoras_dataset.get(position);
             holder.tv_titulo_emisora.setText(em.getNombre());
             holder.tv_info_emisora.setText(em.getFrecuencia_dial());
-            Picasso.with(context)
+            /*Picasso.with(context)
                     .load(em.getLogotipo())
                     .placeholder(R.drawable.radio_banner2)
-                    .into(holder.iv_emisora);
+                    .into(holder.iv_emisora);*/
         }
         else{//if(viewHolder instanceof  TitleViewHolder){
             TitleViewHolder holder= (TitleViewHolder) viewHolder;

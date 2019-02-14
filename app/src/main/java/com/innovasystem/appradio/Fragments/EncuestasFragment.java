@@ -11,10 +11,10 @@ import com.innovasystem.appradio.R;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link NotificacionesFragment#newInstance} factory method to
+ * Use the {@link EncuestasFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class NotificacionesFragment extends Fragment {
+public class EncuestasFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -25,7 +25,7 @@ public class NotificacionesFragment extends Fragment {
     private String mParam2;
 
 
-    public NotificacionesFragment() {
+    public EncuestasFragment() {
         // Required empty public constructor
     }
 
@@ -35,11 +35,11 @@ public class NotificacionesFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment NotificacionesFragment.
+     * @return A new instance of fragment EncuestasFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static NotificacionesFragment newInstance(String param1, String param2) {
-        NotificacionesFragment fragment = new NotificacionesFragment();
+    public static EncuestasFragment newInstance(String param1, String param2) {
+        EncuestasFragment fragment = new EncuestasFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -60,7 +60,7 @@ public class NotificacionesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_notificaciones, container, false);
+        return inflater.inflate(R.layout.fragment_encuestas, container, false);
     }
 
 }
